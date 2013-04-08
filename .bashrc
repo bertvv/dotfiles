@@ -6,6 +6,7 @@ if [ -f /etc/bashrc ]; then
 fi
 
 # User specific aliases and functions
+
 # Source extra init scripts in .bash.d/
 for f in $(ls ~/.bash.d/*.sh); do
     [ -r "${f}" ] && source "${f}"
