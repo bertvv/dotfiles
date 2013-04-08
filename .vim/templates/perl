@@ -1,0 +1,11 @@
+#!/usr/bin/perl
+#
+# Created:  Mon 11 Aug 2008 01:50:26 PM CEST
+# Modified: Mon 11 Aug 2008 01:50:26 PM CEST
+# Author: Bert Van Vreckem <bert.vanvreckem@gmail.com>
+
+use strict;
+use warnings;
+
+
+# cursor: 10 del

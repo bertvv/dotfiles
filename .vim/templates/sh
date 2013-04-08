@@ -1,0 +1,11 @@
+#!/bin/bash
+#
+# Created:  Sat 30 Mar 2013 02:11:26 PM CET
+# Modified: Sat 30 Mar 2013 02:11:26 PM CET
+# Author:   Bert Van Vreckem <bert.vanvreckem@gmail.com>
+#
+
+set -e # abort on nonzero exitstatus
+set -u # abort on unbound variable
+
+# cursor: 11 del
