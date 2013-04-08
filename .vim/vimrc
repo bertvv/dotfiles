@@ -1,6 +1,6 @@
 " .vimrc
 " Created:  Fri 08 Aug 2008 03:15:21 PM CEST
-" Modified: Sun 07 Apr 2013 12:11:57 AM CEST
+" Modified: Tue 09 Apr 2013 01:43:45 AM CEST
 " Author:   Bert Van Vreckem <bert.vanvreckem@gmail.com>
 "
 " Lots of inspiration comes from https://raw.github.com/teranex/dotvim/
@@ -51,7 +51,7 @@ set hlsearch                            " highlight all the matches for the sear
 set directory=~/.vimswaps,.,/tmp        " where to store the swap files
 set noswapfile                          " disable swap files, most of the time they are just annoying
 set nobackup                            " don't make a (permanent) backup when saving files
-set writebackup                         " make a (temporary) backup while saving files
+"set writebackup                         " make a (temporary) backup while saving files
 
 if v:version > '702'
     if $VIM !~ 'vimtouch'               " check that we are not running on Android (VimTouch)
@@ -112,7 +112,7 @@ colorscheme molokai
 "
 
 " Timestamp
-let timestamp_regexp = '\v\C%(<%(%([cC]hanged?|modified)|Modified)\s*:\s+)@<=\a+ \d{2} \a+ \d{4} \d{2}:\d{2}:\d{2}%(\s+[AP]M)?%(\s+\a+)?|Sat 06 Apr 2013 11:59:57 PM CEST'
+let timestamp_regexp = '\v\C%(<%(%([cC]hanged?|modified)|Modified)\s*:\s+)@<=\a+ \d{2} \a+ \d{4} \d{2}:\d{2}:\d{2}%(\s+[AP]M)?%(\s+\a+)?|TIMESTAMP'
 
 filetype plugin indent on
 
