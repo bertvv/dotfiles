@@ -15,3 +15,6 @@ fi
 
 # Notification after long commands, e.g. sleep 10; alert
 alias alert='tput bel; notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "Done: $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Git stuff
+alias push='git push -u origin --all' # push to Github
