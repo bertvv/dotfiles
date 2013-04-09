@@ -18,3 +18,6 @@ alias alert='tput bel; notify-send --urgency=low -i "$([ $? = 0 ] && echo termin
 
 # Git stuff
 alias push='git push -u origin --all' # push to Github
+
+# Print CPU temperature
+alias temp='cat /sys/bus/acpi/drivers/thermal/LNXTHERM\:00/thermal_zone/temp'
