@@ -1,6 +1,6 @@
 " .vimrc
 " Created:  Fri 08 Aug 2008 03:15:21 PM CEST
-" Modified: Tue 09 Apr 2013 01:43:45 AM CEST
+" Modified: Tue 09 Apr 2013 01:52:02 AM CEST
 " Author:   Bert Van Vreckem <bert.vanvreckem@gmail.com>
 "
 " Lots of inspiration comes from https://raw.github.com/teranex/dotvim/
@@ -113,8 +113,11 @@ colorscheme molokai
 
 " Timestamp
 let timestamp_regexp = '\v\C%(<%(%([cC]hanged?|modified)|Modified)\s*:\s+)@<=\a+ \d{2} \a+ \d{4} \d{2}:\d{2}:\d{2}%(\s+[AP]M)?%(\s+\a+)?|TIMESTAMP'
+let modelines = 5
 
-filetype plugin indent on
+
+
+
 
 " }}}
 
