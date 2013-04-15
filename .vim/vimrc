@@ -1,6 +1,6 @@
 " .vimrc
 " Created:  Fri 08 Aug 2008 03:15:21 PM CEST
-" Modified: Tue 09 Apr 2013 01:52:02 AM CEST
+" Modified: Mon 15 Apr 2013 02:51:04 PM CEST
 " Author:   Bert Van Vreckem <bert.vanvreckem@gmail.com>
 "
 " Lots of inspiration comes from https://raw.github.com/teranex/dotvim/
@@ -105,6 +105,8 @@ endif
 " color scheme
 let g:molokai_original=0
 colorscheme molokai
+"set background=light
+"colorscheme solarized
 
 " }}}
 
