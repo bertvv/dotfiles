@@ -1,3 +1,5 @@
 [user]
 	name = Bert Van Vreckem
 	email = bert.vanvreckem@gmail.com
+[push]
+	default = simple
