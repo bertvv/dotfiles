@@ -12,3 +12,5 @@ for f in $(ls ~/.bash.d/*.sh); do
     [ -r "${f}" ] && source "${f}"
 done
 
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
