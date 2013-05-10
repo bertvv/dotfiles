@@ -3,3 +3,7 @@
 	email = bert.vanvreckem@gmail.com
 [push]
 	default = simple
+[github]
+	user = bertvv
+[credential]
+	helper = cache --timeout=3600
