@@ -6,6 +6,8 @@ alias ll='ls -l  --si --time-style=long-iso'
 alias df='df --si'
 alias du='du --total --si'
 
+alias tree='tree -C'
+
 # Protect root against shooting himself in the foot
 if [ $(id -ru) -eq 0 ]; then
     alias rm='rm --interactive=once'
