@@ -1,5 +1,16 @@
 # Bash aliases
 
+# Shortcuts based on top commands in Bash history
+# (see functions.sh, topcmd function)
+# Credit https://coderwall.com/p/o5qijw
+alias a='git add'
+alias c='git commit -m'
+alias g='git'
+alias l='ls -la --si --time-style=long-iso'
+alias s='git status'
+alias v='vim'
+alias y='yum'
+
 # Use rational units/formats in file size & date output
 alias la='ls -la --si --time-style=long-iso'
 alias ll='ls -l  --si --time-style=long-iso'
@@ -32,6 +43,8 @@ alias fixbar='xrandr --output LVDS-0 --primary'
 # otherwise, if vim-enhanced is installed, use that
 if [[ -x "/usr/bin/gvim" ]]; then
     alias vi='gvim -v'
+    alias v='gvim -v'
 elif [[ -x "/usr/bin/vim" ]]; then
     alias vi='vim'
+    alias v='vim'
 fi
