@@ -10,7 +10,7 @@ alias l='ls -la --si --time-style=long-iso'
 alias p='git push'
 alias s='git status'
 alias v='vim'
-alias y='yum'
+alias y='sudo yum'
 
 # Use rational units/formats in file size & date output
 alias la='ls -la --si --time-style=long-iso'
