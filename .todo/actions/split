@@ -1,0 +1,79 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         split
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 19-Apr-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)split	$Id: 731c86b912e4f347e570d5fd34709c291968cf59 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) ITEM# [PATTERN]"
+    echo "      Splits task on line ITEM# on PATTERN (or the word \"and\") and creates"
+    echo "      new task(s) for them. Dates, priorities, projects, contexts and markers"
+    echo "      are cloned to the new task(s); a done / trashed status is not."
+    echo ""
+    exit
+}
+
+shopt -s extglob
+errmsg="usage: $TODO_SH $(basename $0) ITEM# [PATTERN]"
+item=$1; shift
+if [ $# -eq 0 ]; then
+    pattern=' \+and \+'
+elif [ "$*" ]; then
+    pattern=$*
+else
+    die "TODO: PATTERN must not be empty!"
+fi
+
+[ -z "$item" ] && die "$errmsg"
+[[ "$item" = +([0-9]) ]] || die "$errmsg"
+getTodo "$item"
+
+prepends=$(echo "$todo" | sed -e 's/^\([xX] \([0-9]\{2,4\}-[0-9]\{2\}-[0-9]\{2\} \)\{0,1\}\)\{0,1\}\((.) \)\{0,1\}\([0-9]\{2,4\}-[0-9]\{2\}-[0-9]\{2\} \)\{0,1\}\(\([+@][^ ]\+ \+\|[[:graph:]]:\(([^)]\+)\|[^ ]\+\) \+\)\{0,\}\)\(.*$\)/\3\4\5/')
+rest=$(echo "$todo" | sed -e 's/^\([xX] \([0-9]\{2,4\}-[0-9]\{2\}-[0-9]\{2\} \)\{0,1\}\)\{0,1\}\((.) \)\{0,1\}\([0-9]\{2,4\}-[0-9]\{2\}-[0-9]\{2\} \)\{0,1\}\(\([+@][^ ]\+ \+\|[[:graph:]]:\(([^)]\+)\|[^ ]\+\) \+\)\{0,\}\)\(.*$\)/\8/')
+text=$(echo "$rest" | sed -e 's/\(\( \+[+@][^ ]\+\| \+[[:graph:]]:\(([^)]\+)\|[^ ]\+\)\)\{0,\}\)$//')
+appends=${rest#"$text"}
+
+splitText=$(echo "$text" | sed -e "s/${pattern}/\\n/g")
+if [ "$splitText" = "$text" ]; then
+    die "TODO: No split on \"${pattern}\" possible."
+fi
+
+isFirst=t
+while IFS=$'\n' read -r text
+do
+    newtodo="${prepends}${text}${appends}"
+    if [ "$isFirst" ]; then
+        # The 'replace' command doesn't handle done tasks, and may do surprising
+        # things to existing priorities and dates. To avoid surprises, do the
+        # complete replacement of the line here.
+        input=$newtodo
+        cleaninput "for sed"
+        sed -i.bak "$item s|^.*|${input}|" "$TODO_FILE"
+        if [ $TODOTXT_VERBOSE -gt 0 ]; then
+            echo "$item $todo"
+            echo "TODO: Replaced task with:"
+            echo "$item $newtodo"
+        fi
+        isFirst=
+    else
+        "$TODO_FULL_SH" -T add "$newtodo" || exit $?
+    fi
+done <<< "$splitText"

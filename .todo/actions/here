@@ -1,0 +1,66 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         here
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 01-Feb-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)here	$Id: d95a4362832ba6f75f171780ab8c31326deed677 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [-s [NUM]] [TERM...]"
+    echo "      Displays all tasks with a context of the current host / location."
+    echo "      If TERM specified, lists only tasks that contain TERM(s)."
+    echo "      With -s, show just the summary, and the NUM last tasks."
+    echo ""
+    exit
+}
+
+summaryNum=
+if [ "$1" = '-s' ]; then
+    if [[ "$2" =~ ^[0-9]+$ ]]; then
+        summaryNum=$2
+        shift
+    else
+        summaryNum=0
+    fi
+    shift
+fi
+
+[ "$HOSTNAME" ] || die "TODO: Cannot determine hostname!"
+
+post_filter_command="grep -ve '^ *[0-9]\+ [xX] ' | grep -e '@$(echo "$HOSTNAME" | tr 'A-Z' 'a-z')'"
+if [ "$summaryNum" ]; then
+    tasks=$(TODOTXT_VERBOSE=0 _list "$TODO_FILE" "$@")
+    if [ "$tasks" ]; then
+        tasksCnt=$(echo "$tasks" | wc -l)
+        if [ $summaryNum -gt 0 ]; then
+            if [ $tasksCnt -gt $summaryNum ]; then
+                printf 'TODO: You have %d local task(s) open on this system; showing the last %d:\n' $tasksCnt $summaryNum
+                echo "$tasks" | tail -n $summaryNum
+            else
+                printf 'TODO: You have %d local task(s) open on this system:\n' $tasksCnt
+                echo "$tasks"
+            fi
+        else
+            printf 'TODO: You have %d local task(s) open on this system.\n' $tasksCnt
+        fi
+    fi
+else
+    _list "$TODO_FILE" "$@"
+fi

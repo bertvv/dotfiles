@@ -1,0 +1,62 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         backup
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 13-Apr-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)backup	$Id: a985926ab321ef6c3e5400251079c0848266acbb $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0)"
+    echo "      Writes a backup copy of todo.txt, done.txt, etc."
+    echo ""
+    exit
+}
+
+# Configuration to place the backups into a different directory.
+: ${TODOTXT_BACKUP_DIR="${TODO_DIR}.backup"}
+# Use a custom backup script if it exists, fall back on a simple copy to a
+# timestamp; do nothing when the command is "none".
+: ${TODOTXT_BACKUP_COMMAND:=writebackup}
+# Files to include in the backup.
+: ${TODOTXT_BACKUP_FILES:='{todo,done,trash}.txt'}
+
+
+if [ "$TODOTXT_BACKUP_COMMAND" = 'none' ]; then
+    # Skip backup.
+    :
+elif type -P "$TODOTXT_BACKUP_COMMAND" >/dev/null; then
+    if [ -d "${TODOTXT_BACKUP_DIR%/}" ]; then
+        eval '"$TODOTXT_BACKUP_COMMAND" -d "${TODOTXT_BACKUP_DIR%/}" "${TODO_DIR}/"'${TODOTXT_BACKUP_FILES}
+    else
+        eval '"$TODOTXT_BACKUP_COMMAND" "${TODO_DIR}/"'${TODOTXT_BACKUP_FILES}
+    fi
+else
+    readonly timestamp=$(date +%F_%H%M%S)
+    eval 'for todofile in "${TODO_DIR}/"'${TODOTXT_BACKUP_FILES}'
+    do
+        filename=$(basename -- "$todofile")
+        backupFilename="${filename%.txt}_${timestamp}.bak"
+        if [ -d "${TODOTXT_BACKUP_DIR%/}" ]; then
+            cp "$todofile" "${TODOTXT_BACKUP_DIR%/}/${backupFilename}" && echo "Backed up to ${TODOTXT_BACKUP_DIR%/}/${backupFilename}"
+        else
+            cp "$TODO_FILE" "$backupFilename" && echo "Backed up to ${backupFilename}"
+        fi
+    done'
+fi

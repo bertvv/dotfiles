@@ -1,0 +1,43 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         markerTrashedFilter
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 02-Feb-2012
+#
+###############################################################################
+# CONTENTS:
+#   Converts x:DUPITEM# marker into trashing of the task, with a corresponding
+#   comment (the same that "dup del" uses) appended. Useful as an alternative to
+#   "dup del" when editing in other clients.
+#
+# REMARKS:
+#
+# ATTENTION:
+#   This filter is to be used in post_filter_command, before formatting and
+#   coloring of priorities. It won't work as a TODOTXT_FINAL_FILTER!
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)markerTrashedFilter	$Id: 5ce31eafefe06073ffc72e5c5978f0849050dca3 $	todo.txt-cli-ex
+###############################################################################
+
+: ${TODOTXT_COMMENT_SYMBOL:= => }
+
+awk --re-interval -v commentSymbol="$TODOTXT_COMMENT_SYMBOL" '
+/ *[0-9]+ [xX] / {
+    # Do not process done tasks.
+    print
+    next
+}
+/ x:[0-9]+( |$)/ {
+    today = strftime("%Y-%m-%d", systime())
+    dupItem = gensub(/^.* x:([0-9]+).*$/, "\\1", "")
+    $0 = gensub(/^( *[0-9]+ )(\(.\) )?/, "\\1X " today " ", "") commentSymbol "dup of " dupItem
+}
+{ print }
+'

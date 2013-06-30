@@ -1,0 +1,132 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         cheat
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 18-Apr-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)cheat	$Id: 9db440e5085cecd710f730959f273334227eaefb $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [pri|marker|syntax]"
+    echo "      Print a cheat sheet for the use of priorities, defined markers, and"
+    echo "      general todo.txt syntax in the context of the todo.txt-ex extensions."
+    echo ""
+    exit
+}
+
+: ${COLOR_CHEATSHEET_HEADER=[1;47m}
+
+priorityHelp()
+{
+    sort <<EOF
+(A) top priority:  do ASAP
+(B) must priority: important and work-related tasks, to be done soon
+(C) want priority: private or side tasks, to be done if time permits
+(O) opportunity:   optional, stretch goals that may be done opportunistically
+(P) pending:       tasks currently in progress, only a step away from completion${TODOTXT_CHEAT_CUSTOM_PRIORITIES:+
+}${TODOTXT_CHEAT_CUSTOM_PRIORITIES}
+EOF
+if [ "$TODOTXT_WHAT_PRIORITIES" ]; then
+    echo "Priorities $TODOTXT_WHAT_PRIORITIES are included in the todo.sh what output."
+fi
+}
+
+markerHelp()
+{
+    cat <<EOF
+m:marker and m:(a marker with spaces), especially
+
+A:2012-04-01 ... Z:2012-01-01 prioritize on date.
+d:2012-12-12 deprioritize after date.
+a:42         "also, <a href>" related to task number. No action on do and trash.
+a:(gg foo)   explicit search URL for the browse action.
+l:42         unidirectionally linked to task number, which becomes done (but not
+             trashed) recursively.
+             There is no marker for bidirectional linking; if you want to mark
+             one task done when another is done and vice versa, they are
+             probably duplicates, and one of them should be deleted.
+             Alternatively, cross-link them separately: todo.sh dup link 42 43
+k:42         kill task number, which is trashed when this task is done.
+j:42         bidirectionally joined / contradependent with task number;
+             when one is done, the other(s) are trashed recursively.
+j:goal       joined to goal; when this is done, other tasks with the same goal
+             are trashed.
+t:2010-10-10 future task becomes due on the date, created via todo.sh schedule
+u:2011-12-01 do-until, ultimate, latest due date until the task should have been
+             done.
+w:42         waiting for task number, created via todo.sh wait ITEM# for 42
+w:Gina       waiting for person / event, created via todo.sh wait ITEM# Gina
+x:42         trash as a duplicate of task 42; useful as an alternative to
+             todo.sh dup del when editing in other clients.
+x:2011-12-01 trash on date.
+z:2011-12-01 do-until-then-trash, ultimate, latest due date; after it, the task
+             is trashed.
+
+{weekly} or {every two weeks} recurrences
+
+[Assignee]
+R:Robert A:Albert C:Claudia I:Ingo
+EOF
+}
+
+syntaxHelp()
+{
+    cat <<EOF
++project +project-subproject
+For subprojects use +project-subproj1, not +project +subproj1:
+    $ todo.sh ls +project\  # list all +project that do not have a subproject
+    $ todo.sh ls +project   # get a flat list
+    $ todo.sh pv +project   # grouped by subproject
+
+@context: lowercase @places, capitalized @People @IngoK, email @you@gmail.com
+
+2010-09-15 is the entry date and prefered date format
+
+tasks can have trailing Unix-style comments # by convention
+x done tasks can have a comment => explaining why/how it was done
+X trashed tasks can have a comment => explaining why it was trashed
+
+tasks "can" use *basic* common 'markup' for _formatting_.
+
+Preferred ordering:
+(P) 2010-09-15 +project1 @context1 place task description here t:2010-10-10 w:42
+EOF
+}
+
+if [ $# -eq 0 ]; then
+    echo "${COLOR_CHEATSHEET_HEADER}PRIORITIES${COLOR_DEFAULT}"
+    priorityHelp
+
+    echo
+    echo "${COLOR_CHEATSHEET_HEADER}MARKERS${COLOR_DEFAULT}"
+    markerHelp
+
+    echo
+    echo "${COLOR_CHEATSHEET_HEADER}SYNTAX${COLOR_DEFAULT}"
+    syntaxHelp
+else
+    for topic
+    do
+        case $topic in
+            pri|priority|priorities)    priorityHelp;;
+            marker)                     markerHelp;;
+            syntax)                     syntaxHelp;;
+        esac
+    done
+fi | "${PAGER:-less}"

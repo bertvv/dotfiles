@@ -1,0 +1,58 @@
+# === EDIT FILE LOCATIONS BELOW ===
+
+# Your todo.txt directory
+#export TODO_DIR="/Users/gina/Documents/todo"
+export TODO_DIR="/home/bert/Dropbox/todo"
+
+# Your todo/done/report.txt locations
+export TODO_FILE="$TODO_DIR/todo.txt"
+export DONE_FILE="$TODO_DIR/done.txt"
+export REPORT_FILE="$TODO_DIR/report.txt"
+export TMP_FILE="$TODO_DIR/todo.tmp"
+
+# You can customize your actions directory location
+export TODO_ACTIONS_DIR="$HOME/.todo/actions"
+export TODO_FILTERS_DIR="$HOME/.todo/filters"
+
+# == EDIT FILE LOCATIONS ABOVE ===
+
+export TODOTXT_PRESERVE_LINE_NUMBERS=0
+
+# === COLORS ===
+
+. ${TODO_FILTERS_DIR}/colorDefs
+
+## Uncomment and edit to override these defaults.
+## Reference the constants from the color map above,
+## or use $NONE to disable highlighting.
+#
+# Priorities can be any upper-case letter.
+# A,B,C are highlighted; you can add coloring for more.
+#
+export PRI_A="$Red"        # color for A priority
+export PRI_B="$Yellow"         # color for B priority
+export PRI_C="$Yellow"    # color for C priority
+
+# There is highlighting for tasks that have been done,
+# but haven't been archived yet.
+#
+export COLOR_DONE=$White
+export COLOR_BLOCKED=$URed
+
+# === BEHAVIOR ===
+
+## customize list output
+#
+# TODOTXT_SORT_COMMAND will filter after line numbers are
+# inserted, but before colorization, and before hiding of
+# priority, context, and project.
+#
+# export TODOTXT_SORT_COMMAND='env LC_COLLATE=C sort -f -k2'
+
+# TODOTXT_FINAL_FILTER will filter list output after colorization,
+# priority hiding, context hiding, and project hiding. That is,
+# just before the list output is displayed.
+#
+export TODOTXT_FINAL_FILTER="${TODO_FILTERS_DIR}/colorFutureTasks | ${TODO_FILTERS_DIR}/colorBlockedTasks | ${TODO_FILTERS_DIR}/colorSymbols"
+
+

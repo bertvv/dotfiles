@@ -1,0 +1,135 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         unwait
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 28-Jun-2010
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)unwait	$Id: 01f2e3152536c6b1c2643972c5594873e278164a $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) ITEM#[, ITEM#, ...]"
+    echo "      Unblock the task(s) on line ITEM#"
+    echo "    $(basename $0) ITEM#[, ITEM#, ...] PRIORITY"
+    echo "      Unblock the task(s) on line ITEM# and prioritize as PRIORITY."
+    echo "    $(basename $0) [ITEM#, ...] \"REASON for Waiting\"[, REASON, ...]"
+    echo "      Remove REASON as a blocker for the task(s) on line ITEM#,"
+    echo "      or (if not specified) all tasks that are blocked because of it."
+    echo "    $(basename $0) [ITEM#, ...] for DEPITEM#[, DEPITEM#, ...]"
+    echo "      Remove DEPITEM# as a dependency for the task(s) on line ITEM#,"
+    echo "      or (if not specified) all tasks that are blocked because of it."
+    echo ""
+    exit
+}
+
+errmsg="usage: $TODO_SH $(basename $0) [ITEM#, ...] \"REASON for Waiting\"[, REASON, ...] | for DEPITEM#[, #DEPITEM, ...] | [PRIORITY]"
+
+[ $# -eq 0 ] && die "$errmsg"
+
+items=
+while [[ "$1" =~ ^[,0-9]+$ ]]
+do
+    items="$items $1"
+    shift
+done
+
+pri=
+
+# This is the general pattern for all wait reasons.
+generalReasonPattern='([^)]*)\|[^ \t]\+'
+waitPattern=$generalReasonPattern
+
+if [ $# -eq 0 ]; then
+    [ "$items" ] || die "$errmsg"
+elif [[ "$1" = [a-zA-Z] ]]; then
+    pri=$1
+    shift
+elif [[ "$*" =~ ^for\ +[0-9,\ ]+$ ]]; then
+    # We have dependent tasks: DEPITEM#.
+    waitDescription="dependent tasks"
+    shift # Remove the "for" filler argument.
+
+    waitPattern=
+    for waitDependentTaskNum in ${*//,/ }
+    do
+        waitPattern=${waitPattern}${waitPattern:+\\|}${waitDependentTaskNum}
+    done
+else
+    # We have reason(s).
+    waitDescription="wait reasons"
+    # Split REASONs based on commas, not whitespace. A multi-word single REASON is
+    # far more frequent than multiple REASONs. Splitting on whitespace would
+    # necessitate enclosing each REASON in double quotes.
+    waitPattern=
+    IFS=,
+    for waitReason in $(echo "$@" | sed -e 's/, \+/,/g')
+    do
+        # Escape "/" within REASON because it is used in /-delimited regexps.
+        # Enclose REASON in parentheses if it consists of multiple words.
+        waitPattern=${waitPattern}${waitPattern:+\\|}$(echo "$waitReason" | sed -e 's|/|\\&|g' -e '/[ \t]/s/.*/(&)/')
+    done
+    unset IFS
+fi
+# The wait pattern is always preceded by a space character, and is anchored to
+# the next whitespace or end of line.
+waitPattern=' w:\('${waitPattern}'\)\([ \t]\|$\)'
+generalWaitPattern=' w:\('$generalReasonPattern'\)\([ \t]\|$\)'
+
+if [ ! "$items" ]; then
+    # No tasks have been specified; we must generate the list of (not yet done
+    # or trashed) tasks that contain the waitPattern ourselves.
+    items=$(sed -n -e '/^[xX] /b' -e "/${waitPattern}/=" "$TODO_FILE")
+
+    [ "$items" ] || die "TODO: No tasks that contain the ${waitDescription:?} found."
+fi
+
+# Split multiple unwait's, if comma separated change to whitespace separated.
+for item in ${items//,/ }
+do
+    getTodo "$item"
+
+    # Unfortunately, sed doesn't understand the /\>/ "match end of word" regex
+    # atom, so the wait pattern needs to be specified in a way that it may
+    # overlap with a following blocker. Due to that, even a global sed
+    # substitute will not remove all blockers in one pass. Thus, we repeat the
+    # substitution until there's nothing left to substitute.
+    sed -i.bak -e "$item {
+:repeat
+s/${waitPattern}/\\2/g
+t repeat
+}" "$TODO_FILE"
+    getNewtodo "$item"
+    if [ "$newtodo" = "$todo" ]; then
+        die "TODO: $item not blocked"
+        continue
+    else
+        if [ $TODOTXT_VERBOSE -gt 0 ]; then
+            if [ "$(sed -e "$item!d" -e "/$generalWaitPattern/d" "$TODO_FILE")" = "" ]; then
+                newState="had blocker(s) removed; still blocked"
+            else
+                newState="unblocked"
+            fi
+            echo "$item $newtodo"
+            echo "TODO: $item $newState."
+        fi
+    fi
+
+    if [ "$pri" ]; then
+        "$TODO_FULL_SH" command pri $item $pri
+    fi
+done

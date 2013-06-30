@@ -1,0 +1,62 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         opportunity
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 04-Jun-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)opportunity	$Id: a03482e93c9505395828b98dde7743d4b6582789 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) ITEM#[, ITEM#, ITEM#, ...] DATE"
+    echo "      Adds priority O to task(s) on line ITEM#,"
+    echo "      and automatically de-prioritize the task(s) on DATE."
+    echo ""
+    exit
+}
+
+shopt -s extglob
+
+errmsg="usage: $TODO_SH $(basename $0) ITEM#[, ITEM#, ITEM#, ...] DATE"
+[ $# -lt 2 ] && die "$errmsg"
+
+typeset -a items=()
+while [[ "$1" =~ ^[,0-9]+$ ]]
+do
+    items+=("$1")
+    shift
+done
+
+[ $# -eq 1 ] || die "$errmsg"
+depriDate=$(date -d "$1" +%F) || exit 1
+shift
+
+for item in ${items[*]//,/ }
+do
+    getTodo "$item"
+
+    # Replace existing date-deprioritization with the same deprioritization
+    # in-place or append new date-deprioritization.
+    newtodo=$(echo "$todo" | sed -e 's| d:\([0-9]\{2,4\}[^A-Za-z0-9]\)\{2\}[0-9]\{2,4\}| '"d:${depriDate}|" -e t -e "s| *\$| d:${depriDate}|") || exit 1
+
+    input=$newtodo
+    cleaninput "for sed"
+    sed -i.bak "$item s|^.*|${input}|" "$TODO_FILE"
+
+    "$TODO_FULL_SH" pri "$item" O || exit $?
+done

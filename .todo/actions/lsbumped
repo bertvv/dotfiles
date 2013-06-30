@@ -1,0 +1,43 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         lsbumped
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 15-May-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)lsbumped	$Id: 81671e6a519730e5fcaabc212953a9069b49006c $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [TERM...]"
+    echo "      Displays all bumped tasks, sorted by number of bumps."
+    echo "      If TERM specified, lists only tasks that contain TERM(s)."
+    echo ""
+    exit
+}
+
+: ${TODOTXT_BUMP_MARKER:='!'}
+
+# Consider only tasks that are not yet done or trashed and contain the bump
+# marker.
+post_filter_command="grep -ve '^ *[0-9]\+ [xX] ' | grep -e ' ${TODOTXT_BUMP_MARKER}:[0-9]\+'"
+
+# To sort based on the number of bumps, temporarily add the bump count to the
+# front, do a numeric sort, then remove the count again.
+TODOTXT_SORT_COMMAND="sed -e 's/^.* ${TODOTXT_BUMP_MARKER}:\\([0-9]\\+\\).*\$/\\1 &/' | sort -nr | sed -e 's/^[0-9]\+ //'"
+
+_list "$TODO_FILE" "$@" | sed -e '/^TODO:/s/of [0-9]\+ tasks shown/bumped \0/'

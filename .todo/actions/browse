@@ -1,0 +1,86 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         browse
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Philippe Teuwen
+# MAINTAINER:   Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 01-Jun-2010
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# SOURCE:
+#   https://github.com/doegox/todo.txt-cli/blob/extras/todo.actions.d/nav
+#
+# @(#)browse	$Id: a9abf91479801cdca57002e53bef294680531ddc $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) ITEM#[, ITEM#, ...]"
+    echo "      Searches for URLs in the task text and launches a browser."
+    echo "    $(basename $0) [TERM...]"
+    echo "      Displays all tasks that contain URLs and TERM(s)."
+    echo ""
+    exit
+}
+
+if [[ ! "$1" =~ ^[0-9]+$ ]]; then
+    post_filter_command="grep -e '[a-z]\\+://[^ ]\\+' -e ' a:\\([0-9]*[^0-9]\\)\\+[0-9]*\\( \\|\$\\)'"
+    _list "$TODO_FILE" "$@"
+    exit 0
+fi
+
+typeset -a urls=()
+while [ $# -gt 0 ]
+do
+    item=$1
+    shift
+    getTodo "$item"
+
+    taskUrls=$(echo "$todo" | grep -o '[a-z]\+://[^ ]\+')
+    linkMarkers=$(echo "$todo" | grep -o '[^ ]*a:[^(][^[:space:]]*' | grep '^a:'; echo "$todo" | grep -o '[^ ]*a:([^)]\+)' | grep '^a:')
+    if [ -z "$taskUrls" -a -z "$linkMarkers" ]; then
+        [ $TODOTXT_VERBOSE -gt 0 ] && echo "$item $todo"
+        echo "TODO: No URL found in task $item."
+    fi
+
+    IFS=$'\n'
+    for url in $taskUrls
+    do
+        urls+=("$url")
+        echo "$url"
+    done
+    for linkMarker in $linkMarkers
+    do
+        url=${linkMarker#a:(}
+        if [ "$url" = "$linkMarker" ]; then
+            url=${linkMarker#a:}
+        else
+            url=${url%)}
+        fi
+
+        urls+=("$url")
+        echo "$url"
+    done
+done
+[ ${#urls} -gt 0 ] || exit 1
+
+
+
+if [ "$TODOTXT_BROWSER" ]; then
+    exec "$TODOTXT_BROWSER" "${urls[@]}"
+elif type -P browse >/dev/null; then
+    exec browse "${urls[@]}"
+elif type -P x-www-browser >/dev/null; then
+    exec x-www-browser "${urls[@]}"
+elif type -P xdg-open >/dev/null; then
+    exec xdg-open "${urls[@]}"
+else
+    die "TODO: Cannot find a web browser; point the TODOTXT_BROWSER environment variable to one."
+fi

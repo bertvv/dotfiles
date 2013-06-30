@@ -1,0 +1,73 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         dashboard
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 06-Jan-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)dashboard	$Id: af4cc0f3e7a13391617b14360fe930ee69a0e200 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [TERM...]"
+    echo "      Displays a dashboard overview of the current tasks."
+    echo "      Useful for embedding into the desktop background via Conky, Samurize, etc."
+    echo "      If TERM specified, considers only tasks that contain TERM(s)."
+    echo ""
+    exit
+}
+
+filter=
+[ $# -gt 0 ] && filter="$* "
+
+echo "    Pending ${filter}tasks:"
+"$TODO_FULL_SH" what "$@"
+"$TODO_FULL_SH" summary "$@"
+
+modDate=$([ ${TODOTXT_RELTIME:-1} -ne 0 ] && reldate "$TODO_FILE" 2>/dev/null || date -d "$(stat -c %y "$TODO_FILE")" '+%F %R')
+echo "TODO: last modified ${modDate}"
+
+if [ "$HOSTNAME" ]; then
+    hereTaskNum=0
+    hereTasks=$(TODOTXT_VERBOSE=0 "$TODO_FULL_SH" here "$@")
+    if [ "$hereTasks" ]; then
+        hereTaskNum=$(echo "$hereTasks" | sed -n '$ =')
+        echo
+        echo "    Local ${filter}tasks @${HOSTNAME}:"
+        echo "$hereTasks"
+    fi
+
+    if [ $# -gt 0 ]; then
+        # When filter TERM(s) are given, still include information about any
+        # other local tasks.
+        allHereTaskNum=$(TODOTXT_VERBOSE=0 "$TODO_FULL_SH" here | sed -n '$ =')
+        if [ $allHereTaskNum -gt 0 ]; then
+            if [ $hereTaskNum -gt 0 ]; then
+                moreHereTaskNum=$((allHereTaskNum - hereTaskNum))
+                if [ $moreHereTaskNum -gt 0 ]; then
+                    echo "TODO: $moreHereTaskNum more local task(s) @${HOSTNAME}"
+                fi
+            else
+                echo "TODO: $allHereTaskNum local task(s) @${HOSTNAME}"
+            fi
+        fi
+    fi
+fi
+
+echo
+echo "    Last ${filter}tasks:"
+TODOTXT_VERBOSE=0 "$TODO_FULL_SH" last "$@"

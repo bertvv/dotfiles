@@ -1,0 +1,187 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         mail
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 24-Feb-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)mail	$Id: 8e0b2be90fe5379f71ea83a63661a3c9a9fe51ca $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [-t] [-e | -m MESSAGE] TERM..."
+    echo "      Sends all tasks that aren't done yet and contain TERM(s),"
+    echo "      putting the tasks into the email body."
+    echo "    $(basename $0) [-t] [-e | -m MESSAGE] ITEM#, ITEM#[, ITEM#, ...]"
+    echo "      Sends all tasks on lines ITEM#, putting the tasks into the email body."
+    echo "    $(basename $0) [-t] [-e | -m MESSAGE] -s ITEM#"
+    echo "      Sends task ITEM#, putting the task directly into the email subject."
+    echo "      -t just prints what would be sent."
+    echo "      -e edits the email recipients and body before sending."
+    echo "      -m uses MESSAGE as the email body."
+    echo "      Recipients are taken from @Person (first letter uppercase, must be found"
+    echo "      in email address book then), @name@host, a marker matching"
+    echo "      TODOTXT_MAIL_MARKER_PATTERN, or if none is found uses"
+    echo "      TODOTXT_MAIL_DEFAULT_RECIPIENTS (containing comma-separated entries)."
+    echo "      Or add / edit them through -e."
+    echo "      The email can be copied to TODOTXT_MAIL_DEFAULT_CC and"
+    echo "      TODOTXT_MAIL_DEFAULT_BCC."
+    echo ""
+    exit
+}
+
+errmsg="usage: $TODO_SH $(basename $0) [-t] [-e | -m MESSAGE] TERM... | ITEM#[, ITEM#] | -s ITEM#"
+: ${TODOTXT_MAIL_MARKER_PATTERN:='^[wRACI]:\([[:upper:]]\|.\+@.\+\)$'}
+
+shopt -s extglob
+
+type -P email >/dev/null || die "TODO: Cannot send email; command 'email' not found!"
+
+# Consider only tasks that are not yet done or trashed. The tasks are already
+# numbered when the filter is applied, so there definitely is a space in front
+# of the marker.
+post_filter_command="grep -ve '^ *[0-9]\+ [xX] '"
+
+# No highlighting and verbose summary.
+TODOTXT_VERBOSE=0
+TODOTXT_PLAIN=1
+
+
+cc=$TODOTXT_MAIL_DEFAULT_CC
+bcc=$TODOTXT_MAIL_DEFAULT_BCC
+taskInSubject=
+isTest=
+isEdit=
+singleTask=
+message=
+noTasksError='No tasks found.'
+items=
+while getopts ":s:tem:" opt; do
+    case "$opt" in
+        's') taskInSubject=$OPTARG;;
+        't') isTest='true';;
+        'e') isEdit='true';;
+        'm') message=$OPTARG;;
+    esac
+done
+shift $(( $OPTIND - 1 ))
+
+if [[ "$taskInSubject" = +([0-9]) ]]; then
+    singleTask=$taskInSubject
+    noTasksError="No task ${singleTask}."
+    items=$singleTask
+elif [[ $# -eq 1 && "$1" = +([0-9]) ]]; then
+    singleTask=$1
+    noTasksError="No task ${singleTask}."
+    items=$singleTask
+else
+    while [[ "$1" =~ ^[,0-9]+$ ]]
+    do
+        item=${1%,}
+        item=${item#,}
+        items="${items}${items:+,}$item"
+        shift
+    done
+    noTasksError="No tasks ${items}."
+fi
+
+if [ "$items" ]; then
+    # Listing of task numbers is unintuitive, because the search pattern is
+    # applied in the middle of alignment, when the numbers have already been
+    # space- (but not zero-) aligned.
+    tasks=$(_list "$TODO_FILE" "^ *\\(${items//,/\\|}\\) ")
+else
+    tasks=$(_list "$TODO_FILE" "$@")
+fi
+[ "$tasks" ] || die "TODO: $noTasksError"
+
+recipients=$(
+    (
+        echo "$tasks" | grep -o '[^ ]*@[^ ]\+' | sed -ne '/^@\([[:upper:]]\|.\+@.\+\)/s/^.//p'
+        echo "$tasks" | grep -o '[^ ]\+' | sed -ne "/${TODOTXT_MAIL_MARKER_PATTERN}/s/^[^:]\\+://p"
+    ) | sort -u
+)
+[ "$recipients" ] || recipients=$TODOTXT_MAIL_DEFAULT_RECIPIENTS
+
+if [ "$taskInSubject" ]; then
+    subject=$tasks
+    body=
+else
+    if [ "$singleTask" ]; then
+        subject="Task $singleTask"
+    elif [ "$items" ]; then
+        subject="Tasks ${items//,/, }"
+    else
+        subject="Tasks $*"
+    fi
+    body=$tasks
+fi
+if [ "$message" ]; then
+    if [ "$body" ]; then
+        body="$message
+$body"
+    else
+        body=$message
+    fi
+fi
+
+printEmail()
+{
+    [ "$1" ] && local bodySeparator="-=-=-=-=-=-=-=-=-=# Don't remove this line #=-=-=-=-=-=-=-=-=-
+" || local bodySeparator=
+    cat <<EOF
+Subject:   $subject
+To:        ${recipients//
+/,}
+Cc:        $cc
+Bcc:       $bcc
+${bodySeparator}${body}
+EOF
+}
+
+if [ "$isEdit" ]; then
+    cleanup()
+    {
+        rm "$TMPEDIT" 2>/dev/null
+    }
+    trap 'cleanup' EXIT
+    TMPEDIT=$(mktemp --tmpdir "todo-mail-XXXXXX.eml" 2>/dev/null || echo "${TEMP:-/tmp}/todo-mail-$$.eml")
+    printEmail true > "$TMPEDIT"
+    "$EDITOR" "$TMPEDIT" || { echo 2>&1 "Unclean exit of editor; aborting!"; exit $?; }
+    subject=$(sed -ne '/^Subject:/{ s/^[^ ]\+: *\(.*\)$/\1/p; q }' "$TMPEDIT")
+    recipients=$(sed -ne '/^To:/{ s/^[^ ]\+: *\(.*\)$/\1/p; q }' "$TMPEDIT")
+    cc=$(sed -ne '/^Cc:/{ s/^[^ ]\+: *\(.*\)$/\1/p; q }' "$TMPEDIT")
+    bcc=$(sed -ne '/^Bcc:/{ s/^[^ ]\+: *\(.*\)$/\1/p; q }' "$TMPEDIT")
+    body=$(sed -e "1,/^-=-=-=-=-=-=-=-=-=# Don't remove this line #=-=-=-=-=-=-=-=-=-\$/d" "$TMPEDIT")
+fi
+
+if [ "$isTest" ]; then
+    printEmail
+fi
+
+if [ ! "$recipients" ]; then
+    if [ "$isEdit" ]; then
+        die "TODO: No recipients specified!"
+    else
+        die "TODO: No recipients found!"
+    fi
+fi
+
+if [ "$isTest" ]; then
+    exit
+fi
+echo "$body" | eval 'email --subject "$subject"' ${cc:+--cc '"$cc"'} ${bcc:+--bcc '"$bcc"'} '"$recipients"'

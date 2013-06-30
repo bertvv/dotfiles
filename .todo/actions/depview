@@ -1,0 +1,211 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         depview
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 20-Aug-2010
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)depview	$Id: a53bb22c14a7f35ef593453149801919cc7c3a36 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+if [ "$action" = "usage" ]; then
+    echo "    $(basename $0) [TERM...]"
+    echo "      Show task dependency tree where dependent tasks are indented."
+    echo "      Dependency is defined via a w:### marker to the dependent tasknum."
+    echo "      Blocks of tasks where at least one of the tasks contains TERM(s) are"
+    echo "      shown."
+    echo "      If no TERM provided, displays all tasks with dependencies."
+    echo ""
+    exit
+elif [ "$action" = "list" ]; then
+    TODOTXT_VERBOSE=0
+    post_filter_command="grep -e '^ \\{0,\\}$1 ' | sed -e 's/ w:[0-9]\+//g'"
+    # Note: Must use '^ \{0,\}', because '^ *$1' doesn't match for $1="1".
+    # Remove the w:### markers from the output, as this information is already
+    # included in the task indentation.
+
+    # Remove projects, contexts and done / add date(s) to shorten the tasks.
+    : ${TODOTXT_HIDE_DEPENDENCY_SUBSTITUTION='[[:space:]][+@][[:graph:]]\{1,\}\| \([0-9]\{2,4\}-[0-9]\{2\}-[0-9]\{2\}\)\{1,2\}'}
+    if [ "$TODOTXT_HIDE_DEPENDENCY_SUBSTITUTION" ]; then
+        export HIDE_CUSTOM_SUBSTITUTION=$TODOTXT_HIDE_DEPENDENCY_SUBSTITUTION
+    fi
+
+    _list "$TODO_FILE"
+    exit
+elif [ "$action" = "filter" ]; then
+    echo "$filterTasks"
+    exit
+fi
+
+original_TODOTXT_VERBOSE=$TODOTXT_VERBOSE
+if [ $# -gt 0 ]; then
+    isFilter=1
+
+    # Only the blocks that contain at least one task that matches TERM should be
+    # printed. We need to obtain the task numbers and pass them to the AWK
+    # script.
+    TODOTXT_VERBOSE=0
+    TODOTXT_PLAIN=1
+    post_filter_command="sed -ne 's/^ *\([0-9]\+\) .*$/\1/p'"
+    # It's difficult to store "$@" in a variable and keep the quoting. Thus, we
+    # generate the list already here and store the result for the AWK to fetch
+    # it later by re-invoking this script with the "filter" action argument.
+    export filterTasks=$(_list "$TODO_FILE" "$@")
+else
+    isFilter=0
+fi
+referencePattern='^w:[0-9]+$'
+
+awk -v isFilter=$isFilter -v referencePattern=$referencePattern -v callback=$0 -v verbose=$original_TODOTXT_VERBOSE '
+    BEGIN {
+        FS = "[ \t]"
+
+        if (isFilter) {
+            # Read list of unfiltered task numbers.
+            filtercall = callback " filter"
+            while((filtercall | getline unfilteredNum) > 0) {
+                # print "filter task: " unfilteredNum
+                unfiltered[unfilteredNum] = 1
+            }
+            close(filtercall)
+        }
+    }
+    {
+        # Extract dependency information from the w:### markers.
+        for (i = 1; i <= NF; ++i) {
+            if ($i ~ referencePattern) {
+                match($i, /[0-9]+/)
+                s = substr($i, RSTART, RLENGTH) + 0
+                p = NR
+                # print p "->" s
+
+                # Generate data structures for the topological sort.
+                if (!(p in pcnt))
+                    pcnt[p] = 0
+                ++pcnt[s]
+                slist[p, ++scnt[p]] = s
+            }
+        }
+    }
+    END {
+        WIDTH = length(NR "")
+
+        # Do the (reverse) topological sort to generate the dependency
+        # structure.
+        for (node in pcnt) {
+            ++nodecnt
+            if (pcnt[node] == 0)
+                rtsort(node)
+        }
+        if (pncnt != nodecnt)
+            errmsgs[errmsgcnt++] = "Note: Some task dependencies contain a cycle and are not shown."
+
+        # Find all roots (i.e. nodes without a predecessor).
+        for (i = pncnt; i > 0; --i) {
+            node = sorted[i]
+            if (pcnt[node] == 0) {
+                # Insert into rilist so that it is sorted by the nodes that the indices are referring to.
+                rilist[++rcnt] = i
+                for (j = rcnt; j > 1 && (sorted[rilist[j-1]] + 0) > (sorted[rilist[j]] + 0); j--) {
+                    # Swap rilist[j-1] and rilist[j].
+                    t = rilist[j-1]; rilist[j-1] = rilist[j]; rilist[j] = t
+                }
+            }
+        }
+
+        # Print all dependency blocks (that are not filtered) starting from the
+        # root task.
+        for (ri = 1; ri <= rcnt; ++ri) {
+            # print "**** iteration " ri
+            if (isFilter && ! intree(rilist[ri]))
+                continue
+
+            if (hasPrinted) {
+                printf("\n")
+            }
+            printtree(rilist[ri], 0)
+            hasPrinted = 1
+        }
+
+        # Print additional information and cycle errors at the end.
+        if (verbose > 0) {
+            printf("--\nTODO: %d block(s) of %d dependent tasks.\n", rcnt, nodecnt)
+            for (o in omitted)
+                ++omittedcnt
+            if (omittedcnt > 0)
+                printf("TODO: %s task(s) have been filtered out.\n", omittedcnt)
+        }
+        for (errmsg in errmsgs)
+            print errmsgs[errmsg]
+    }
+    function rtsort(node,     i, s) {
+        visited[node] = 1
+        for (i = scnt[node]; i > 0; --i)
+            if (visited[s = slist[node, i]] == 0)
+                rtsort(s)
+            else if (visited[s] == 1)
+                errmsgs[errmsgcnt++] = sprintf("Note: Tasks %0" WIDTH "d and %0" WIDTH "d are in a cycle; the block will not be shown.", s, node)
+            visited[node] = 2
+            sorted[++pncnt] = node
+    }
+    function gettaskDEBUG(num) {
+        return sprintf("%0" WIDTH "d", num)
+    }
+    function gettask(num,     taskcall, task) {
+        # Get a fully rendered, single task and cache it, because it may appear
+        # in multiple trees.
+        if (taskcache[num] != "")
+            return taskcache[num]
+        taskcall = callback " list " num
+        taskcall | getline task
+        close(taskcall)
+        taskcache[num] = task
+        return task
+    }
+    function intree(i,     node, j, k) {
+        # Find out whether the dependency block contains one of the unfiltered
+        # tasks.
+        node = sorted[i]
+        if (unfiltered[node])
+            return 1
+
+        if (scnt[node] > 0) {
+            for (j = i - 1; j >= 0; --j)
+                for (k = 1; k <= scnt[node]; ++k)
+                    if (sorted[j] == slist[node, k])
+                        if (intree(j))
+                            return 1
+        }
+        return 0
+    }
+    function printtree(i, level,     node, task, j, k) {
+        # Print one dependency block with indentation.
+        node = sorted[i]
+        task = gettask(node)
+        # printf("%s%s=%s(%s)\n", level, i, node, scnt[node])
+        if (task == "")
+            omitted[node] += 1
+        else
+            printf("%" (level * (WIDTH + 1)) "s%s\n", "", task)
+
+        if (scnt[node] > 0) {
+            for (j = i - 1; j >= 0; --j)
+                for (k = 1; k <= scnt[node]; ++k)
+                    if (sorted[j] == slist[node, k])
+                        printtree(j, (level + 1))
+        }
+    }' "$TODO_FILE"

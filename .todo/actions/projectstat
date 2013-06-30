@@ -1,0 +1,24 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         projectstat
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 29-Sep-2011
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)projectstat	$Id: 11476db8ce4e684137d24534aa8df9d3d507b3c7 $	todo.txt-cli-ex
+###############################################################################
+
+export ITEM='projects'
+[ "$1" = "usage" ] && set -- "usage" "$0"
+exec "$TODO_ACTIONS_DIR/birdseye+filter" "$@"

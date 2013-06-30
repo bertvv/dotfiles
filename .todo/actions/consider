@@ -1,0 +1,37 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         consider
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 17-Oct-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)consider	$Id: 287452f000ae24cd3f2811f5e7b7ea9599677fc3 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) ITEM#[, ITEM#, ...]"
+    echo "      Adds priority O to task(s) on line ITEM#"
+    echo "      only for today and tomorrow."
+    echo "      Use \"todo.sh opportunity\" to specify a different date range."
+    echo ""
+    exit
+}
+
+errmsg="usage: $TODO_SH $(basename $0) ITEM#[, ITEM#, ...]"
+[ $# -lt 1 ] && die "$errmsg"
+
+exec "$TODO_FULL_SH" opportunity "$@" '2 days'

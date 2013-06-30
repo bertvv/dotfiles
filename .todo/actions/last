@@ -1,0 +1,35 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         last
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 15-Nov-2010
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)last	$Id: ac5796266edc86f1f59e98a8991e1a26f4012592 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [TERM...]"
+    echo "      Displays the last few tasks, unfiltered and unsorted."
+    echo ""
+    exit
+}
+
+TODOTXT_SORT_COMMAND='tail -n 10'
+export TODOTXT_FILTER_FUTURE_TASKS=0
+
+_list "$TODO_FILE" "$@"

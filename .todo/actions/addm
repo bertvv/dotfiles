@@ -1,0 +1,63 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         addm
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ed Blackman
+# MAINTAINER:   Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 17-Aug-2010
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# SOURCE:
+#   Posted on the todo.txt mailing list:
+#   http://tech.groups.yahoo.com/group/todotxt/message/2723
+#
+# @(#)addm	$Id: 0749a245c69719f8dafd8213678ad8c952f33e63 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+  echo "    addm [-b prefix] [-e suffix] \"FIRST THING I NEED TO DO +project1 @context"
+  echo "    SECOND THING I NEED TO DO +project2 @context\""
+  echo "      Adds FIRST THING I NEED TO DO to your todo.txt on its own line and"
+  echo "      Adds SECOND THING I NEED TO DO to you todo.txt on its own line."
+  echo "      Project and context notation optional."
+  echo "      Quotes optional."
+  echo "      -b prefix adds \"prefix\" to the beginning of each line"
+  echo "      -e suffix adds \"suffix\" to the end of each line"
+  echo ""
+  exit
+}
+
+# evaluate standardized arguments to set prefix and suffix
+prefix=''
+suffix=''
+
+while getopts ":b:e:" opt; do
+  case "$opt" in
+    'b') prefix="$OPTARG "; echo $OPTARG ;;
+    'e') suffix=" $OPTARG"; echo $OPTARG ;;
+  esac
+done
+shift $(( $OPTIND - 1 ))
+
+# apply prefix and suffix, if either are set
+if [ -n "$prefix" ] || [ -n "$suffix" ]; then
+  items=$( echo "$@" | sed -e "s/.*/$prefix&$suffix/" )
+else
+  items="$@"
+fi
+
+if [ -x "$TODO_ACTIONS_DIR/add" ]; then
+  export ADDACTION='addm'
+  "$TODO_ACTIONS_DIR/add" addm "$items"
+else
+  # Call back to the main script to addm.
+  "$TODO_FULL_SH" command addm "$items"
+fi

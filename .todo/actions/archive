@@ -1,0 +1,120 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         archive
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 21-May-2010
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)archive	$Id: 382c363c49fe6978f02d42569291bc0082a74a45 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0)"
+    echo "      Moves done tasks from todo.txt to done.txt and trashed tasks to trash.txt"
+    echo "      and removes blank lines."
+    echo "    $(basename $0) TERM..."
+    echo "      If TERM specified, processes only tasks that contain TERM(s)."
+    echo "      Note that if TERM is a number it is considered as an ITEM# number."
+    echo "    $(basename $0) ITEM#[, ITEM#, ...]"
+    echo "      Processes task(s) ITEM# and removes blank lines. Ignores ITEM# if it's"
+    echo "      not done or trashed."
+    echo ""
+    exit
+}
+
+shopt -s extglob
+TRASH_FILE=${TRASH_FILE:-$TODO_DIR/trash.txt}
+
+items=
+while [[ "$1" =~ ^[,0-9]+$ ]]
+do
+    item=${1%,}
+    item=${item#,}
+    items="${items}${items:+,}$item"
+    shift
+done
+
+listItems()
+{
+    mark=$1
+    shift
+    items=$1
+    shift
+
+    # Go through the _list pipeline in order to apply the filters. Some tasks
+    # may only be "virtually" done or trashed via markers. By directly
+    # processing the TODO_FILE, we would always miss those, but pick up tasks
+    # that are hidden by a filter.
+    TODOTXT_VERBOSE=0
+    TODOTXT_PLAIN=1
+    post_filter_command="grep -e '^ *[0-9]\+ $mark ' | sed -ne 's/^ *\([0-9]\+\) .*$/\1/p'"
+    if [ "$items" ]; then
+        # Listing of task numbers is unintuitive, because the search pattern is
+        # applied in the middle of alignment, when the numbers have already been
+        # space- (but not zero-) aligned.
+        _list "$TODO_FILE" "^ *\\(${items//,/\\|}\\) "
+    else
+        _list "$TODO_FILE" "$@"
+    fi
+}
+
+processItems()
+{
+    mark=$1
+    shift
+    FILE=$1
+    shift
+    what=$1
+    shift
+    items=$1
+    shift
+
+    moveItems=$(listItems "$mark" "$items" "$@")
+
+    if [ "$moveItems" ]; then
+        if [ $TODOTXT_VERBOSE -gt 0 ]; then
+            _list "$TODO_FILE" "^ *\\(${moveItems//$'\n'/\\|}\\) " | sed -e "\$s/tasks shown/tasks ${what}/"
+        else
+            moveCnt=$(echo "$moveItems" | wc -l)
+            echo "TODO: $moveCnt task(s) ${what}."
+        fi
+
+        sed -ne "${moveItems//$'\n'/p;}p" "$TODO_FILE" >> "$FILE"
+        sed -i.bak -e "${moveItems//$'\n'/s#^.*##;}s#^.*##" "$TODO_FILE"
+    else
+        echo "TODO: No tasks have been ${what}."
+    fi
+}
+
+processItems 'x' "$DONE_FILE" 'archived' "$items" "$@"
+processItems 'X' "$TRASH_FILE" 'trashed' "$items" "$@"
+
+
+if [ $# -eq 0 -a -x "$TODO_ACTIONS_DIR/backup" ]; then
+    # This is a complete, regular archive.
+    # Use this occasion to make a backup.
+    "$TODO_FULL_SH" backup
+fi
+
+# Defragment blank lines.
+if [ -x "$TODO_ACTIONS_DIR/defragment" ]; then
+    # We have a customized defragment script that not only removes the empty
+    # lines, but also adapts cross-task references; use it.
+    "$TODO_FULL_SH" defragment
+else
+    sed -i.bak -e '/./!d' "$TODO_FILE"
+fi

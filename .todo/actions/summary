@@ -1,0 +1,95 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         summary
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 28-Jun-2010
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)summary	$Id: 6f59b1d84e04fbdb74e6c398c604f66aceb6c221 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [TERM...]"
+    echo "      Displays detailed summary of tasks."
+    echo "      If TERM specified, considers only tasks that contain TERM(s)."
+    echo ""
+    exit
+}
+
+# Configuration to limit the priorities that are considered.
+: ${TODOTXT_SUMMARY_PRIORITIES:=A-Z}
+
+export TODOTXT_VERBOSE=0    # Turn off the list footer.
+
+totalNum=$(sed -ne '$ =' "$TODO_FILE")   # Total task number, not just the ones matching TERM.
+if [ $# -eq 0 ]; then
+    listNum=$totalNum
+    totalMessage=
+else
+    listNum=$("$TODO_FULL_SH" -p -x command ls "$@" | wc -l) # All tasks, including future and done.
+    totalMessage=" ($((listNum * 100 / totalNum))%), ${totalNum} total"
+fi
+dueNum=$("$TODO_FULL_SH" -p lsdue "$@" | wc -l)  # All tasks that are due now.
+# The following usually do not include future tasks, but this is depending on the active filter.
+doneNum=$("$TODO_FULL_SH" -p lsdo "$@" | wc -l)  # All tasks marked with "x".
+trashedNum=$("$TODO_FULL_SH" -p lstrashable "$@" | wc -l)  # All tasks marked with "X".
+prioNum=$("$TODO_FULL_SH" -p lsp "$@" | wc -l)   # All prioritized tasks.
+waitNum=$("$TODO_FULL_SH" -p lswait "$@" | wc -l) # All tasks marked with "w:..." marker.
+
+activeNum=$(
+    # Ignore done and trashed tasks.
+    # Undo the effect of a possible -x option; we need the filter to only show the
+    # due tasks.
+    # Also ensure that the correct final filter is set.
+    post_filter_command="grep -v -e '^ *[0-9]\+ [xX] ' -e ' w:[^ ]'" \
+    TODOTXT_DISABLE_FILTER=0 \
+    TODOTXT_FINAL_FILTER="${TODO_FILTER_DIR:?}/futureTasks" \
+        "$TODO_FULL_SH" -p command ls "$@" | wc -l
+)    # All tasks not done, trashed, future, or waiting.
+
+futureNum=$((listNum - activeNum - waitNum - doneNum - trashedNum))  # All tasks that will only come due in the future.
+# When the futureTasks filter isn't enabled, this will be 0.
+
+inOutStat()
+{
+    local -r inOut=$("$TODO_FULL_SH" -p inout -s "$@")
+    echo "${inOut#TODO: }"
+}
+
+waitReasons=
+if [ $waitNum -gt 0 ]; then
+    waitReasons=$("$TODO_FULL_SH" listblockers "$@" | sed -n -e '1h' -e '1!H' -e '$g' -e '$s/\n/, /g' -e '$p')
+fi
+
+prioritizedProjects=$("$TODO_FULL_SH" lspriprj "$TODOTXT_SUMMARY_PRIORITIES" "$@" | sed -n -e '1h' -e '1!H' -e '$g' -e '$s/\n/, /g' -e '$p')
+
+
+filter=
+[ $# -gt 0 ] && filter="$* "
+echo "TODO: ${listNum} ${filter}tasks${totalMessage}, ${prioNum} prioritized, ${dueNum} due"
+echo "TODO: ${activeNum} open, ${waitNum} waiting, ${futureNum} future, ${trashedNum} trashed, ${doneNum} done"
+
+inOutYesterday=$(inOutStat 'yesterday' "$@")
+inOutToday=$(inOutStat 'today' "$@")
+echo "TODO: ${inOutYesterday}; ${inOutToday}"
+
+if [ "$prioritizedProjects" ]; then
+    echo "TODO: prioritized $prioritizedProjects"
+fi
+if [ "$waitReasons" ]; then
+    echo "TODO: waiting for $waitReasons"
+fi

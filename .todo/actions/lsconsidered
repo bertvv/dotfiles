@@ -1,0 +1,44 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         lsconsidered
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 17-Oct-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)lsconsidered	$Id: 9da668c72f94cde781ab850067b5e4b1925d2297 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [TERM...]"
+    echo "      Displays all tasks with an expired priority O."
+    echo "      Recently expired tasks come first."
+    echo "      If TERM specified, considers only tasks that contain TERM(s)."
+    echo ""
+    exit
+}
+
+# To get the expired tasks, grep for priority O before the scheduledFilter
+# applies the d:DATE marker and strips off the priority. After that, filter out
+# tasks that still have priority O.
+pre_filter_command="grep '^ *[0-9]\+ (O) '${pre_filter_command:+ | }${pre_filter_command:-}"
+post_filter_command="${post_filter_command:-}${post_filter_command:+ | }grep -ve '^ *[0-9]\+ (O) '"
+
+# To sort based on the deprioritization date, temporarily add it to the front,
+# do the sort, then remove it again.
+TODOTXT_SORT_COMMAND="sed -e 's/^.*  d:\(\([0-9]\{2,4\}[^A-Za-z0-9]\)\{2\}[0-9]\{2,4\}\)/\\1 &/' | sort -r | sed -e 's/^\([0-9]\{2,4\}[^A-Za-z0-9]\)\{2\}[0-9]\{2,4\} //'"
+
+_list "$TODO_FILE" "$@" | sed -e '/^TODO:/s/of [0-9]\+ tasks shown/considered \0/'

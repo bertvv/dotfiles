@@ -1,0 +1,17 @@
+#!/bin/bash
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+  echo "  Review:"
+  echo "    review"
+  echo "      generates a markdown formatted report of all files and some statistics"
+  echo ""
+  exit
+}
+
+[ "$action" = "review" ] && {
+     imapls.py zimbra.proceranetworks.com emil.erlandsson@proceranetworks.com
+     python ${TODO_ACTIONS_DIR}/review.py "$TODO_DIR"
+}

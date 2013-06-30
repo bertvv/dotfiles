@@ -1,0 +1,75 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         lsdue
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 04-Jun-2010
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)lsdue	$Id: 4aa303e1359ad1acaf94ea65911a3c6e4a7ad170 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [DATE] [TERM...]"
+    echo "      Displays open tasks that have a t:date \"scheduled\", u:date \"do-until\","
+    echo "      or z:date \"do-until-then-trash\" marker attached and are due on DATE"
+    echo "      (or now). If TERM specified, lists only tasks that contain TERM(s)."
+    echo ""
+    exit
+}
+
+threshold=
+summary='due \0'
+if [ $# -ge 1 ]; then
+    # Check whether the first argument represents a date.
+    threshold=$(date -d "$1" +%F 2>/dev/null)
+    [ "$threshold" ] && { shift; summary="tasks due on $threshold shown"; }
+fi
+
+# Undo the effect of a possible -x option; we need the filter to only show the
+# due tasks.
+export TODOTXT_DISABLE_FILTER=0
+
+# Also ensure that the correct filter is set, and pass the optionally set
+# threshold.
+if [[ "$TODOTXT_FINAL_FILTER" == *utureTasks* ]]; then
+    TODOTXT_FINAL_FILTER=${TODOTXT_FINAL_FILTER/utureTasks/utureTasks $threshold}
+else
+    if [ "$TODOTXT_FINAL_FILTER" = 'cat' ]; then
+        TODOTXT_FINAL_FILTER="${TODO_FILTER_DIR:?}/futureTasks $threshold"
+    else
+        TODOTXT_FINAL_FILTER="${TODO_FILTER_DIR:?}/futureTasks $threshold ${TODOTXT_FINAL_FILTER:+|} ${TODOTXT_FINAL_FILTER}"
+    fi
+fi
+# Also pass the optionally set threshold to the relativeDates filter.
+if [[ "$TODOTXT_FINAL_FILTER" == *relativeDates* ]]; then
+    TODOTXT_FINAL_FILTER=${TODOTXT_FINAL_FILTER/relativeDates/relativeDates $threshold}
+fi
+
+# Consider only tasks that are not yet done or trashed and contain the "t:"
+# scheduled, "u:" do-until, or "z:" do-until-then-trash markers.
+# The tasks are already numbered when the filter is applied, so there definitely
+# is a space in front of the marker.
+post_filter_command="grep -ve '^ *[0-9]\+ [xX] ' | \
+    grep ${TODOTXT_LSDUE_TASKINCLUSION} -e ' [tuz]:[0-9]\{2,4\}[^A-Za-z0-9][0-9]\{2,4\}[^A-Za-z0-9][0-9]\{2,4\}' | \
+    ${TODO_FILTER_DIR:?}/latestDueTasks $threshold \
+" # not enforcing any particular format
+
+if [ "$TODOTXT_LSDUE_TASKINCLUSION" ]; then
+    _list "$TODO_FILE" "$@"
+else
+    _list "$TODO_FILE" "$@" | sed -e "/^TODO:/s/of [0-9]\\+ tasks shown/${summary}/"
+fi

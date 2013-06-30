@@ -1,0 +1,42 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         lsr
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 29-Jan-2013
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2013 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)lsr	001	(29-Jan-2013)	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [TERM...]"
+    echo "      Displays all open tasks that contain TERM(s)"
+    echo "      prioritized tasks come first, then all other tasks sorted by date,"
+    echo "      latest first. This is ideal for reviewing the task list."
+    echo ""
+    exit
+}
+
+errmsg="usage: $TODO_SH $(basename $0) [TERM...]"
+
+post_filter_command="grep '^ *[0-9]\+ ([A-Z]) '"
+_list "$TODO_FILE" "$@" | sed -e '/^TODO:/s/of [0-9]\+ tasks shown/prioritized \0/'
+
+TODOTXT_SORT_COMMAND="$TODOTXT_SORT_COMMAND -r"
+# Consider only unprioritized tasks that are not yet done.
+post_filter_command="grep -v -e '^ *[0-9]\+ [xX] ' -e '^ *[0-9]\+ ([A-Z]) '"
+_list "$TODO_FILE" "$@"

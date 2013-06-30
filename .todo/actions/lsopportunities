@@ -1,0 +1,33 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         lsopportunities
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 17-Oct-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)lsopportunities	$Id: b5d1b86baff8a4206016546715ec7ec2761c3e67 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [TERM...]"
+    echo "      Displays all tasks prioritized O."
+    echo "      If TERM specified, considers only tasks that contain TERM(s)."
+    echo ""
+    exit
+}
+
+exec "$TODO_FULL_SH" lsp O "$@"

@@ -1,0 +1,77 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         subst
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 20-May-2010
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)subst	$Id: e9dd7ca651ca98c337eceea6f6a6bc63b3b4208d $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) ITEM# PATTERN REPLACEMENT [PATTERN REPLACEMENT ...]"
+    echo "      Replaces all instances of (sed-style) PATTERN with REPLACEMENT"
+    echo "      on line ITEM#."
+    echo ""
+    exit
+}
+
+shopt -s extglob
+errmsg="usage: $TODO_SH $(basename $0) ITEM# PATTERN REPLACEMENT [PATTERN REPLACEMENT ...]"
+item=$1; shift
+
+getTodo "$item"
+# Get task without potential priority, the "replace" command will maintain the
+# priority.
+todo=${todo#(?) }
+newtodo=$todo
+
+replace()
+{
+    cleaninput
+    input=${input//%/\\%}
+    # Above takes care of the replacement; for the pattern, we only have to escape
+    # the substitution delimiter, as it's supposed to be an sed regexp.
+    # Note: Use a substitution delimiter that has no special meaning as a regexp
+    # symbol. For example, "|" causes problems when it is contained in pattern
+    # (e.g. /\(^\| \)/), and then mistakenly double-escaped.
+    newtodo=$(echo "$newtodo" | sed "s%${pattern//%/\\%}%${input}%g") || exit 1
+}
+
+pattern=
+input=
+if [[ $# -lt 2 && $TODOTXT_FORCE = 0 ]]; then
+    IFS=$'\n' read -p "Pattern: " pattern
+    [ "$pattern" ] || exit 1
+    IFS=$'\n' read -p "Replacement: " input
+    replace
+fi
+
+while [[ $# -ge 2 ]]
+do
+    pattern=$1
+    input=$2
+    shift; shift
+    replace
+done
+[ "$newtodo" ] || die "TODO: Replacement would create empty task."
+
+if [ "$newtodo" = "$todo" ]; then
+    [ $TODOTXT_VERBOSE -gt 0 ] && echo "$item $todo"
+    die "TODO: No replacement done for $pattern"
+fi
+"$TODO_FULL_SH" command replace $item "$newtodo"

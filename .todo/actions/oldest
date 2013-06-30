@@ -1,0 +1,34 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         oldest
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 06-Jan-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)oldest	$Id: 375878235dffff1e5b5bcff56202aea24d242291 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [-a] [TERM...]"
+    echo "      Displays the earliest added open (all with -a) tasks"
+    echo "      that contain TERM(s). Tasks without a date are ignored."
+    echo ""
+    exit
+}
+
+export TODOTXT_LST_ADDITIONAL_SORT_COMMAND='head -n 10'
+exec "$TODO_FULL_SH" listbydate "$@"

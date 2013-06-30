@@ -1,0 +1,111 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         blockerview
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 01-Feb-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)blockerview	$Id: 63771b1e604c1ab64de54ce5e7e825a576ddb2a8 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [TERM...]"
+    echo "      Displays all waiting tasks grouped by blocker (wait reason, w:... marker)."
+    echo "      If TERM specified, lists only tasks that contain TERM(s)."
+    echo ""
+    exit
+}
+
+# Remove projects, contexts and done / add date(s) to shorten the tasks.
+: ${TODOTXT_HIDE_DEPENDENCY_SUBSTITUTION='[[:space:]][+@][[:graph:]]\{1,\}\| \([0-9]\{2,4\}-[0-9]\{2\}-[0-9]\{2\}\)\{1,2\}'}
+if [ "$TODOTXT_HIDE_DEPENDENCY_SUBSTITUTION" ]; then
+    export HIDE_CUSTOM_SUBSTITUTION=$TODOTXT_HIDE_DEPENDENCY_SUBSTITUTION
+fi
+
+original_TODOTXT_VERBOSE=$TODOTXT_VERBOSE
+TODOTXT_VERBOSE=0
+
+# Show wait reasons in alphabetical order and blocked tasks in priority order.
+let blockerCnt=0
+let dependentTaskCnt=0
+let invalidDependentTaskCnt=0
+tasksOnBlocker=
+tasksOnDependentTask=
+
+# Find all wait markers and sort.
+IFS=$'\n'
+for waitMarker in $(sed -e '/^[xX] /d' -e '/ w:/!d' -e 's/ w:[^ ]/\n&/g' "$TODO_FILE" | sed -n -e 's/^.* \(w:([^)]*)\).*$/\1/p;t' -e 's/^.* \(w:[^ ]*\).*$/\1/p' | sort -u )
+do
+    blocker=$(echo "$waitMarker" | sed -e 's/w:(\([^)]*\))/\1/' -e 's/w:\([^ ]*\)/\1/')
+
+    if [[ "$blocker" =~ ^[0-9]+$ ]]; then
+        # Translate dependent task number into a fully rendered, but shortened task description.
+        deptodo=$(export TODOTXT_FILTER_SCHEDULED=0; export TODOTXT_FILTER_FUTURE_TASKS=0; post_filter_command= _list "$TODO_FILE" "^ *$blocker ")
+        if [ ! "$deptodo" ]; then
+            deptodo='???'
+            let invalidDependentTaskCnt+=1
+        fi
+        blocker=$deptodo
+        isTaskDependency='true'
+    else
+        isTaskDependency=
+    fi
+
+    # Extract all tasks that contain the waitMarker and remove the marker itself
+    # before any final filter performs highlighting.
+    post_filter_command="sed -e '\| ${waitMarker//|/\\|}|!d' -e 's| ${waitMarker//|/\\|}||g'"
+    waitList=$(_list "$TODO_FILE" "$@")
+    if [[ -n "$waitList" ]]; then
+        echo "--- $blocker ---"
+        echo "$waitList"
+        echo ""
+
+        if [ "$original_TODOTXT_VERBOSE" -gt 0 ]; then
+            if [ "$isTaskDependency" ]; then
+                let dependentTaskCnt+=1
+                tasksOnDependentTask="${tasksOnDependentTask}${tasksOnDependentTask:+
+}${waitList}"
+            else
+                let blockerCnt+=1
+                tasksOnBlocker="${tasksOnBlocker}${tasksOnBlocker:+
+}${waitList}"
+            fi
+        fi
+    fi
+done
+
+if [ "$original_TODOTXT_VERBOSE" -gt 0 ]; then
+    let taskOnBlockerCnt=$(echo "$tasksOnBlocker" | sort -u | sed -n '$ =')
+    let taskOnDependentTaskCnt=$(echo "$tasksOnDependentTask" | sort -u | sed -n '$ =')
+
+    echo "--"
+    if [ $blockerCnt -gt 0 ]; then
+        echo "TODO: $taskOnBlockerCnt blocked task(s) waiting for $blockerCnt blocker(s)."
+    fi
+    if [ $dependentTaskCnt -gt 0 ]; then
+        echo "TODO: $taskOnDependentTaskCnt blocked task(s) waiting for $dependentTaskCnt dependent task(s)."
+    fi
+    if [ $blockerCnt -eq 0 -a $dependentTaskCnt -eq 0 ]; then
+        echo "TODO: No blockers or dependent tasks found."
+    fi
+fi
+
+if [ $invalidDependentTaskCnt -eq 1 ]; then
+    echo "TODO: The list contains a dependency to an invalid task (marked ???)."
+elif [ $invalidDependentTaskCnt -gt 1 ]; then
+    echo "TODO: The list contains $invalidDependentTaskCnt dependencies to invalid tasks (marked ???)."
+fi

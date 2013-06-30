@@ -1,0 +1,111 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         colorSymbols
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 26-Nov-2011
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)colorSymbols	$Id: 5e21c62af66e333a56067190e221e82bb5e53845 $	todo.txt-cli-ex
+###############################################################################
+
+export COLOR_CONTEXT=${COLOR_CONTEXT-'\\033[35m'}
+export COLOR_TASKNUM=${COLOR_TASKNUM-'\\033[7m'}
+export COLOR_PROJECT=${COLOR_PROJECT-'\\033[1;34m'}
+export COLOR_DATE=${COLOR_DATE-$CYAN}
+export COLOR_ALTERNATING=${COLOR_ALTERNATING-$DEFAULT'\\033[47m'}
+
+if [ $TODOTXT_PLAIN -eq 0 ]; then
+awk --re-interval '
+function hasHighlight(colorVar) {
+    return (ENVIRON[colorVar] != "")
+}
+function highlight(colorVar,      color) {
+    color = ENVIRON[colorVar]
+    gsub(/\\+033/, "\033", color)
+    return color
+}
+function highlightend(colorVar, defaultColor,      color) {
+    color = highlight(colorVar "_END")
+    return (color == "" ? (defaultColor == "" ? highlight("DEFAULT") : defaultColor) : color)
+}
+function getLineColor() {
+    if (match($0, /[0-9]+ /) > 1) {
+        return substr($0, 1, RSTART - 1)
+    } else {
+        return ""
+    }
+}
+{
+    lineColor = getLineColor()
+    lineEndColor = ""
+    if (lineColor != "") {
+        # Some matches here (for contexts and projects) are not cleanly
+        # delimited at the end (unlike the match for date, whose format and
+        # length is fix), and match as much non-whitespace as possible.
+        # This eats the end color that closes the line highlighting when such a
+        # match occurs at the end of the line. In that case, the end color is
+        # included in the match, and instead of "match-lineColor-lineEndColor",
+        # it is "match-lineEndColor-lineColor", so the coloring bleeds into the
+        # following line.
+        # To fix that, remove the line end color before the matches, and put it
+        # back on at the end.
+        # TODO: We just check for the DEFAULT highlight, so no custom end colors
+        # are supported yet. However, this works fine for ANSI escape sequences,
+        # and HTML colorings that have all the same closing tag (e.g. </span>).
+        defaultColor = highlight("DEFAULT")
+        if (substr($0, length($0) - length(defaultColor) + 1) == defaultColor) {
+            lineEndColor = defaultColor
+            $0 = substr($0, 1, length($0) - length(defaultColor))
+        }
+    }
+
+    if (hasHighlight("COLOR_TASKNUM")) {
+        netTask = substr($0, length(lineColor) + 1)
+        if (! match(netTask, /^[0-9]+ [xX] /)) {
+            # Lazy-initialize task number width.
+            if (taskNumWidth <= 0) {
+                match(netTask, /[0-9]+ /)
+                taskNumWidth = RLENGTH - 1
+            }
+
+            # Highlight current task number.
+            $0 = gensub(/([0-9]+) /, highlight("COLOR_TASKNUM") "\\1" highlightend("COLOR_TASKNUM", lineColor) " ", " ")
+
+            # Highlight any m:42 references to other tasks, and normalize number
+            # width to e.g. m:042.
+            for (i = 1; i <= NF; i++) {
+                taskNum = gensub(/^[lkjw]:([0-9]+)/, "\\1", "", $i)
+                if (taskNum == $i) continue
+                newTaskNum = sprintf("%0" taskNumWidth "d", taskNum)
+                $i = gensub(/^([lkjw]:)([0-9]+)/, "\\1" highlight("COLOR_TASKNUM") newTaskNum highlightend("COLOR_TASKNUM", lineColor), " ", $i)
+            }
+        }
+    }
+    if (hasHighlight("COLOR_CONTEXT")) $0 = gensub(/ (@[^ ]+)/, " " highlight("COLOR_CONTEXT") "\\1" highlightend("COLOR_CONTEXT", lineColor), "g")
+    if (hasHighlight("COLOR_PROJECT")) $0 = gensub(/ (\+[^ ]+)/, " " highlight("COLOR_PROJECT") "\\1" highlightend("COLOR_PROJECT", lineColor), "g")
+    if (hasHighlight("COLOR_DATE"))   $0 = gensub(/ ([0-9]{4}-[0-9]{2}-[0-9]{2}) /, " " highlight("COLOR_DATE") "\\1" lineColor " ", "")
+
+    $0 = $0 lineEndColor
+
+    # Remember line highlighting for highlighting of alternate lines.
+    # This has the advantage over a simple "NR % 2" that the line following an
+    # otherwise highlighted tasks is never highlighted, which is nicer visually.
+    wasUncolored = (lineColor == "")
+
+    print
+}
+'
+else
+cat
+fi

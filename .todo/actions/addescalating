@@ -1,0 +1,52 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         addescalating
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 19-Apr-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)addescalating	$Id: 9dbc4cd88d83e480dcafb3bda16b0b25673dce67 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) DATESPAN \"THING I NEED TO DO\""
+    echo "      Adds THING I NEED TO DO, starting with priority C,"
+    echo "      increasing the priority to B and then A after DATESPAN has passed."
+    echo ""
+    exit
+}
+
+errmsg="usage: $TODO_SH $(basename $0) DATESPAN \"THING I NEED TO DO\""
+[ $# -ge 1 ] || die "$errmsg"
+
+priCDate=$(date -d 'today' +%F) || exit 1
+priBDate=$(date -d "$priCDate $1" +%F) || exit 1
+priADate=$(date -d "$priBDate $1" +%F) || exit 1
+shift
+
+if [ "$priCDate" = "$priBDate" -o "$priBDate" = "$priADate" ]; then
+    die "TODO: Dates do not differ: ${priCDate}, ${priBDate}, ${priADate}"
+fi
+
+# Call back to the main script to add.
+"$TODO_FULL_SH" add "$@" || exit $?
+
+# Figure out the line of what we just added, and prioritize it.
+item=$(sed -n '$ =' "$TODO_FILE")
+"$TODO_FULL_SH" pri "$item" C || exit $?
+"$TODO_FULL_SH" pri "$item" B on "$priBDate" || exit $?
+"$TODO_FULL_SH" pri "$item" A on "$priADate" || exit $?

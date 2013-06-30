@@ -1,0 +1,96 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         addagain
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 29-May-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)addagain	$Id: d553ab27528a92730b3b4f4c1f60d59a8ad50428 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [TERM...]"
+    echo "      Adds a done task specified by TERM(s) as an open task again."
+    echo "      When multiple tasks are found, queries which task to choose."
+    echo "    $(basename $0) ITEM#[, ITEM#, ...] [TERM...]"
+    echo "      Adds done, but not yet archived task(s) from todo.txt as open task(s)."
+    echo ""
+    exit
+}
+
+shopt -s extglob
+
+stripRawTasks()
+{
+    # Strip the task number, done marker, done and optional add dates.
+    # Strip any m:DATE markers; they are probably obsolete.
+    sed -e 's|^[0-9]\+ [xX]\( [0-9]\{2,4\}-[0-9]\{2\}-[0-9]\{2\}\)\{1,2\} ||' \
+        -e 's/ [[:graph:]]:[0-9]\{2,4\}-[0-9]\{2\}-[0-9]\{2\}//g'
+}
+
+addTask()
+{
+    "$TODO_FULL_SH" add "$@" || exit $?
+    if [ -x "$TODO_ACTIONS_DIR/uncomment" ]; then
+        # Figure out the line of what we just added, and "uncomment" it.
+        item=$(sed -n '$ =' "$TODO_FILE")
+        "$TODO_FULL_SH" uncomment -q "$item"
+    fi
+}
+
+items=
+while [[ "$1" =~ ^[,0-9]+$ ]]
+do
+    item=${1%,}
+    item=${item#,}
+    items="${items}${items:+,}$item"
+    shift
+done
+if [ "$items" ]; then
+    # Listing of task numbers is unintuitive, because the search pattern is
+    # applied in the middle of alignment, when the numbers have already been
+    # space- (but not zero-) aligned.
+    doneTasks=$(TODOTXT_VERBOSE=0 "$TODO_FULL_SH" -p -x lsdo "^ *\\(${items//,/\\|}\\) " "$@" | stripRawTasks | uniq)
+else
+    doneTasks=$(TODOTXT_VERBOSE=0 "$TODO_FULL_SH" -p -x lsdone "$@" | stripRawTasks | uniq)
+fi
+if [ ! "$doneTasks" ]; then
+    die "TODO: No tasks found."
+fi
+doneTasksNum=$(echo "$doneTasks" | wc -l)
+if [ $doneTasksNum -eq 1 ]; then
+    addTask "$doneTasks"
+else
+    echo "TODO: $doneTasksNum done tasks found."
+
+    IFS=$'\n'
+    for task in $(echo "$doneTasks" | tac)
+    do
+        echo
+        echo "$task"
+        read -p "Add task? ([o]nly this/[y]es/[n]o/[q]uit) " answer
+        case $answer in
+            o)  addTask "$task"
+                break
+                ;;
+            y)  addTask "$task";;
+            n)  ;;
+            q)  exit;;
+            *)  exit 2;;
+        esac
+    done
+fi

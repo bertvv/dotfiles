@@ -1,0 +1,42 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         addendum
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 26-Dec-2011
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)addendum	$Id: 85d46c19d47556fb46ab9e33e295df15a82f0149 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) \"THING I NEED TO DO +project @context\""
+    echo "      Adds a new task to add.txt. Use this when you know that todo.txt"
+    echo "      on your system isn't up-to-date, and use \"todo.sh incorporate\" after"
+    echo "      having sync'ed up with the latest version."
+    echo ""
+    exit
+}
+
+errmsg="usage: $TODO_SH $(basename $0) \"THING I NEED TO DO +project @context\""
+[ $# -eq 0 ] && die "$errmsg"
+
+if [ -x "$TODO_ACTIONS_DIR/add" ]; then
+    export ADDACTION='addto add.txt'
+    "$TODO_ACTIONS_DIR/add" addendum "$@"
+else
+    "$TODO_FULL_SH" addto add.txt "$@"
+fi

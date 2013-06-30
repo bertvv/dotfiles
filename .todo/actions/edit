@@ -1,0 +1,122 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         edit
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 21-May-2010
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# SOURCE:
+#   Based on the edit action by Matt Brubeck:
+#   https://github.com/mbrubeck/todo.txt-cli/blob/master/todo.actions.d/edit
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)edit	$Id: 99c2dfd74cf92a782c8b7e78e9ed67e861eb524c $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [ITEM#] [SRC]"
+    echo "      Open ITEM# in \$TODO_DIR/SRC in \$EDITOR for editing."
+    echo "      If ITEM# is omitted, the entire file is edited."
+    echo "      If BASENAME is not given, defaults to 'todo'."
+    echo "      ITEM# can be removed by deleting the line."
+    echo "      Additional tasks can be added by appending more lines."
+    echo ""
+    exit
+}
+
+shopt -s extglob
+
+errmsg="usage: $TODO_SH $(basename $0) [ITEM#] [SRC]"
+item=
+if [[ "$1" = +([0-9]) ]]; then
+    # We got an ITEM#.
+    item=$1
+    shift
+fi
+if [ "$1" ]; then
+    EDIT_FILE=$TODO_DIR/${1}.txt
+else
+    EDIT_FILE=$TODO_FILE
+fi
+
+if [ ! "$item" ]; then
+    # Edit entire file.
+    exec "$EDITOR" "$EDIT_FILE"
+fi
+
+
+# Edit single task.
+cleanup()
+{
+    rm "$TMPEDIT" 2>/dev/null
+}
+trap 'cleanup' EXIT
+TMPEDIT=$(mktemp --tmpdir "todo-edit-XXXXXX.txt" 2>/dev/null || echo "${TEMP:-/tmp}/todo-edit-$$.txt")
+getTodo "$item"
+echo "$todo" > "$TMPEDIT"
+
+TMPMODTIME=$(stat -c %Y "$TMPEDIT")
+"$EDITOR" "$TMPEDIT" || { echo 2>&1 "Unclean exit of editor; aborting!"; exit $?; }
+NEWMODTIME=$(stat -c %Y "$TMPEDIT")
+
+if [ $NEWMODTIME -eq $TMPMODTIME ]; then
+    echo "TODO: No changes done."
+    exit 0
+fi
+
+newtodo=$(head -n 1 "$TMPEDIT")
+if [ -z "$newtodo" ]; then
+    # We don't need to ask for confirmation here, the "del" command will take
+    # care of that.
+    "$TODO_FULL_SH" command del $item
+elif [ "$newtodo" = "$todo" ]; then
+    echo "TODO: No changes done to original line."
+else
+    # The 'replace' command doesn't handle done tasks, and may do
+    # surprising things to existing priorities and dates. To avoid surprises,
+    # do the complete replacement of the line here.
+    input=$newtodo
+    cleaninput "for sed"
+    sed -i.bak "$item s|^.*|${input}|" "$TODO_FILE"
+    if [ $TODOTXT_VERBOSE -gt 0 ]; then
+        echo "$item $todo"
+        echo "TODO: Replaced task with:"
+        echo "$item $newtodo"
+    fi
+fi
+
+newLinesNum=$(sed '1d' "$TMPEDIT" | grep -cve '^\s*$')
+if [ $newLinesNum -ge 1 ]; then
+    if  [ $TODOTXT_FORCE = 0 ]; then
+        echo
+        if [ $newLinesNum -eq 1 ]; then
+            echo "There is one additional line. Add it as another task? (y/n)"
+        else
+            echo "There are $newLinesNum additional lines. Add them as individual tasks? (y/n)"
+        fi
+        read ANSWER
+    else
+        ANSWER="y"
+    fi
+    if [ "$ANSWER" = "y" ]; then
+        IFS=$'\n'
+        sed -e '1d' -e '/^[ \t]*$/d' "$TMPEDIT" | while IFS=$'\n' read newtask
+        do
+            # -T: The additional lines should be added as-is, without TODOTXT_DATE_ON_ADD.
+            "$TODO_FULL_SH" -T command add "$newtask"
+        done
+    fi
+fi

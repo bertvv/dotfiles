@@ -1,0 +1,188 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         schedule
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       FND
+# MAINTAINER:   Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 30-May-2010
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# SOURCE:
+#   https://github.com/FND/todo.txt-cli/blob/extensions/schedule
+#
+# @(#)schedule	$Id: f1dc5c6800a0c386dd45a603896e1fd9073ff60f $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+if [ "$action" = "usage" ]; then
+    echo "    $(basename $0) DATE|none|never|off|del|rm ITEM#[, ITEM#, ...]"
+    echo "    $(basename $0) ITEM#[, ITEM#, ...] DATE|none|never|off|del|rm"
+    echo "      Set, change or remove scheduled date of task ITEM#."
+    echo "    $(basename $0) [(all|now|on DATE|for DATE|future [on DATE]) [TERM...]]"
+    echo "      List all scheduled tasks."
+    echo "          with now: only list tasks that are already open"
+    echo "          with future: only to-be scheduled tasks not already open"
+    echo "          with on DATE: scheduled as seen on DATE, not today"
+    echo "          with for DATE: scheduled between now and DATE"
+    echo "      If TERM specified, lists only tasks that contain TERM(s)."
+    echo "          Intended to be used with futureTasks."
+    echo "      Example:  $TODO_SH $(basename $0) tomorrow 42"
+    echo ""
+    exit
+fi
+
+shopt -s extglob
+
+readonly datePattern='\([0-9]\{2,4\}[^A-Za-z0-9]\)\{2\}[0-9]\{2,4\}' # not enforcing any particular format
+readonly pattern=" t:$datePattern"
+readonly errmsg="usage: $TODO_SH $(basename $0) [ITEM#[, ITEM#, ...] DATE|none|never|off|del|rm] | [(all|now|on DATE|for DATE|future [on DATE]) [TERM...]]"
+
+ensureFilter()
+{
+    # Ensure that a futureTasks filter is set.
+    if [[ "$TODOTXT_FINAL_FILTER" != *utureTasks* ]]; then
+        if [ "$TODOTXT_FINAL_FILTER" = 'cat' ]; then
+            TODOTXT_FINAL_FILTER="${TODO_FILTER_DIR:?}/futureTasks"
+        else
+            TODOTXT_FINAL_FILTER="${TODO_FILTER_DIR:?}/futureTasks ${TODOTXT_FINAL_FILTER:+|} ${TODOTXT_FINAL_FILTER}"
+        fi
+    fi
+
+    # When a threshold is passed, install it.
+    if [ $# -gt 0 ]; then
+        TODOTXT_FINAL_FILTER=${TODOTXT_FINAL_FILTER/utureTasks/utureTasks "$1"}
+
+        # Also pass the threshold to the relativeDates filter.
+        if [[ "$TODOTXT_FINAL_FILTER" == *relativeDates* ]]; then
+            TODOTXT_FINAL_FILTER=${TODOTXT_FINAL_FILTER/relativeDates/relativeDates $1}
+        fi
+    fi
+}
+listOpen()
+{
+    threshold=''
+    if [ "$1" = 'on' -a "$2" != '' ]; then
+        threshold=$(date -d "$2" +%F) || exit 1
+        shift
+        shift
+    fi
+
+    ensureFilter "$threshold"
+    export TODOTXT_FILTER_FUTURE_TASKS=1    # Suppress tasks that are scheduled in the future.
+    post_filter_command="sed -e '/^ *[0-9]\+ [xX] /d' -e '/${pattern}/!d'"
+    _list "$TODO_FILE" "$@"
+}
+listRange()
+{
+    [ "$1" ] || die "$errmsg"
+    threshold=$(date -d "$1" +%F) || exit 1
+    shift
+
+    ensureFilter
+    export TODOTXT_FILTER_FUTURE_TASKS=-1    # Suppress tasks that have already been scheduled.
+
+    # And suppress tasks that are scheduled in the future of threshold.
+    TODOTXT_FINAL_FILTER="TODOTXT_FILTER_FUTURE_TASKS=1 ${TODO_FILTER_DIR:?}/futureTasks $threshold ${TODOTXT_FINAL_FILTER:+|} ${TODOTXT_FINAL_FILTER}"
+
+    post_filter_command="sed -e '/^ *[0-9]\+ [xX] /d' -e '/${pattern}/!d'"
+    _list "$TODO_FILE" "$@"
+}
+listFuture()
+{
+    threshold=''
+    if [ "$1" = 'on' -a "$2" != '' ]; then
+        threshold=$(date -d "$2" +%F) || exit 1
+        shift
+        shift
+    fi
+
+    ensureFilter "$threshold"
+    export TODOTXT_FILTER_FUTURE_TASKS=-1   # Suppress tasks that have already been scheduled.
+    post_filter_command="sed -e '/^ *[0-9]\+ [xX] /d' -e '/${pattern}/!d'"
+    _list "$TODO_FILE" "$@"
+}
+listAll()
+{
+    export TODOTXT_FILTER_FUTURE_TASKS=0    # Disable the futureTasks filter.
+    post_filter_command="sed -e '/^ *[0-9]\+ [xX] /d' -e '/${pattern}/!d'"
+    _list "$TODO_FILE" "$@"
+}
+
+getUnscheduledTask()
+{
+    getTodo "$1"
+    # Remove threshold and priority.
+    unscheduledTodo=$(echo "$todo" | sed -e "s/${pattern}//g" -e "s/^([A-Z])* //")
+}
+
+remove()
+{
+    getUnscheduledTask "$1"
+    if [ "$unscheduledTodo" = "$todo" ]; then
+        echo "TODO: $1 is not scheduled."
+        return
+    fi
+    "$TODO_FULL_SH" command replace $1 "$unscheduledTodo" # N.B.: retains priority
+}
+
+replace()
+{
+    local item=$1
+    local threshold=$2
+    [ -z "$threshold" ] && die "$errmsg"
+    date=$(date -d "$threshold" +%F) || return 1
+
+    getUnscheduledTask "$item"
+    scheduledTodo="$unscheduledTodo t:$date"
+    if [ "$scheduledTodo" = "$todo" ]; then
+        echo "TODO: $1 is already scheduled on ${date}."
+        return
+    fi
+    "$TODO_FULL_SH" command replace $item "$scheduledTodo"
+}
+
+
+if [ $# -eq 0 -o "$1" = 'all' -o "$1" = 'now' -o "$1" = 'on' -o "$1" = 'for' -o "$1" = 'future' ]; then
+    what=$1
+    shift
+    case $what in
+        now)    listOpen "$@";;
+        on)     listOpen on "$@";;
+        for)    listRange "$@";;
+        future) listFuture "$@";;
+        all)    listAll "$@";;
+        *)      listAll;;
+    esac
+    exit $?
+fi
+
+items=
+while [[ "$1" =~ ^[,0-9]+$ ]]
+do
+    items="$items $1"
+    shift
+done
+if [ "$items" ]; then
+    date=$*
+else
+    date=$1
+    shift
+    items=$*
+fi
+[ "$items" ] || die "$errmsg"
+
+for item in ${items//,/ }
+do
+    case $date in
+        '')                     die "$errmsg";;
+        none|never|off|del|rm)  remove "$item";;
+        *)                      replace "$item" "$date";;
+    esac
+done

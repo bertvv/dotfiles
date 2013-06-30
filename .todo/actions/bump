@@ -1,0 +1,60 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         bump
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 15-May-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)bump	$Id: 8142fcdfa43fcbe59d2b50b864df70d9b34ebd9a $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) ITEM#[, ITEM#, ...]"
+    echo "      Increments a bump counter for each ITEM#."
+    echo "      Use this whenever you're annoyed by an open task, to get a better"
+    echo "      measure about its importance."
+    echo ""
+    exit
+}
+
+: ${TODOTXT_BUMP_MARKER:='!'}
+errmsg="usage: $TODO_SH $(basename $0) ITEM#[, ITEM#, ...]]"
+[ $# -eq 0 ] && die "$errmsg"
+
+for item in ${*//,/ }; do
+    getTodo "$item"
+    bumpCnt=$(echo "$todo" | sed -ne 's/^\(.* \)\{0,1\}'"$TODOTXT_BUMP_MARKER"':\([0-9]\+\)\( .*\)\{0,1\}$/\2/p')
+    if [ "$bumpCnt" ]; then
+        newBumpCnt=$((bumpCnt + 1))
+        newtodo=$(echo "$todo" | sed -e 's/\(^\| '"${TODOTXT_BUMP_MARKER}:\\)${bumpCnt}"'\( \|$\)/\1'"$newBumpCnt"'\2/')
+    else
+        newBumpCnt=1
+        newtodo="$todo ${TODOTXT_BUMP_MARKER}:$newBumpCnt"
+    fi
+
+    input=$newtodo
+    cleaninput "for sed"
+    sed -i.bak "$item s|^.*|${input}|" "$TODO_FILE"
+    if [ $TODOTXT_VERBOSE -gt 0 ]; then
+        echo "$item $newtodo"
+        if [ $newBumpCnt -eq 1 ]; then
+            echo "TODO: $item was bumped for the first time."
+        else
+            echo "TODO: $item has now been bumped $newBumpCnt times."
+        fi
+    fi
+done

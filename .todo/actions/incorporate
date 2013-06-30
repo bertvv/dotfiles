@@ -1,0 +1,66 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         incorporate
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 27-Aug-2010
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)incorporate	$Id: 15f881eba392aa6630d0a04ef21dda2a734262eb $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0)"
+    echo "      Moves all tasks from add.txt into todo.txt."
+    echo ""
+    exit
+}
+
+readonly ADD_FILE="$TODO_DIR/add.txt"
+
+[ -f "$ADD_FILE" ] || die "TODO: Source file $ADD_FILE does not exist."
+addTaskNum=$(grep -ve '^\s*$' "$ADD_FILE" | wc -l)
+if [ $addTaskNum -eq 0 ]; then
+    echo "TODO: No tasks to add."
+    exit
+fi
+existingTaskNum=$(sed -n '$ =' "$TODO_FILE")
+
+# Note: We cannot just output the last $addTaskNum tasks via 'tail' to show the
+# added tasks, as the list may be sorted in a different way. Instead, we filter
+# on the leading task numbers.
+addedTaskFilter=$(seq $((existingTaskNum + 1)) $((existingTaskNum + addTaskNum)) | sed -e '
+1h
+1!H
+$!d
+${
+    g
+    s/\n/\\|/g
+    s/^/^0*\\(/
+    s/$/\\)/
+}')
+
+grep -ve '^\s*$' "$ADD_FILE" >> "$TODO_FILE" || die "TODO: Could not append tasks to $TODO_FILE."
+cp /dev/null "$ADD_FILE" || die "TODO: Could not truncate $ADD_FILE."
+
+original_TODOTXT_VERBOSE=$TODOTXT_VERBOSE
+TODOTXT_VERBOSE=0
+_list "$TODO_FILE" $addedTaskFilter
+
+if [ $original_TODOTXT_VERBOSE -gt 0 ]; then
+    echo "--"
+    echo "TODO: $addTaskNum tasks moved."
+fi

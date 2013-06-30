@@ -1,0 +1,38 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         lstrash
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 24-Feb-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)lstrash	$Id: c724dc3f28b78dc3c997aae1534058903b1cfbfa $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [TERM...]"
+    echo "      Displays all trashed tasks that contain TERM(s)."
+    echo ""
+    exit
+}
+
+errmsg="usage: $TODO_SH $(basename $0) [TERM...]"
+
+TRASH_FILE=${TRASH_FILE:-$TODO_DIR/trash.txt}
+# Omit the "trashed" highlighting in favor of the more readable alternating task
+# highlighting for readability; all tasks are trashed, anyway.
+export HIDE_COLOR_TRASH=1
+"$TODO_FULL_SH" listfile "$TRASH_FILE" "$@"

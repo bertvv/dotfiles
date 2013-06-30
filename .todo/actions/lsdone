@@ -1,0 +1,38 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         lsdone
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 25-Dec-2011
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)lsdone	$Id: 2ea9bb3deef1ef048366c76f668a55eebde887d3 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [TERM...]"
+    echo "      Displays all done (as well as archived) tasks."
+    echo "      If TERM specified, lists only tasks that contain TERM(s)."
+    echo ""
+    exit
+}
+
+# Omit the "done" highlighting in favor of the more readable alternating task
+# highlighting for readability; all tasks are done, anyway.
+export HIDE_COLOR_DONE=1
+
+export post_filter_command="grep -e '^ *[0-9]\+ x '"
+"$TODO_FULL_SH" command listall "$@"

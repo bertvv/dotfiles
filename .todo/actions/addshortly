@@ -1,0 +1,40 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         addshortly
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 18-Apr-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)addshortly	$Id: 6b1e1cd10131d5add187789810448fe1a836e35b $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) DATE \"THING I NEED TO DO\""
+    echo "      Adds THING I NEED TO DO, which will automatically be trashed after DATE."
+    echo ""
+    exit
+}
+
+errmsg="usage: $TODO_SH $(basename $0) DATE \"THING I NEED TO DO\""
+[ $# -lt 2 ] && die "$errmsg"
+
+trashDate=$(date -d "$1" +%F) || exit 1
+shift
+
+# Use the z: marker instead of x: so that the task is also highlighted before
+# its ultimate date.
+"$TODO_FULL_SH" add "$@" "z:${trashDate}"

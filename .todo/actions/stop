@@ -1,0 +1,37 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         stop
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 18-Apr-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)stop	$Id: 4737ee5a11fd5dc59bd70a2eb01f7eaf90397512 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) ITEM#[, ITEM#, ITEM#, ...]|all [on DATE|DATE-] [COMMENT]"
+    echo "    $(basename $0) [on DATE|DATE-] ITEM#[, ITEM#, ITEM#, ...]|all [COMMENT]"
+    echo "      Marks task(s) on line ITEM# as not being worked on any more in todo.txt,"
+    echo "      optionally appending COMMENT."
+    echo ""
+    exit
+}
+
+errmsg="usage: $TODO_SH $(basename $0) ITEM#[, ITEM#, ITEM#, ...] [on DATE|DATE-] [COMMENT]"
+[ $# -eq 0 ] && die "$errmsg"
+
+"$TODO_FULL_SH" depri "$@"

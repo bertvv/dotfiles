@@ -1,0 +1,37 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         what
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 04-Jun-2010
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2010-2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)what	$Id: 1ee6963ffd502dfe02fe219416b04456cd19ea35 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [DATE] [TERM...]"
+    echo "      Displays all prioritized and due tasks (based on DATE)."
+    echo "      If TERM specified, lists only tasks that contain TERM(s)."
+    echo ""
+    exit
+}
+
+# Configuration to limit the priorities that are considered.
+: ${TODOTXT_WHAT_PRIORITIES:=A-Z}
+
+export TODOTXT_LSDUE_TASKINCLUSION="-e '^ *[0-9]\+ ([${TODOTXT_WHAT_PRIORITIES}])'"
+exec "$TODO_FULL_SH" lsdue "$@"

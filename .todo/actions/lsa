@@ -1,0 +1,57 @@
+#!/bin/bash
+###############################################################################
+##
+# FILE:         lsa
+# PRODUCT:      todo.txt-cli-ex
+# AUTHOR:       Ingo Karkat <ingo@karkat.de>
+# DATE CREATED: 30-May-2012
+#
+###############################################################################
+# CONTENTS:
+#
+# REMARKS:
+#
+# COPYRIGHT: (C) 2012 Ingo Karkat
+#   This program is free software; you can redistribute it and/or modify it
+#   under the terms of the GNU General Public License.
+#   See http://www.gnu.org/copyleft/gpl.txt
+#
+# @(#)lsa	$Id: 3d53cacbefaf342102dde53f6c5af0676e997252 $	todo.txt-cli-ex
+###############################################################################
+
+action=$1
+shift
+
+[ "$action" = "usage" ] && {
+    echo "    $(basename $0) [TERM...]"
+    echo "      Displays all the lines in todo.txt AND done.txt AND trash.txt that"
+    echo "      contain TERM(s) sorted by added date. Tasks without a date come first."
+    echo ""
+    exit
+}
+
+TRASH_FILE=${TRASH_FILE:-$TODO_DIR/trash.txt}
+
+TOTAL=$( sed -n '$ =' "$TODO_FILE" )
+PADDING=${#TOTAL}
+
+# To sort based on the entered date, add a dummy second column for tasks that
+# are not prioritized, done or trashed, do the sort on field 3, and finally
+# remove the dummy column again.
+post_filter_command="${post_filter_command:-}${post_filter_command:+ | }awk -v TOTAL=$TOTAL -v PADDING=$PADDING '{ \$1 = sprintf(\"%\" PADDING \"d\", (\$1 > TOTAL ? 0 : \$1)); print }' | sed -e '/^ *[0-9]\\+ \\([xX]\\|(.)\\) /!s/^ *[0-9]\\+ /&(.) /'"
+TODOTXT_SORT_COMMAND="env LC_COLLATE=C sort -f -k3,3 | sed -e 's/^\( *[0-9]\\+ \)(\.) /\\1/'"
+export TODOTXT_FILTER_FUTURE_TASKS=0
+cat "$TODO_FILE" "$DONE_FILE" "$TRASH_FILE" | TODOTXT_VERBOSE=0 _format '' "$PADDING" "$@"
+
+if [ $TODOTXT_VERBOSE -gt 0 ]; then
+    TDONE=$( sed -n '$ =' "$DONE_FILE" )
+    TTRASH=$( sed -n '$ =' "$TRASH_FILE" )
+    TASKNUM=$(TODOTXT_PLAIN=1 TODOTXT_VERBOSE=0 _format "$TODO_FILE" 1 "$@" | sed -n '$ =')
+    DONENUM=$(TODOTXT_PLAIN=1 TODOTXT_VERBOSE=0 _format "$DONE_FILE" 1 "$@" | sed -n '$ =')
+    TRASHNUM=$(TODOTXT_PLAIN=1 TODOTXT_VERBOSE=0 _format "$TRASH_FILE" 1 "$@" | sed -n '$ =')
+    echo "--"
+    echo "$(getPrefix "$TODO_FILE"): ${TASKNUM:-0} of ${TOTAL:-0} tasks shown"
+    echo "$(getPrefix "$DONE_FILE"): ${DONENUM:-0} of ${TDONE:-0} tasks shown"
+    echo "$(getPrefix "$TRASH_FILE"): ${TRASHNUM:-0} of ${TTRASH:-0} tasks shown"
+    echo "total $((TASKNUM + DONENUM + TRASHNUM)) of $((TOTAL + TDONE + TTRASH)) tasks shown"
+fi
