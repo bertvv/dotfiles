@@ -49,3 +49,6 @@ elif [[ -x "/usr/bin/vim" ]]; then
     alias vi='vim'
     alias v='vim'
 fi
+
+# Puppet-lint with sane options
+alias puppet-lint='puppet-lint --log-format "%{path}:%{linenumber}: %{KIND}: %{message}"'
