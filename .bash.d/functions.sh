@@ -47,3 +47,9 @@ mkdir -p "$@" && cd "$@"
 function topcmd() {
 history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
 }
+
+# Validate the syntax of an ERB template
+# Source: Turnbull & McCune (2011). Pro Puppet. Apress. (p. 51)
+function validate_erb() {
+erb -x -T '-' "${1}" | ruby -c
+}
