@@ -6,7 +6,8 @@ fi
 
 # User specific environment and startup programs
 
-export PATH=${HOME}/bin:${PATH}
+PATH=${HOME}/bin:${PATH}
+export PATH
 
 # Source extra init scripts in .bash.d/
 for f in $(ls ~/.bash.d/*.sh); do
