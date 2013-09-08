@@ -37,7 +37,7 @@ export PRI_C="$Yellow"    # color for C priority
 # but haven't been archived yet.
 #
 export COLOR_DONE=$White
-export COLOR_BLOCKED=$URed
+export COLOR_BLOCKED=$BBlack
 
 # === BEHAVIOR ===
 
