@@ -1,6 +1,6 @@
 " .vimrc
 " Created:  Fri 08 Aug 2008 03:15:21 PM CEST
-" Modified: Mon 15 Apr 2013 02:51:04 PM CEST
+" Modified: zo 08 sep 2013 03:59:04  CEST
 " Author:   Bert Van Vreckem <bert.vanvreckem@gmail.com>
 "
 " Lots of inspiration comes from https://raw.github.com/teranex/dotvim/
@@ -99,7 +99,7 @@ set display+=lastline                   " display wrapped lines at bottom instea
 if v:version > '702'
     set colorcolumn=80,120              " show a vertical line at these positions
     set relativenumber                  " use relative line numbering
-    set nonumber                        " and disable default line numbering
+    set number
 endif
 
 " color scheme
