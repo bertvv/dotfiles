@@ -1,6 +1,6 @@
 " .vimrc
 " Created:  Fri 08 Aug 2008 03:15:21 PM CEST
-" Modified: zo 08 sep 2013 03:59:04  CEST
+" Modified: di 10 sep 2013 08:44:02  CEST
 " Author:   Bert Van Vreckem <bert.vanvreckem@gmail.com>
 "
 " Lots of inspiration comes from https://raw.github.com/teranex/dotvim/
@@ -17,9 +17,10 @@ set backspace=indent,eol,start          " define behavior of backspace key
 set history=1000                        " keep more history (was 50 in Debian config)
 set encoding=utf-8                      " by default set the encoding to
 set fileformats=unix,dos,mac            " also read mac files correctly, just in case we are dealing with that
-set nowrap                              " no line wrapping
+"set nowrap                              " no line wrapping
 set foldlevelstart=99                   " by default, open all folds
 set foldmethod=indent                   " indent fold method by default
+set foldnestmax=1                       " don't fold too deeply
 set mouse=a                             " enable mouse
 set mousemodel=popup                    " produce pop up for right click
 set scrolloff=3                         " minimal number of screen lines to keep above and below the cursor.
@@ -78,7 +79,9 @@ set sessionoptions=buffers,folds,resize,tabpages,winsize,winpos
 " set the path, so we can easily open files with the gf command etc
 set path+=./**;,,
 
-" }}}
+let mapleader = ","                     " Set the <Leader> key to comma (instead of backslash)
+
+" }}} 
 
 " GUI options {{{
 
@@ -99,13 +102,13 @@ set display+=lastline                   " display wrapped lines at bottom instea
 if v:version > '702'
     set colorcolumn=80,120              " show a vertical line at these positions
     set relativenumber                  " use relative line numbering
-    set number
+    set number                          " and show line number on selected line
 endif
 
 " color scheme
 let g:molokai_original=0
 colorscheme molokai
-"set background=light
+"set background=dark
 "colorscheme solarized
 
 " }}}
@@ -113,14 +116,47 @@ colorscheme molokai
 " Plugin settings {{{
 "
 
-" Timestamp
+"--- Timestamp ---
 let timestamp_regexp = '\v\C%(<%(%([cC]hanged?|modified)|Modified)\s*:\s+)@<=\a+ \d{2} \a+ \d{4} \d{2}:\d{2}:\d{2}%(\s+[AP]M)?%(\s+\a+)?|TIMESTAMP'
 let modelines = 5
 
+"--- LaTeX Suite ---
+let g:tex_flavor='latex'
+au FileType tex setl shiftwidth=2 tabstop=2 softtabstop=2 expandtab
+let g:Tex_DefaultTargetFormat = 'pdf'
+let g:Tex_MultipleCompileFormats='pdf, aux'
+let g:Tex_GotoError=0  " don't move focus to the QuickFix buffer
 
+"--- Vim Markdown ---
+let g:vim_markdown_folding_disabled=1
 
+"--- Vimwiki ---
+let g:vimwiki_list = [{'syntax': 'markdown', 'ext': '.markdown'}]
+let g:vimwiki_ext2syntax = {'.md': 'markdown',
+            \ '.markdown': 'markdown', 
+            \ '.mkd': 'markdown',
+            \ '.wiki': 'media'}
+"  }}}
 
+" Custom Functions {{{
+" If the current buffer has never been saved, it will have no name,
+" call the file browser to save it, otherwise just save it.
+" Source: http://vim.wikia.com/wiki/Map_Ctrl-S_to_save_current_or_new_files
+command -nargs=0 -bar Update if &modified 
+                           \|    if empty(bufname('%'))
+                           \|        browse confirm write
+                           \|    else
+                           \|        confirm write
+                           \|    endif
+                           \|endif
 
+" }}}
+
+" Custom shortcuts {{{
+
+" Ctrl-S for saving files (both in normal as in insert mode)
+nnoremap <silent> <C-S> :<C-u>Update<CR>
+inoremap <c-s> <Esc>:Update<CR>
 " }}}
 
 " vim: fdm=marker fdl=0
