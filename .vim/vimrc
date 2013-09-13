@@ -1,6 +1,6 @@
 " .vimrc
 " Created:  Fri 08 Aug 2008 03:15:21 PM CEST
-" Modified: di 10 sep 2013 08:44:02  CEST
+" Modified: di 10 sep 2013 09:31:16  CEST
 " Author:   Bert Van Vreckem <bert.vanvreckem@gmail.com>
 "
 " Lots of inspiration comes from https://raw.github.com/teranex/dotvim/
@@ -126,6 +126,9 @@ au FileType tex setl shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 let g:Tex_DefaultTargetFormat = 'pdf'
 let g:Tex_MultipleCompileFormats='pdf, aux'
 let g:Tex_GotoError=0  " don't move focus to the QuickFix buffer
+set grepprg=grep\ -nH\ $* " Enable F9 autocomplete of BibTEX items
+" Fix problem with insertin é in LaTeX mode  
+imap <buffer> <leader>it <Plug>Tex_InsertItemOnThisLine
 
 "--- Vim Markdown ---
 let g:vim_markdown_folding_disabled=1
