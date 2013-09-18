@@ -3,6 +3,7 @@
 # Your todo.txt directory
 #export TODO_DIR="/Users/gina/Documents/todo"
 export TODO_DIR="/home/bert/Dropbox/todo"
+export TODOTXT_BACKUP_DIR="${TODO_DIR}/backup"
 
 # Your todo/done/report.txt locations
 export TODO_FILE="$TODO_DIR/todo.txt"
