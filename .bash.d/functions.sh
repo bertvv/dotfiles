@@ -44,6 +44,8 @@ function mkd() {
 mkdir -p "$@" && cd "$@"
 }
 
+# Search in the history for the commands that are used the most
+# Credits: https://coderwall.com/p/o5qijw
 function topcmd() {
 history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
 }
