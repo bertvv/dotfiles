@@ -87,7 +87,7 @@ complete -F _todo todo
 
 # If you define an alias (e.g. "t") to todo.sh, you need to explicitly enable
 # completion for it, too:
-#complete -F _todo t
+complete -F _todo t
 # It is recommended to put this line next to your alias definition in your
 # ~/.bashrc (or wherever else you're defining your alias). If you simply
 # uncomment it here, you will need to redo this on every todo.txt update!
