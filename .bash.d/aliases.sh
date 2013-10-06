@@ -6,13 +6,13 @@
 alias a='git add'
 alias c='git commit -m'
 alias g='git'
-alias i='sudo yum install'
+alias i='sudo yum install -y'
 alias l='ls -la --si --time-style=long-iso'
 alias p='git push'
 alias s='git status'
 alias t='todo'
 alias th='todo ls @hogent'
-alias v='vim'
+alias v='vagrant'
 alias y='sudo yum'
 
 # Use rational units/formats in file size & date output
