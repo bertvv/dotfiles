@@ -1,6 +1,6 @@
 " .vimrc
 " Created:  Fri 08 Aug 2008 03:15:21 PM CEST
-" Modified: di 10 sep 2013 09:31:16  CEST
+" Modified: Thu 31 Oct 2013 11:46:24 pm CET CET CET CET CET CET CEST
 " Author:   Bert Van Vreckem <bert.vanvreckem@gmail.com>
 "
 " Lots of inspiration comes from https://raw.github.com/teranex/dotvim/
@@ -35,9 +35,9 @@ endif
 set linebreak                           " only wrap after words, not inside words
 set completeopt=menu,longest,preview    " options for insert mode completion
 "set spell                               " enable spell check by default
-set tabstop=4                           " number of spaces that a tab counts for
-set shiftwidth=4                        " number of spaces to use for each step of indent
-set softtabstop=4                       " number of spaces that a tab counts for while editing
+set tabstop=2                           " number of spaces that a tab counts for
+set shiftwidth=2                        " number of spaces to use for each step of indent
+set softtabstop=2                       " number of spaces that a tab counts for while editing
 set shiftround                          " round the indent to a multiple of shiftwidth
 set expandtab                           " expand tabs to spaces
 set autoindent                          " automatically indent a new line
@@ -160,6 +160,17 @@ command -nargs=0 -bar Update if &modified
 " Ctrl-S for saving files (both in normal as in insert mode)
 nnoremap <silent> <C-S> :<C-u>Update<CR>
 inoremap <c-s> <Esc>:Update<CR>
+
+" Command aliases for common typing mistakes
+ca Wq wq
+ca W w
+
+" Section jumps also apply to { } in other columns than the first one
+map [[ ?{<CR>w99[{
+map ][ /}<CR>b99]}
+map ]] j0[[%/{<CR>
+map [] k$][%?}<CR>
+
 " }}}
 
 " vim: fdm=marker fdl=0
