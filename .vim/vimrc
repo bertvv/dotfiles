@@ -1,6 +1,6 @@
 " .vimrc
 " Created:  Fri 08 Aug 2008 03:15:21 PM CEST
-" Modified: Thu 31 Oct 2013 11:46:24 pm CET CET CET CET CET CET CEST
+" Modified: Fri 01 Nov 2013 12:35:14 pm CET CET CET CET CET CET CET CET CET CET CEST
 " Author:   Bert Van Vreckem <bert.vanvreckem@gmail.com>
 "
 " Lots of inspiration comes from https://raw.github.com/teranex/dotvim/
@@ -18,9 +18,9 @@ set history=1000                        " keep more history (was 50 in Debian co
 set encoding=utf-8                      " by default set the encoding to
 set fileformats=unix,dos,mac            " also read mac files correctly, just in case we are dealing with that
 "set nowrap                              " no line wrapping
-set foldlevelstart=99                   " by default, open all folds
-set foldmethod=indent                   " indent fold method by default
-set foldnestmax=1                       " don't fold too deeply
+"set foldlevelstart=99                   " by default, open all folds
+set foldmethod=marker                   " marker fold method by default
+"set foldnestmax=1                       " don't fold too deeply
 set mouse=a                             " enable mouse
 set mousemodel=popup                    " produce pop up for right click
 set scrolloff=3                         " minimal number of screen lines to keep above and below the cursor.
