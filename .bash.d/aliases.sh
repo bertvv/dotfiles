@@ -23,6 +23,7 @@ alias df='df --si'
 alias du='du --total --si'
 
 alias tree='tree -C'
+alias gl='git log --pretty="format:%C(yellow)%h %C(blue)%ad %C(reset)%s%C(red)%d %C(green)%an%C(reset), %C(cyan)%ar" --date=short'
 
 # Protect root against shooting himself in the foot
 if [ $(id -ru) -eq 0 ]; then
