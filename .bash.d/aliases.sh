@@ -15,6 +15,7 @@ alias t='todo'
 alias th='todo ls @hogent'
 alias v='vagrant'
 alias y='sudo yum'
+alias Z='ls -Z'
 
 # Use rational units/formats in file size & date output
 alias la='ls -la --si --time-style=long-iso'
