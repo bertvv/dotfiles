@@ -5,9 +5,11 @@
 # Credit https://coderwall.com/p/o5qijw
 alias a='git add'
 alias c='git commit -m'
+alias d='git diff'
 alias g='git'
+alias h='git log --pretty="format:%C(yellow)%h %C(blue)%ad %C(reset)%s%C(red)%d %C(green)%an%C(reset), %C(cyan)%ar" --date=short'
 alias i='sudo yum install -y'
-alias l='ls -la --si --time-style=long-iso'
+alias l='ls -l --si --time-style=long-iso'
 alias p='git push'
 alias pt='git push -u origin --tags'
 alias s='git status'
