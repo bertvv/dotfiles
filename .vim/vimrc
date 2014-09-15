@@ -1,6 +1,6 @@
 " .vimrc
 " Created:  Fri 08 Aug 2008 03:15:21 PM CEST
-" Modified: 2014-06-08 23:05:48 CEST CEST CET CET CET CET CET CET CET CET CET CET CET CET CET CET CET CET CET CET CEST
+" Modified: 2014-06-08 23:05:48 CEST
 " Author:   Bert Van Vreckem <bert.vanvreckem@gmail.com>
 "
 " Lots of inspiration comes from https://raw.github.com/teranex/dotvim/
@@ -112,10 +112,11 @@ autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$\| \+\ze\t\|\t/
 
 " color scheme
-let g:molokai_original=0
-colorscheme molokai
-"set background=dark
+"let g:molokai_original=0
+"colorscheme molokai
+"set background=light
 "colorscheme solarized
+colorscheme morning
 
 " }}}
 
