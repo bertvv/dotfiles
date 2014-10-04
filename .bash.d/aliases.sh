@@ -52,10 +52,8 @@ alias fixbar='xrandr --output LVDS-0 --primary'
 # otherwise, if vim-enhanced is installed, use that
 if [[ -x "/usr/bin/gvim" ]]; then
     alias vi='gvim -v'
-    alias v='gvim -v'
 elif [[ -x "/usr/bin/vim" ]]; then
     alias vi='vim'
-    alias v='vim'
 fi
 
 # Puppet-lint with sane options
