@@ -33,6 +33,8 @@ if [ $(id -ru) -eq 0 ]; then
     alias rm='rm --interactive=once'
     alias cp='cp --interactive=once'
     alias mv='mv --interactive=once'
+else
+  alias cp='cp -r'
 fi
 
 alias sudo='sudo '
