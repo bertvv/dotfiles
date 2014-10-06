@@ -25,7 +25,7 @@ alias ll='ls -l  --si --time-style=long-iso'
 alias df='df --si'
 alias du='du --total --si'
 
-alias tree='tree -C'
+alias tree='tree -AC'
 alias gl='git log --pretty="format:%C(yellow)%h %C(blue)%ad %C(reset)%s%C(red)%d %C(green)%an%C(reset), %C(cyan)%ar" --date=short'
 
 # Protect root against shooting himself in the foot
