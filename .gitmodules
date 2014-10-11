@@ -64,3 +64,6 @@
 [submodule ".vim/bundle/python-mode"]
 	path = .vim/bundle/python-mode
 	url = https://github.com/klen/python-mode
+[submodule ".vim/bundle/bats.vim"]
+	path = .vim/bundle/bats.vim
+	url = https://github.com/rosstimson/bats.vim
