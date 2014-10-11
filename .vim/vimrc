@@ -176,6 +176,7 @@ inoremap <c-s> <Esc>:Update<CR>
 " Command aliases for common typing mistakes
 ca Wq wq
 ca W w
+ca Q q
 
 " Section jumps also apply to { } in other columns than the first one
 map [[ ?{<CR>w99[{
