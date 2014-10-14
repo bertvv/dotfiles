@@ -64,3 +64,6 @@
 [submodule ".vim/bundle/bats.vim"]
 	path = .vim/bundle/bats.vim
 	url = https://github.com/rosstimson/bats.vim
+[submodule ".vim/bundle/vimwiki"]
+	path = .vim/bundle/vimwiki
+	url = https://github.com/vimwiki/vimwiki
