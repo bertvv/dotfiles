@@ -1,11 +1,10 @@
-# Bash prompt with Powerline-shell
+# Bash prompt withi Promptastic
 
 # Installation (YMMV)
-# 1/ Install Powerline-shell [1]
+# 1/ Install Promptastic [1]
 #    $ cd ~/opt/
-#    $ git clone https://github.com/milkbikis/powerline-shell
-#    $ cd powerline-shell
-#    $ ./install.py
+#    $ git clone t clone https://github.com/nimiq/promptastic.git
+# 
 # 2/ Install the font (follow "fontconfig" instructions at [2])
 #    $ cd ~/.fonts/
 #    $ wget https://github.com/Lokaltog/powerline/raw/develop/font/PowerlineSymbols.otf
@@ -14,15 +13,14 @@
 #    $ wget https://github.com/Lokaltog/powerline/raw/develop/font/10-powerline-symbols.conf
 # 3/ Restart shell
 #
-# [1] https://github.com/milkbikis/powerline-shell
 # [2] https://powerline.readthedocs.org/en/latest/installation/linux.html#font-installation
 
-#  Powerline-shell is assumed to be installed in $powerline_shell_home
-powerline_shell_home=~/opt/powerline-shell
+#  Promptastic is assumed to be installed in $promptastic_home
+promptastic_home=~/opt/promptastic
 
 
 function _update_ps1() {
-  export PS1="$(${powerline_shell_home}/powerline-shell.py $? 2> /dev/null)"
+  export PS1="$(${promptastic_home}/promptastic.py $?)"
 }
 
-export PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+export PROMPT_COMMAND="_update_ps1"
