@@ -8,4 +8,6 @@
 [credential]
 	helper = cache --timeout=3600
 [color]
-	ui = true
+  ui = true
+[alias]
+  co = checkout
