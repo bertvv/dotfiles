@@ -25,6 +25,7 @@ alias vS='vagrant ssh'
 alias vs='vagrant status'
 alias vu='vagrant up'
 alias y='sudo yum'
+alias yu='sudo yum update'
 alias Z='ls -Z'
 
 # Use rational units/formats in file size & date output
