@@ -69,3 +69,7 @@ fi
 
 # Puppet-lint with sane options
 alias puppet-lint='puppet-lint --log-format "%{path}:%{linenumber}: %{KIND}: %{message}"'
+
+# Create a crypted password for use in a Linux shadow file
+# Python library ’passlib’ should be installed
+alias cryptpw='python -c "from passlib.hash import sha512_crypt; import getpass; print sha512_crypt.encrypt(getpass.getpass())"'
