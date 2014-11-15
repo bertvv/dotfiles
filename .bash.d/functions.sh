@@ -55,3 +55,13 @@ history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
 function validate_erb() {
 erb -x -T '-' "${1}" | ruby -c
 }
+
+# Print a list of manually installed packages
+# credits: http://forums.fedoraforum.org/showpost.php?p=1606568&postcount=12
+listinstalled() {
+  yumdb search command_line "*install*" \
+    | grep command_line \
+    | sed 's/.*install//' \
+    | tr ' ' '\n' \
+    | sort --unique
+}
