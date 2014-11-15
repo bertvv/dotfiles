@@ -1,3 +1,5 @@
+#! /usr/bin/env bash
+#
 # Bash functions
 #
 
@@ -5,7 +7,7 @@
 # for a given domain
 # Credits: https://github.com/mathiasbynens/dotfiles/
 
-function getcertnames() {
+getcertnames() {
 if [ -z "${1}" ]; then
     echo "ERROR: No domain specified."
     return 1
@@ -40,19 +42,19 @@ fi
 
 # Create a new directory and enter it
 # Credits: https://github.com/mathiasbynens/dotfiles/
-function mkd() {
+mkd() {
 mkdir -p "$@" && cd "$@"
 }
 
 # Search in the history for the commands that are used the most
 # Credits: https://coderwall.com/p/o5qijw
-function topcmd() {
+topcmd() {
 history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
 }
 
 # Validate the syntax of an ERB template
 # Source: Turnbull & McCune (2011). Pro Puppet. Apress. (p. 51)
-function validate_erb() {
+validate_erb() {
 erb -x -T '-' "${1}" | ruby -c
 }
 
