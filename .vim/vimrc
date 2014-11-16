@@ -173,6 +173,9 @@ command -nargs=0 -bar Update if &modified
 nnoremap <silent> <C-S> :<C-u>Update<CR>
 inoremap <c-s> <Esc>:Update<CR>
 
+" F2 for :!make
+nnoremap <F2> :!make<CR>
+
 " Command aliases for common typing mistakes
 ca Wq wq
 ca W w
