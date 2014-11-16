@@ -7,7 +7,7 @@ alias a='git add'
 alias c='git commit -m'
 alias d='git diff'
 alias g='git'
-alias h='git log --pretty="format:%C(yellow)%h %C(blue)%ad %C(reset)%s%C(red)%d %C(green)%an%C(reset), %C(cyan)%ar" --date=short --graph'
+alias h='git log --pretty="format:%C(yellow)%h %C(blue)%ad %C(reset)%s%C(red)%d %C(green)%an%C(reset), %C(cyan)%ar" --date=short --graph --all'
 alias i='sudo yum install -y'
 alias l='ls -l --si --time-style=long-iso'
 alias p='git push'
@@ -38,7 +38,7 @@ alias tree='tree -AC'
 alias gl='git log --pretty="format:%C(yellow)%h %C(blue)%ad %C(reset)%s%C(red)%d %C(green)%an%C(reset), %C(cyan)%ar" --date=short'
 
 # Protect root against shooting himself in the foot
-if [ $(id -ru) -eq 0 ]; then
+if [ "$(id -ru)" -eq "0" ]; then
     alias rm='rm --interactive=once'
     alias cp='cp --interactive=once'
     alias mv='mv --interactive=once'
@@ -61,9 +61,9 @@ alias fixbar='xrandr --output LVDS-0 --primary'
 
 # If Gvim/vim-X11 is installed, use it to enable X11 clipboard support
 # otherwise, if vim-enhanced is installed, use that
-if [[ -x "/usr/bin/gvim" ]]; then
+if [ -x "/usr/bin/gvim" ]; then
     alias vi='gvim -v'
-elif [[ -x "/usr/bin/vim" ]]; then
+elif [ -x "/usr/bin/vim" ]; then
     alias vi='vim'
 fi
 
