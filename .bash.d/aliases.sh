@@ -1,20 +1,20 @@
 # Bash aliases
 
-# Shortcuts based on top commands in Bash history
-# (see functions.sh, topcmd function)
+# Shortcuts for often used commands, a.o. based on top commands in Bash
+# history (see functions.sh, topcmd function)
 # Credit https://coderwall.com/p/o5qijw
+
+# Git
 alias a='git add'
 alias c='git commit -m'
 alias d='git diff'
 alias g='git'
 alias h='git log --pretty="format:%C(yellow)%h %C(blue)%ad %C(reset)%s%C(red)%d %C(green)%an%C(reset), %C(cyan)%ar" --date=short --graph --all'
-alias i='sudo yum install -y'
-alias l='ls -l --si --time-style=long-iso'
 alias p='git push'
 alias pt='git push -u origin --tags'
 alias s='git status'
-alias t='todo'
-alias th='todo ls @hogent'
+
+# Vagrant
 alias v='vagrant'
 alias vD='vagrant destroy -f'
 alias vd='vagrant destroy'
@@ -24,18 +24,27 @@ alias vr='vagrant reload'
 alias vS='vagrant ssh'
 alias vs='vagrant status'
 alias vu='vagrant up'
-alias y='sudo yum'
-alias yu='sudo yum update'
-alias Z='ls -Z'
 
+# Yum
+alias i='sudo yum install -y'
+alias y='sudo yum'
+alias yl='yum list'
+alias ys='yum search'
+alias yu='sudo yum update'
+
+# Todo.txt
+alias t='todo'
+alias th='todo ls @hogent'
+
+# Directory listing and file system
 # Use rational units/formats in file size & date output
-alias la='ls -la --si --time-style=long-iso'
-alias ll='ls -l  --si --time-style=long-iso'
 alias df='df --si'
 alias du='du --total --si'
-
+alias l='ls -l --si --time-style=long-iso'
+alias la='ls -la --si --time-style=long-iso'
+alias ll='ls -l  --si --time-style=long-iso'
 alias tree='tree -AC'
-alias gl='git log --pretty="format:%C(yellow)%h %C(blue)%ad %C(reset)%s%C(red)%d %C(green)%an%C(reset), %C(cyan)%ar" --date=short'
+alias Z='ls -Z --si'
 
 # Protect root against shooting himself in the foot
 if [ "$(id -ru)" -eq "0" ]; then
