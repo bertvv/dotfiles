@@ -1,15 +1,12 @@
 #! /usr/bin/bash
 #
-# Author:   Bert Van Vreckem <bert.vanvreckem@gmail.com>
+# Author: Bert Van Vreckem <bert.vanvreckem@gmail.com>
 #
 # 
 
-set -e # abort on nonzero exitstatus
-set -u # abort on unbound variable
+set -o errexit # abort on nonzero exitstatus
+set -o nounset # abort on unbound variable
 
-#{{{ Variables
-
-#}}}
 #{{{ Functions
 
 usage() {
@@ -22,13 +19,17 @@ _EOF_
 #}}}
 #{{{ Command line parsing
 
-if [[ "$#" -ne "1" ]]; then
+if [ "$#" -ne "1" ]; then
     echo "Expected 1 argument, got $#" >&2
     usage
     exit 2
 fi
 
 #}}}
+#{{{ Variables
+
+#}}}
+
 # Script proper
 
 
