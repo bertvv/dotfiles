@@ -111,12 +111,13 @@ highlight ExtraWhitespace ctermbg=red guibg=red
 autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$\| \+\ze\t\|\t/
 
-" color scheme
-"let g:molokai_original=0
-"colorscheme molokai
-"set background=light
-"colorscheme solarized
-colorscheme morning
+" colour scheme
+"  beamer: turn off these colour schemes, use white shell bg
+
+"colorscheme desert256 " black background, soft colours
+"colorscheme synic     " no bg set, not usable on white shell bg
+colorscheme molokai   " black bg
+"colorscheme morning   " grey bg, suitable for beamer
 
 " }}}
 
@@ -135,7 +136,7 @@ let g:Tex_DefaultTargetFormat = 'pdf'
 let g:Tex_MultipleCompileFormats='pdf, aux'
 let g:Tex_GotoError=0  " don't move focus to the QuickFix buffer
 set grepprg=grep\ -nH\ $* " Enable F9 autocomplete of BibTEX items
-" Fix problem with insertin é in LaTeX mode  
+" Fix problem with insertin é in LaTeX mode
 imap <buffer> <leader>it <Plug>Tex_InsertItemOnThisLine
 
 "--- Vim Markdown ---
