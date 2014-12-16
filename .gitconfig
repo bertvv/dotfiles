@@ -11,3 +11,5 @@
   ui = true
 [alias]
   co = checkout
+[core]
+	excludesfile = /home/bert/.gitignore_global
