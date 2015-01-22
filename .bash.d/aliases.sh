@@ -13,6 +13,8 @@ alias h='git log --pretty="format:%C(yellow)%h %C(blue)%ad %C(reset)%s%C(red)%d 
 alias p='git push'
 alias pt='git push -u origin --tags'
 alias s='git status'
+# Git author stats
+alias gs='git ls-tree -r -z --name-only HEAD | xargs -0 -n1 git blame --line-porcelain | grep  "^author "|sort|uniq -c|sort -nr'
 
 # Vagrant
 alias v='vagrant'
