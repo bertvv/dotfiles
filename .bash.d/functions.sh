@@ -73,7 +73,10 @@ listinstalled() {
 #  2015 Ghent
 ifind ()
 {
-  [ "$#" = "0" ] || echo "Usage: ifind PATTERN [DIR]..." 1>&2 && return 1
+  if [ "$#" = "0" ]; then
+    echo "Usage: ifind PATTERN [DIR]..." 1>&2
+    return 1
+  fi
   pattern="$1";
   shift;
   if [ "$#" = "0" ]; then
