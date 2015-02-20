@@ -5,8 +5,11 @@
 
 # Backup files
 *~
-*.swp
 *.bak
+
+# Document swap files
+*.swp
+.~*#
 
 # Packages
 *.7z
