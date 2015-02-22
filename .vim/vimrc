@@ -114,10 +114,10 @@ match ExtraWhitespace /\s\+$\| \+\ze\t\|\t/
 " colour scheme
 "  beamer: turn off these colour schemes, use white shell bg
 
-colorscheme desert256 " black background, soft colours
+"colorscheme desert256 " black background, soft colours
 "colorscheme synic     " no bg set, not usable on white shell bg
 "colorscheme molokai   " black bg
-"colorscheme morning   " grey bg, suitable for beamer
+colorscheme morning   " grey bg, suitable for beamer
 
 " }}}
 
