@@ -23,4 +23,6 @@ function _update_ps1() {
   export PS1="$(${promptastic_home}/promptastic.py $?)"
 }
 
-export PROMPT_COMMAND="_update_ps1"
+if [ -f "${promptastic_home}/promptastic.py" ]; then
+  export PROMPT_COMMAND="_update_ps1"
+fi
