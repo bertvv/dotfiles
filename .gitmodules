@@ -13,9 +13,6 @@
 [submodule ".vim/bundle/syntastic"]
 	path = .vim/bundle/syntastic
 	url = git://github.com/scrooloose/syntastic.git
-[submodule ".vim/bundle/timestamp"]
-	path = .vim/bundle/timestamp
-	url = https://github.com/vim-scripts/timestamp.vim
 [submodule ".vim/bundle/todo.txt-vim"]
 	path = .vim/bundle/todo.txt-vim
 	url = git://github.com/freitass/todo.txt-vim.git
