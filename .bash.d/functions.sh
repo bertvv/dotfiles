@@ -88,6 +88,24 @@ ifind ()
   done
 }
 
+# Function that finds patterns in files within a directory structure
+# Consider `ack` instead...
+function igrep {
+  if [ "$#" = "0" ]; then
+    echo "Usage: igrep PATTERN [DIR]..." 1>&2
+    return 1
+  fi
+  pattern="$1";
+  shift;
+  if [ "$#" = "0" ]; then
+    set ".";
+  fi;
+  for dir in "$@"; do
+    find "${dir}" -type f -exec grep -inH "${pattern}" {} \;
+    shift;
+  done
+}
+
 # vagrant screen
 # Credits: https://ttboj.wordpress.com/2014/01/02/vagrant-clustered-ssh-and-screen/
 function vscreen {
