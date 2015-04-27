@@ -164,6 +164,9 @@ if isdirectory(expand("~/.vim/bundle/vim-fugitive/"))
   nnoremap <silent> <leader>gg :SignifyToggle<CR>
 endif
 
+"--- Airline
+let g:airline_powerline_fonts = 1
+
 "  }}}
 
 " Custom Functions {{{
