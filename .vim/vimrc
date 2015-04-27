@@ -69,10 +69,6 @@ set hidden                              " allow Vim to switch to another buffer 
 
 set tags=tags;/                         " where to find the tags file: current directory and up
 
-if exists('+autochdir')
-    set autochdir                       " automatically change to the current directory when loading a file
-endif
-
 " options for sessions. These define what should be saved in a session
 set sessionoptions=buffers,folds,resize,tabpages,winsize,winpos
 
@@ -81,7 +77,7 @@ set path+=./**;,,
 
 let mapleader = ","                     " Set the <Leader> key to comma (instead of backslash)
 
-" }}} 
+" }}}
 
 " GUI options {{{
 
@@ -145,7 +141,7 @@ let g:vim_markdown_folding_disabled=1
 "--- Vimwiki ---
 let g:vimwiki_list = [{'syntax': 'markdown', 'ext': '.markdown'}]
 let g:vimwiki_ext2syntax = {'.md': 'markdown',
-            \ '.markdown': 'markdown', 
+            \ '.markdown': 'markdown',
             \ '.mkd': 'markdown',
             \ '.wiki': 'media'}
 
@@ -174,7 +170,7 @@ endif
 " If the current buffer has never been saved, it will have no name,
 " call the file browser to save it, otherwise just save it.
 " Source: http://vim.wikia.com/wiki/Map_Ctrl-S_to_save_current_or_new_files
-command -nargs=0 -bar Update if &modified 
+command -nargs=0 -bar Update if &modified
                            \|    if empty(bufname('%'))
                            \|        browse confirm write
                            \|    else
@@ -203,6 +199,10 @@ map [[ ?{<CR>w99[{
 map ][ /}<CR>b99]}
 map ]] j0[[%/{<CR>
 map [] k$][%?}<CR>
+
+" Close buffer without closing window
+" https://stackoverflow.com/questions/1444322/how-can-i-close-a-buffer-without-closing-the-window/
+map <leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
 
 " }}}
 
