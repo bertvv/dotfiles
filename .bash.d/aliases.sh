@@ -27,12 +27,12 @@ alias vS='vagrant ssh'
 alias vs='vagrant status'
 alias vu='vagrant up'
 
-# Yum
-alias i='sudo yum install -y'
-alias y='sudo yum'
-alias yl='yum list'
-alias ys='yum search'
-alias yu='sudo yum update'
+# DNF
+alias i='sudo dnf install -y'
+alias y='sudo dnf'
+alias yl='dnf list'
+alias ys='dnf search'
+alias yu='sudo dnf update'
 
 # Todo.txt
 alias t='todo'
