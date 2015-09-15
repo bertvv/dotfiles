@@ -112,8 +112,8 @@ match ExtraWhitespace /\s\+$\| \+\ze\t\|\t/
 
 "colorscheme desert256 " black background, soft colours
 "colorscheme synic     " no bg set, not usable on white shell bg
-colorscheme molokai   " black bg
-"colorscheme morning   " grey bg, suitable for beamer
+" colorscheme molokai   " black bg
+colorscheme morning   " grey bg, suitable for beamer
 
 " }}}
 
