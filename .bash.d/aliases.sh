@@ -18,8 +18,9 @@ alias gs='git ls-tree -r -z --name-only HEAD | xargs -0 -n1 git blame --line-por
 
 # Vagrant
 alias v='vagrant'
-alias vD='vagrant destroy -f'
+alias vD='vagrant destroy --force'
 alias vd='vagrant destroy'
+alias vdu='vagrant destroy --force && vagrant up'
 alias vh='vagrant halt'
 alias vp='vagrant provision'
 alias vr='vagrant reload'
