@@ -46,8 +46,9 @@ alias du='du --total --si'
 alias l='ls -l --si --time-style=long-iso'
 alias la='ls -la --si --time-style=long-iso'
 alias ll='ls -l  --si --time-style=long-iso'
+alias lh='ls -lh  --si --time-style=long-iso'
 alias tree='tree -AC'
-alias Z='ls -Z --si'
+alias Z='ls -l -Z --si'
 
 # Protect root against shooting himself in the foot
 if [ "$(id -ru)" -eq "0" ]; then
