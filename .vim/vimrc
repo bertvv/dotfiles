@@ -131,6 +131,8 @@ au FileType tex setl shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 let g:Tex_DefaultTargetFormat = 'pdf'
 let g:Tex_MultipleCompileFormats='pdf, aux'
 let g:Tex_GotoError=0  " don't move focus to the QuickFix buffer
+let g:Tex_FoldedMisc = 'slide,<<<'
+let g:Tex_FoldedSections = 'chapter,section,subsection,subsubsection,paragraph'
 set grepprg=grep\ -nH\ $* " Enable F9 autocomplete of BibTEX items
 " Fix problem with insertin é in LaTeX mode
 imap <buffer> <leader>it <Plug>Tex_InsertItemOnThisLine
