@@ -28,6 +28,11 @@ alias vS='vagrant ssh'
 alias vs='vagrant status'
 alias vu='vagrant up'
 
+# Docker Docker Docker Docker Docker Docker Docker Docker
+alias ds='echo -e "${Yellow}Images${Reset}"; docker images; echo -e "${Yellow}Containers${Reset}"; docker ps -a'
+# Clean up volumes with status ‘exited’ and ‘dangling’ images
+alias dC='docker rm -v $(docker ps -a -q -f status=exited) > /dev/null 2>&1; docker rmi $(docker images -f "dangling=true" -q) > /dev/null 2>&1'
+
 # DNF
 alias i='sudo dnf install -y'
 alias y='sudo dnf'
