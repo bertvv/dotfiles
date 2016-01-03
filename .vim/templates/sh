@@ -2,35 +2,48 @@
 #
 # Author: Bert Van Vreckem <bert.vanvreckem@gmail.com>
 #
-# 
+# PURPOSE
+# See usage() for details.
 
 set -o errexit # abort on nonzero exitstatus
 set -o nounset # abort on unbound variable
 
-#{{{ Functions
+#{{{ Variables
+readonly SCRIPT_NAME="$(basename ${0})"
+readonly SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+#}}}
+
+main() {
+  check_args
+}
+
+#{{{ Helper functions
+
+# Check if command line arguments are valid
+check_args() {
+  if [ "${#}" -ne "1" ]; then
+    echo "Expected 1 argument, got ${#}" >&2
+    usage
+    exit 2
+  fi
+}
+
+# Print usage message on stdout
 usage() {
 cat << _EOF_
-Usage: ${0} 
+Usage: ${0} []OPTIONS]... [ARGS]...
 
+  description
+
+OPTIONS:
+
+EXAMPLES:
 _EOF_
 }
 
 #}}}
-#{{{ Command line parsing
 
-if [ "$#" -ne "1" ]; then
-    echo "Expected 1 argument, got $#" >&2
-    usage
-    exit 2
-fi
-
-#}}}
-#{{{ Variables
-
-#}}}
-
-# Script proper
-
+main
 
 # cursor: 5 del
