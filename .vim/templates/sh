@@ -5,17 +5,24 @@
 # PURPOSE
 # See usage() for details.
 
-set -o errexit # abort on nonzero exitstatus
-set -o nounset # abort on unbound variable
-
+#{{{ Bash settings
+# abort on nonzero exitstatus
+set -o errexit
+# abort on unbound variable
+set -o nounset
+# don't hide errors within pipes
+set -o pipefail
+#}}}
 #{{{ Variables
 readonly SCRIPT_NAME=$(basename "${0}")
 readonly SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+IFS=$'\t\n'   # Split on newlines and tabs (but not on spaces)
 
 #}}}
 
 main() {
   check_args
+
 }
 
 #{{{ Helper functions
@@ -46,4 +53,4 @@ _EOF_
 
 main
 
-# cursor: 5 del
+# cursor: 25 del
