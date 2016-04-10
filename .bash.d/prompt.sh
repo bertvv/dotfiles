@@ -1,3 +1,4 @@
+#! /bin/bash
 # Bash prompt withi Promptastic
 
 # Installation (YMMV)
@@ -20,9 +21,10 @@ promptastic_home=~/opt/promptastic
 
 
 function _update_ps1() {
-  export PS1="$(${promptastic_home}/promptastic.py $?)"
+  PS1="$(${promptastic_home}/promptastic.py $?)"
+  export PS1
 }
 
 if [ -f "${promptastic_home}/promptastic.py" ]; then
-  export PROMPT_COMMAND="_update_ps1"
+  export PROMPT_COMMAND="history -a;_update_ps1"
 fi
