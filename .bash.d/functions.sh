@@ -49,7 +49,7 @@ mkdir -p "$@" && cd "$@"
 # Search in the history for the commands that are used the most
 # Credits: https://coderwall.com/p/o5qijw
 topcmd() {
-history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
+history | awk '{a[$4]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
 }
 
 # Validate the syntax of an ERB template
