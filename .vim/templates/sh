@@ -21,7 +21,7 @@ IFS=$'\t\n'   # Split on newlines and tabs (but not on spaces)
 #}}}
 
 main() {
-  check_args
+  check_args "${@}"
 
 }
 
@@ -39,7 +39,7 @@ check_args() {
 # Print usage message on stdout
 usage() {
 cat << _EOF_
-Usage: ${0} []OPTIONS]... [ARGS]...
+Usage: ${SCRIPT_NAME} [OPTIONS]... [ARGS]...
 
   description
 
@@ -51,6 +51,6 @@ _EOF_
 
 #}}}
 
-main
+main "${@}"
 
 # cursor: 25 del
