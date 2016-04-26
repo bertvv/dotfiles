@@ -1,0 +1,14 @@
+# Snippets for Bash/sh/BATS
+
+snippet t "BATS test case"
+@test '${1:decription}' {
+  ${2}
+}
+endsnippet
+
+snippet fin "Cleanup on exit"
+function finish {
+  ${1}
+}
+trap finish EXIT
+endsnippet
