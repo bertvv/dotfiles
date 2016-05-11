@@ -2,52 +2,52 @@
 
 snippet sol "Solution or dotted lines"
 \begin{solutionordottedlines}[${1:1}cm]
-  ${2:ANSWER}
+  ${2:<+solution+>}
 \end{solutionordottedlines}
 endsnippet
 
 snippet qu "Exam question"
-\question[${1:1}] ${2:QUESTION}
+\question[${1:1}] ${2:<+question+>}
 \begin{solutionordottedlines}[${3:1}cm]
-  ${4:ANSWER}
+  ${4:<+solution+>}
 \end{solutionordottedlines}
 endsnippet
 
 snippet qps "Exam question with parts"
-\question ${1:QUESTION}
+\question ${1:<+question+>}
 
 \begin{parts}
 
-\part[${2:1}] ${3:PART}
+\part[${2:1}] ${3:<+part+>}
 
 \begin{solutionordottedlines}[${4:1}cm]
-  ${5:ANSWER}
+  ${5:<+solution+>}
 \end{solutionordottedlines}
 ${0}
 \end{parts}
 endsnippet
 
 snippet pt "Part of a question"
-\part[${1:1}] ${2:PART}
+\part[${1:1}] ${2:<+question+>}
 
 \begin{solutionordottedlines}[${3:1}cm]
-  ${4:ANSWER}
+  ${4:<+solution+>}
 \end{solutionordottedlines}
 endsnippet
 
 snippet fr "Slide frame"
 \begin{frame}
-  \frametitle{${1:TITLE}}
+  \frametitle{${1:<+title+>}}
 
-  ${2:CONTENT}
+  ${2:<+content+>}
 \end{frame}
 endsnippet
 
 snippet col "Two columns"
 \begin{columns}
   \column{.5\textwidth}
-    ${1:COL1}
+    ${1:<+column1+>}
   \column{.5\textwidth}
-    ${2:COL2}
+    ${2:<+column2+>}
 \end{columns}
 endsnippet
