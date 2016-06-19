@@ -48,13 +48,13 @@ alias th='todo ls @hogent'
 # Use rational units/formats in file size & date output
 alias df='df --si'
 alias du='du --total --si'
-alias l='ls -l --si --time-style=long-iso'
-alias ls='ls -h --si --time-style=long-iso'
-alias la='ls -la --si --time-style=long-iso'
-alias ll='ls -l  --si --time-style=long-iso'
-alias lh='ls -lh  --si --time-style=long-iso'
+alias l='ls -l --si --time-style=long-iso --color'
+alias ls='ls -h --si --time-style=long-iso --color'
+alias la='ls -la --si --time-style=long-iso --color'
+alias ll='ls -l  --si --time-style=long-iso --color'
+alias lh='ls -lh  --si --time-style=long-iso --color'
 alias tree='tree -AC'
-alias Z='ls -l -Z --si'
+alias Z='ls -l -Z --si --color'
 
 # Protect root against shooting himself in the foot
 if [ "$(id -ru)" -eq "0" ]; then
