@@ -29,9 +29,14 @@ alias vs='vagrant status'
 alias vu='vagrant up'
 
 # Docker Docker Docker Docker Docker Docker Docker Docker
-alias ds='echo -e "${Yellow}Images${Reset}"; docker images; echo -e "${Yellow}Containers${Reset}"; docker ps -a'
-# Clean up volumes with status ‘exited’ and ‘dangling’ images
-alias dC='docker rm -v $(docker ps -a -q -f status=exited) > /dev/null 2>&1; docker rmi $(docker images -f "dangling=true" -q) > /dev/null 2>&1'
+# "docker status"
+alias ds='echo -e "${Yellow}Images${Reset}"; docker images; echo -e "${Yellow}Containers${Reset}"; docker ps --all'
+# "docker cleanup": Clean up volumes with status ‘exited’ and ‘dangling’ images
+alias dC='docker rm --volumes $(docker ps --all --quiet --filter="status=exited") > /dev/null 2>&1; docker rmi $(docker images --filter="dangling=true" --quiet) > /dev/null 2>&1'
+# "docker ssh": Open a shell console into the latest created Docker container
+alias dS='docker exec --interactive --tty $(docker ps --latest --quiet) env TERM=xterm /bin/bash'
+# "docker halt"
+alias dh='docker stop'
 
 # DNF
 alias i='sudo dnf install -y'
