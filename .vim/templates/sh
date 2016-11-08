@@ -3,7 +3,6 @@
 # Author: Bert Van Vreckem <bert.vanvreckem@gmail.com>
 #
 # PURPOSE
-# See usage() for details.
 
 #{{{ Bash settings
 # abort on nonzero exitstatus
@@ -34,19 +33,6 @@ check_args() {
     usage
     exit 2
   fi
-}
-
-# Print usage message on stdout
-usage() {
-cat << _EOF_
-Usage: ${SCRIPT_NAME} [OPTIONS]... [ARGS]...
-
-  description
-
-OPTIONS:
-
-EXAMPLES:
-_EOF_
 }
 
 #}}}
