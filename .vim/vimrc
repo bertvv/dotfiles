@@ -143,6 +143,15 @@ set grepprg=grep\ -nH\ $* " Enable F9 autocomplete of BibTEX items
 " Fix problem with insertin é in LaTeX mode
 imap <buffer> <leader>it <Plug>Tex_InsertItemOnThisLine
 
+"--- Folding for Bash scripts ---
+" See e.g.
+" https://www.reddit.com/r/vim/comments/1rvcqe/bash_folding_not_working/
+" https://stackoverflow.com/questions/413015/a-problem-with-folding-bash-functions-in-vim
+" https://stackoverflow.com/questions/35064131/how-do-i-get-code-folding-in-vim-for-shell-scripts-working
+"au FileType sh let g:sh_fold_enabled=1
+"au FileType sh let g:is_bash=1
+"au FileType sh set foldmethod=syntax
+
 "--- Vim Markdown ---
 let g:vim_markdown_folding_disabled=1
 
