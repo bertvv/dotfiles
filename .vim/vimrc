@@ -209,6 +209,9 @@ inoremap <c-s> <Esc>:Update<CR>
 
 " F2 for :!make
 nnoremap <F2> :!make<CR>
+" F3 for converting Markdown to PDF and opening the resulting PDF
+" Remark: the script is part of https://github.com/bertvv/scripts
+nnoremap <F3> :!md2pdf %; gnome-open %:r.pdf<CR>
 
 " Command aliases for common typing mistakes
 ca Wq wq
