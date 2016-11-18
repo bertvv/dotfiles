@@ -37,6 +37,7 @@ alias dC='docker rm --volumes $(docker ps --all --quiet --filter="status=exited"
 alias dS='docker exec --interactive --tty $(docker ps --latest --quiet) env TERM=xterm /bin/bash'
 # "docker halt"
 alias dh='docker stop'
+alias dip='docker inspect  --format="{{ .NetworkSettings.IPAddress }}" $(docker ps --latest --quiet)'
 
 # DNF
 alias i='sudo dnf install -y'
