@@ -1,6 +1,0 @@
-#!/bin/bash
-
-[ "$1" = "usage" ] && exit
-
-shift
-exec "$TODO_FULL_SH" lsp "$@"

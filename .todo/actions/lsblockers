@@ -1,4 +1,0 @@
-#!/bin/bash
-
-[ "$1" = "usage" ] && exit
-exec "$TODO_ACTIONS_DIR/listblockers" "$@"
