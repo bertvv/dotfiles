@@ -5,9 +5,6 @@
 "
 " Lots of inspiration comes from https://raw.github.com/teranex/dotvim/
 
-" Load pathogen plugin manager
-" Unpack plugins under .vim/bundle
-execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
