@@ -169,11 +169,9 @@ let g:airline_powerline_fonts = 1
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsEditSplit="horizontal"
 
 "  }}}
 
@@ -192,10 +190,6 @@ command -nargs=0 -bar Update if &modified
 " }}}
 
 " Custom shortcuts {{{
-
-" Ctrl-S for saving files (both in normal as in insert mode)
-nnoremap <silent> <C-S> :<C-u>Update<CR>
-inoremap <c-s> <Esc>:Update<CR>
 
 " F2 for :!make
 nnoremap <F2> :!make<CR>
