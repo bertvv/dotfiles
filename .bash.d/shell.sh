@@ -17,6 +17,10 @@ shopt -s checkwinsize # update window size after each command
 # Prevent file overwrite with >. Use >| to force
 set -o noclobber
 
+# Disable Ctrl-S keyboard shortcut for ScrollLock (locks up Vim)
+# Source: https://unix.stackexchange.com/questions/72086/ctrl-s-hang-terminal-emulator
+stty -ixon
+
 # ---------- History ----------------------------------------------------------
 
 # Larger bash history (allow more entries; default is 500)
