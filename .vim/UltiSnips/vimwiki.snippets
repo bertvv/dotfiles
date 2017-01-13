@@ -1,7 +1,23 @@
 # Markdown Snippets
+#
+# Currently broken. Keybord shortcut to expand snippets is mapped to
+# Vimwiki function. Attempts to assign alternative shortcut (e.g.
+# <C-space>, <C-tab>) failed.
+#
+# See also ~/.vim/after/ftplugin/vimwiki.vim
 
 snippet code "Code block for a Hugo post"
-{{< highlight ${1}>}}
-${2}
+{{< highlight ${1:lang}>}}
+${0}
 {{< /highlight >}}
+endsnippet
+
+snippet meta "Metadata block for Pandoc > PDF"
+---
+title: '${1}'
+subtitle: '${2}'
+author: '${3:Bert Van Vreckem}'
+lang: ${4:dutch}
+documentclass: scrartcl
+...
 endsnippet
