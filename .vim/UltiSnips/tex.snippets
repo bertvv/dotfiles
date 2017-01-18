@@ -1,5 +1,21 @@
 # LaTeX snippets
 
+# General snippets
+
+snippet fig "Figure environment with image"
+\begin{figure}
+  \includegraphics[width=\textwidth]{${1:<+image.png+>}}
+  \caption{${2:<+description+>}}
+  \label{fig:${3:<+label+>}}
+\end{figure}
+endsnippet
+
+snippet fu "URL in a footnote"
+\footnote{\url{${0:<+url+>}}}
+endsnippet
+
+# Exam class snippets
+
 snippet sol "Solution or dotted lines"
 \begin{solutionordottedlines}[${1:1}cm]
   ${2:<+solution+>}
@@ -35,6 +51,8 @@ snippet pt "Part of a question"
 \end{solutionordottedlines}
 endsnippet
 
+# Beamer class snippets
+
 snippet fr "Slide frame"
 \begin{frame}
   \frametitle{${1:<+title+>}}
@@ -50,8 +68,4 @@ snippet col "Two columns"
   \column{.5\textwidth}
     ${2:<+column2+>}
 \end{columns}
-endsnippet
-
-snippet fu "URL in a footnote"
-\footnote{\url{${0:<+url+>}}}
 endsnippet
