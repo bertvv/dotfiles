@@ -46,10 +46,6 @@ alias yl='dnf list'
 alias ys='dnf search'
 alias yu='sudo dnf update'
 
-# Todo.txt
-alias t='todo'
-alias th='todo ls @hogent'
-
 # Directory listing and file system
 # Use rational units/formats in file size & date output
 alias df='df --si'
