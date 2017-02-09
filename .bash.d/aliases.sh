@@ -67,6 +67,10 @@ else
   alias cp='cp -r'
 fi
 
+# Find stuff
+alias ff='find . -type f -name '
+alias fd='find . -type d -name '
+
 alias sudo='sudo '
 
 # Notification after long commands, e.g. sleep 10; alert
