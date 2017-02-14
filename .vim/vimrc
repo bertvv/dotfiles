@@ -86,7 +86,7 @@ set t_Co=256                            " force the terminal to use 256 colors
 set showcmd                             " show the current command in the statusline
 "set list                                " show special chars, such as tab and eol
 "set listchars=tab:→\ ,eol:·,trail:☐,extends:❱,precedes:❰ " chars to show for list
-"set showbreak=…\                        " when soft-wrapping, start lines which continue the previous line with these chars
+set showbreak=↪
 
 set laststatus=2                        " always show the statusline
 set title                               " set the title
