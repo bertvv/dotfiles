@@ -33,6 +33,8 @@ alias vu='vagrant up'
 alias ds='echo -e "${Yellow}Images${Reset}"; docker images; echo -e "${Yellow}Containers${Reset}"; docker ps --all'
 # "docker cleanup": Clean up volumes with status ‘exited’ and ‘dangling’ images
 alias dC='docker rm --volumes $(docker ps --all --quiet --filter="status=exited") > /dev/null 2>&1; docker rmi $(docker images --filter="dangling=true" --quiet) > /dev/null 2>&1'
+# Stop all running containers and clean up
+alias dCC='docker stop $(docker ps --quiet) > /dev/null 2>&1; docker rm --volumes $(docker ps --all --quiet --filter="status=exited") > /dev/null 2>&1; docker rmi $(docker images --filter="dangling=true" --quiet) > /dev/null 2>&1'
 # "docker ssh": Open a shell console into the latest created Docker container
 alias dS='docker exec --interactive --tty $(docker ps --latest --quiet) env TERM=xterm /bin/bash'
 # "docker halt"
