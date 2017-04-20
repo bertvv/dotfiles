@@ -12,3 +12,6 @@ for f in $(ls ~/.bash.d/*.sh); do
     [ -r "${f}" ] && source "${f}"
 done
 
+
+# added by travis gem
+[ -f /home/bert/.travis/travis.sh ] && source /home/bert/.travis/travis.sh
