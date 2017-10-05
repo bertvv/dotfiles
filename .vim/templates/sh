@@ -2,7 +2,16 @@
 #
 # Author: Bert Van Vreckem <bert.vanvreckem@gmail.com>
 #
-# PURPOSE
+#/ Usage: SCRIPTNAME [OPTIONS]... [ARGUMENTS]...
+#/
+#/ 
+#/ OPTIONS
+#/   -h, --help
+#/                Print this help message
+#/
+#/ EXAMPLES
+#/  
+
 
 #{{{ Bash settings
 # abort on nonzero exitstatus
@@ -20,23 +29,16 @@ IFS=$'\t\n'   # Split on newlines and tabs (but not on spaces)
 #}}}
 
 main() {
-  check_args "${@}"
-
+  # check_args "${@}"
+  :
 }
 
 #{{{ Helper functions
 
-# Check if command line arguments are valid
-check_args() {
-  if [ "${#}" -ne "1" ]; then
-    echo "Expected 1 argument, got ${#}" >&2
-    usage
-    exit 2
-  fi
-}
+
 
 #}}}
 
 main "${@}"
 
-# cursor: 25 del
+# cursor: 33 del
