@@ -3,7 +3,7 @@
 
 # Installation (YMMV)
 # 1/ Install Promptastic [1]
-#    $ cd ~/opt/
+#    $ cd ~/.local/opt/
 #    $ git clone t clone https://github.com/nimiq/promptastic.git
 # 
 # 2/ Install the font (follow "fontconfig" instructions at [2])
@@ -17,7 +17,7 @@
 # [2] https://powerline.readthedocs.org/en/latest/installation/linux.html#font-installation
 
 #  Promptastic is assumed to be installed in $promptastic_home
-promptastic_home=~/opt/promptastic
+promptastic_home=~/.local/opt/promptastic
 
 
 function _update_ps1() {
