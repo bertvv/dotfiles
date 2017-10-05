@@ -1,6 +1,5 @@
 " .vimrc
-" Created:  Fri 08 Aug 2008 03:15:21 PM CEST
-" Modified: 2014-06-08 23:05:48 CEST
+"
 " Author:   Bert Van Vreckem <bert.vanvreckem@gmail.com>
 "
 " Lots of inspiration comes from https://raw.github.com/teranex/dotvim/
@@ -120,11 +119,6 @@ colorscheme molokai   " black bg
 " Plugin settings {{{
 "
 
-"--- Timestamp ---
-let timestamp_regexp = '\v\C%(<Last %([cC]hanged?|[Mm]odified):\s+)@<=.*$'
-let modelines = 5
-let timestamp_rep = '%Y-%m-%d %H:%M:%S'
-
 "--- LaTeX Suite ---
 let g:tex_flavor='latex'
 let g:Tex_BibTeXFlavor='biber'
@@ -139,15 +133,6 @@ let g:Tex_FoldedSections = 'chapter,section,subsection,subsubsection,paragraph'
 set grepprg=grep\ -nH\ $* " Enable F9 autocomplete of BibTEX items
 " Fix problem with insertin é in LaTeX mode
 imap <buffer> <leader>it <Plug>Tex_InsertItemOnThisLine
-
-"--- Folding for Bash scripts ---
-" See e.g.
-" https://www.reddit.com/r/vim/comments/1rvcqe/bash_folding_not_working/
-" https://stackoverflow.com/questions/413015/a-problem-with-folding-bash-functions-in-vim
-" https://stackoverflow.com/questions/35064131/how-do-i-get-code-folding-in-vim-for-shell-scripts-working
-"au FileType sh let g:sh_fold_enabled=1
-"au FileType sh let g:is_bash=1
-"au FileType sh set foldmethod=syntax
 
 "--- Vim Markdown ---
 let g:vim_markdown_folding_disabled=1
