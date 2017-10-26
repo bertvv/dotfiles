@@ -81,7 +81,7 @@ export hg="${HOME}/Documents/Vakken"
 export elnx="${hg}/enterprise-linux/17-18/"
 export ilnx="${hg}/besturingssystemen/17-18/"
 export stage="${hg}/stage/17-18/"
-export p3ops="${hg}/project-3-systeembeheer/17-18/"
+export p3ops="${hg}/prj-3-systeembeheer/17-18/"
 
 # Examples:
 # export dotfiles="$HOME/dotfiles"
