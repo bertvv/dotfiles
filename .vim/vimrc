@@ -144,9 +144,6 @@ let g:vimwiki_ext2syntax = {'.md': 'markdown',
             \ '.mkd': 'markdown',
             \ '.wiki': 'media'}
 
-"--- Syntastic ---
-let g:syntastic_ruby_checkers=['mri', 'rubocop']
-
 "--- Airline
 let g:airline_powerline_fonts = 1
 
@@ -157,6 +154,10 @@ let g:UltiSnipsExpandTrigger="<tab>"
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="horizontal"
+
+"--- Nerdtree
+" autocmd vimenter * NERDTree   " Start NERDTree when starting Vim
+map <C-n> :NERDTreeToggle<CR>
 
 "  }}}
 
@@ -198,5 +199,9 @@ map [] k$][%?}<CR>
 map <leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
 
 " }}}
+
+"" Load helptags
+packloadall           " First, all plugins must be loaded
+silent! helptags ALL
 
 " vim: fdm=marker fdl=0
