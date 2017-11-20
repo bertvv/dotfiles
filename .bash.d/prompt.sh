@@ -4,17 +4,23 @@
 # Installation (YMMV)
 # 1/ Install Promptastic [1]
 #    $ cd ~/.local/opt/
-#    $ git clone t clone https://github.com/nimiq/promptastic.git
-# 
+#    $ git clone https://github.com/nimiq/promptastic.git
+#    $ git clone https://github.com/powerline/fonts.git --depth=1 powerline-fonts
 # 2/ Install the font (follow "fontconfig" instructions at [2])
-#    $ cd ~/.fonts/
+#    $ cd ~/.local/share/fonts/
 #    $ wget https://github.com/Lokaltog/powerline/raw/develop/font/PowerlineSymbols.otf
+#    $ cd ~/.local/opt/powerline-fonts
+#    $ ./install.sh
 #    $ fc-cache -vf ~/.fonts
-#    $ mkdir ~/.fonts.conf.d/ && cd ~/.fonts.conf.d/
+# 3/ Font config
+#    $ mkdir -p ~/.config/fontconfig/conf.d/
 #    $ wget https://github.com/Lokaltog/powerline/raw/develop/font/10-powerline-symbols.conf
-# 3/ Restart shell
+#    $ mv 10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
+# 4/ Restart shell (or log out/log in)
 #
+# [1] https://github.com/nimiq/promptastic
 # [2] https://powerline.readthedocs.org/en/latest/installation/linux.html#font-installation
+# [3] https://github.com/powerline/fonts
 
 #  Promptastic is assumed to be installed in $promptastic_home
 promptastic_home=~/.local/opt/promptastic
