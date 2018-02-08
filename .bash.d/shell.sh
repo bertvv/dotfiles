@@ -78,10 +78,14 @@ CDPATH=".:~:~/CfgMgmt:~/c"
 shopt -s cdable_vars
 
 export hg="${HOME}/Documents/Vakken"
-export elnx="${hg}/enterprise-linux/17-18/"
-export ilnx="${hg}/besturingssystemen/17-18/"
-export stage="${hg}/stage/17-18/"
-export p3ops="${hg}/prj-3-systeembeheer/17-18/"
+export aj='17-18'
+export bp="${hg}/bachelorproef/${aj}/"
+export elnx="${hg}/enterprise-linux/${aj}/"
+export ilnx="${hg}/besturingssystemen/${aj}/"
+export ozt="${hg}/onderzoekstechnieken/${aj}/"
+export stage="${hg}/stage/${aj}/"
+export p3ops="${hg}/prj-3-systeembeheer/${aj}/"
+export p2ops="${hg}/prj-2-systeembeheer/${aj}"
 
 # Examples:
 # export dotfiles="$HOME/dotfiles"
