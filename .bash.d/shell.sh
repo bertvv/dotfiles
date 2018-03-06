@@ -80,6 +80,7 @@ shopt -s cdable_vars
 export hg="${HOME}/Documents/Vakken"
 export aj='17-18'
 export bp="${hg}/bachelorproef/${aj}/"
+export devit="${hg}/dev-it/${aj}/"
 export elnx="${hg}/enterprise-linux/${aj}/"
 export ilnx="${hg}/besturingssystemen/${aj}/"
 export ozt="${hg}/onderzoekstechnieken/${aj}/"
