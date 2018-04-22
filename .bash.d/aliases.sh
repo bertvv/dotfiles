@@ -11,6 +11,7 @@ alias d='git diff'
 alias g='git'
 alias h='git log --pretty="format:%C(yellow)%h %C(blue)%ad %C(reset)%s%C(red)%d %C(green)%an%C(reset), %C(cyan)%ar" --date=short --graph --all'
 alias p='git push && git push --tags'
+alias pr='git pull --rebase'
 alias pt='git push -u origin --tags'
 alias s='git status'
 # Git author stats
