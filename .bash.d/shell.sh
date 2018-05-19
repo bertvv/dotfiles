@@ -87,6 +87,7 @@ export ozt="${hg}/onderzoekstechnieken/${aj}/"
 export stage="${hg}/stage/${aj}/"
 export p3ops="${hg}/prj-3-systeembeheer/${aj}/"
 export p2ops="${hg}/prj-2-systeembeheer/${aj}"
+export nb2="${HOME}/Documents/Avondschool/Netwerkbeheer2/17-18"
 
 # Examples:
 # export dotfiles="$HOME/dotfiles"
