@@ -8,9 +8,11 @@ endsnippet
 
 snippet fin "Cleanup on exit"
 finish() {
+  result=$?
   ${1}
+  exit ${result}
 }
-trap finish EXIT
+trap finish EXIT ERR
 endsnippet
 
 snippet usage "Usage function"
