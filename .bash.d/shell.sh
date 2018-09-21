@@ -76,7 +76,7 @@ CDPATH=".:~:~/CfgMgmt:~/c"
 shopt -s cdable_vars
 
 export hg="${HOME}/Documents/Vakken"
-export aj='17-18'
+export aj='18-19'
 export bp="${hg}/bachelorproef/${aj}/"
 export devit="${hg}/dev-it/${aj}/"
 export elnx="${hg}/enterprise-linux/${aj}/"
