@@ -32,6 +32,7 @@ export HISTIGNORE="&:ls:cd:cd -:pwd:exit:bg:fg"
 export HISTTIMEFORMAT='%F %T '
 
 shopt -s histappend   # append to history, don't overwrite
+shopt -s histverify   # expand !!, !$, etc when typing ENTER
 shopt -s cmdhist      # enter multi-line commands as one entry
 
 # Enable history expansion with space
@@ -39,12 +40,10 @@ shopt -s cmdhist      # enter multi-line commands as one entry
 bind Space:magic-space
 
 # Enable incremental history search with up/down arrows (also Readline goodness)
-# Learn more about this here:
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 bind '"\e[C": forward-char'
 bind '"\e[D": backward-char'
-
 
 #---------- Completion --------------------------------------------------------
 
@@ -56,7 +55,6 @@ bind "set completion-map-case on"
 
 # Display matches for ambiguous patterns at first tab press
 bind "set show-all-if-ambiguous on"
-
 
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2 | tr ' ' '\n')" scp sftp ssh
