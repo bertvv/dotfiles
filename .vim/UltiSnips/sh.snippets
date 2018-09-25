@@ -67,7 +67,7 @@ snippet logf "Functions for log messages"
 #
 # Prints all arguments on the standard output stream
 info() {
-  printf "${yellow}>>> %s${reset}\\n" "${*}"
+  printf "${yellow}>>> %s${reset}\\\\n" "${*}"
 }
 
 # Usage: debug [ARG]...
@@ -75,14 +75,14 @@ info() {
 # Prints all arguments on the standard output stream,
 # if debug output is enabled
 debug() {
-  [ "${debug}" != 'on' ] || printf "${cyan}### %s${reset}\\n" "${*}"
+  [ "${debug}" != 'on' ] || printf "${cyan}### %s${reset}\\\\n" "${*}"
 }
 
 # Usage: error [ARG]...
 #
 # Prints all arguments on the standard error stream
 error() {
-  printf "${red}!!! %s${reset}\\n" "${*}" 1>&2
+  printf "${red}!!! %s${reset}\\\\n" "${*}" 1>&2
 }
 
 endsnippet
