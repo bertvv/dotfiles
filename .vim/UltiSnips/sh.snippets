@@ -63,10 +63,10 @@ readonly debug='on'
 endsnippet
 
 snippet logf "Functions for log messages"
-# Usage: info [ARG]...
+# Usage: log [ARG]...
 #
 # Prints all arguments on the standard output stream
-info() {
+log() {
   printf "${yellow}>>> %s${reset}\\\\n" "${*}"
 }
 
