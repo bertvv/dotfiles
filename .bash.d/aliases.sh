@@ -30,6 +30,9 @@ alias vS='vagrant ssh'
 alias vs='vagrant status'
 alias vu='vagrant up'
 
+# Ansible
+alias ansible='ansible-3' # use Ansible based on Python 3
+
 # Docker Docker Docker Docker Docker Docker Docker Docker
 # "docker status"
 alias ds='echo -e "${Yellow}Images${Reset}"; docker images; echo -e "${Yellow}Containers${Reset}"; docker ps --all'
