@@ -112,3 +112,5 @@ alias cryptpw='python -c "from passlib.hash import sha512_crypt; import getpass;
 alias ctrlc='xclip -selection clipboard -i'
 alias ctrlv='xclip -selection clipboard -o'
 
+# SSH without adding the target host to ~/.ssh/known_hosts
+alias sshh='ssh -o UserKnownHostsFile=/dev/null '
