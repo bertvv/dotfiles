@@ -4,6 +4,9 @@
 # history (see functions.sh, topcmd function)
 # Credit https://coderwall.com/p/o5qijw
 
+alias r='ranger'
+alias o='gnome-open'
+
 # Git
 alias a='git add'
 alias c='git commit -m'
