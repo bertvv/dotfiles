@@ -104,7 +104,7 @@ alias ip='ip --color'
 
 # Create a crypted password for use in a Linux shadow file
 # Python library ’passlib’ should be installed
-alias cryptpw='python -c "from passlib.hash import sha512_crypt; import getpass; print sha512_crypt.encrypt(getpass.getpass())" | sed "s/rounds=[0-9]*.//"'
+alias cryptpw='python3 -c "from passlib.hash import sha512_crypt; import getpass; print(sha512_crypt.hash(getpass.getpass()))" | sed "s/rounds=[0-9]*.//"'
 
 # Source: Luciano Quercia
 # https://dev.to/djviolin/what-are-your-unix-pipeline-commands-that-saved-you-from-lot-of-codingtime-7ok/comments/185j
