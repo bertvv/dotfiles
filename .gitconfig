@@ -18,3 +18,5 @@
 	autocrlf = input
 [pull]
 	rebase = true
+[rebase]
+  autoStash = true
