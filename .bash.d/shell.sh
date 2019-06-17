@@ -69,14 +69,14 @@ shopt -s nocaseglob   # case insensitive globbing
 # This defines where cd looks for targets
 # Add the directories you want to have fast access to, separated by colon
 # Ex: CDPATH=".:~:~/projects" will look for targets in the current working directory, in home and in the ~/projects folder
-CDPATH=".:~:~/CfgMgmt:~/c"
+CDPATH=".:~:~/c"
 
 # This allows you to bookmark your favorite places across the file system
 # Define a variable containing a path and you will be able to cd into it regardless of the directory you're in
 shopt -s cdable_vars
 
-export hg="${HOME}/Documents/Vakken"
 export aj='18-19'
+export hg="${HOME}/Documents/Vakken"
 export bp="${hg}/bachelorproef/${aj}/"
 export devit="${hg}/dev-it/${aj}/"
 export elnx="${hg}/enterprise-linux/${aj}/"
@@ -86,6 +86,7 @@ export stage="${hg}/stage/${aj}/"
 export p3ops="${hg}/prj-3-systeembeheer/${aj}/"
 export p2ops="${hg}/prj-2-systeembeheer/${aj}"
 export nb2="${HOME}/Documents/Avondschool/Netwerkbeheer2/17-18"
+export huisstijl="${HOME}/Documents/Algemeen/huisstijl"
 
 # Examples:
 # export dotfiles="$HOME/dotfiles"
