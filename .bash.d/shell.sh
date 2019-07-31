@@ -75,7 +75,7 @@ CDPATH=".:~:~/c"
 # Define a variable containing a path and you will be able to cd into it regardless of the directory you're in
 shopt -s cdable_vars
 
-export aj='18-19'
+export aj='19-20'
 export hg="${HOME}/Documents/Vakken"
 export bp="${hg}/bachelorproef/${aj}/"
 export devit="${hg}/dev-it/${aj}/"
