@@ -65,6 +65,7 @@ alias ll='ls -l  --si --time-style=long-iso --color'
 alias lh='ls -lh  --si --time-style=long-iso --color'
 alias tree='tree -AC'
 alias Z='ls -l -Z --si --color'
+alias diff='diff --color --unified'
 
 # Protect root against shooting himself in the foot
 if [ "$(id -ru)" -eq "0" ]; then
