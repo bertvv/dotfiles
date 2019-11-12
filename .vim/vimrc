@@ -19,6 +19,7 @@ set foldmethod=marker                   " marker fold method by default
 "set foldnestmax=1                       " don't fold too deeply
 set mouse=a                             " enable mouse
 set mousemodel=popup                    " produce pop up for right click
+set clipboard=unnamedplus               " Use desktop clipboard (CtrlC, CtrlV) as default
 set scrolloff=3                         " minimal number of screen lines to keep above and below the cursor.
 set sidescrolloff=3                     " minimal number of screen columns to keep next to the cursor
 set sidescroll=5                        " horizontally scroll 5 characters, instead of centering the cursor
