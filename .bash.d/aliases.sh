@@ -19,6 +19,7 @@ alias gp='git pull --rebase --autostash'
 alias pr='git pull --rebase --autostash'
 alias pt='git push -u origin --tags'
 alias s='git status'
+alias gr='git restore .'
 # Git author stats
 alias gs='git ls-tree -r -z --name-only HEAD | xargs -0 -n1 git blame --line-porcelain | grep  "^author "|sort|uniq -c|sort -nr'
 
