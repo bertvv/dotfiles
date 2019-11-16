@@ -92,8 +92,8 @@ set laststatus=2                        " always show the statusline
 set title                               " set the title
 set ruler                               " show cursor position in left bottom corner
 set splitbelow                          " open a new horizontal window below the current window instead of above
-set cursorline                          " highlight the current line
-set cursorcolumn                        " highlight the current column
+"set cursorline                          " highlight the current line
+"set cursorcolumn                        " highlight the current column
 set display+=lastline                   " display wrapped lines at bottom instead of @ symbols
 if v:version > '702'
     set colorcolumn=80,120              " show a vertical line at these positions
@@ -109,11 +109,8 @@ match ExtraWhitespace /\s\+$\| \+\ze\t\|\t/
 
 " colour scheme
 "  beamer: turn off these colour schemes, use white shell bg
-
-"colorscheme desert256 " black background, soft colours
-"colorscheme synic     " no bg set, not usable on white shell bg
-colorscheme molokai   " black bg
-" colorscheme morning   " grey bg, suitable for beamer
+set background=dark
+colorscheme solarized8_high
 
 " }}}
 
