@@ -52,11 +52,6 @@ _EOF_
 endsnippet
 
 snippet logv "Variables for logging functions"
-# Color definitions
-readonly reset='\e[0m'
-readonly cyan='\e[0;36m'
-readonly red='\e[0;31m'
-readonly yellow='\e[0;33m'
 # Debug info ('on' to enable)
 readonly debug='on'
 
@@ -67,7 +62,7 @@ snippet logf "Functions for log messages"
 #
 # Prints all arguments on the standard output stream
 log() {
-  printf "${yellow}>>> %s${reset}\\\\n" "${*}"
+  printf '\e[0;33m>>> %s\e[0m\n' "${*}"
 }
 
 # Usage: debug [ARG]...
@@ -75,14 +70,14 @@ log() {
 # Prints all arguments on the standard output stream,
 # if debug output is enabled
 debug() {
-  [ "${debug}" != 'on' ] || printf "${cyan}### %s${reset}\\\\n" "${*}"
+  [ "${debug}" != 'on' ] || printf '\e[0;36m### %s\e[0m\n' "${*}"
 }
 
 # Usage: error [ARG]...
 #
 # Prints all arguments on the standard error stream
 error() {
-  printf "${red}!!! %s${reset}\\\\n" "${*}" 1>&2
+  printf '\e[0;31m!!! %s\e[0m\n' "${*}" 1>&2
 }
 
 endsnippet
