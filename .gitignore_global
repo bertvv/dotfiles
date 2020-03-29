@@ -37,3 +37,6 @@ Thumbs.db
 
 # Python virtualenv
 .ropeproject
+
+# Visual Studio Code settings
+.vscode
