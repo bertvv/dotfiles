@@ -40,3 +40,6 @@ Thumbs.db
 
 # Visual Studio Code settings
 .vscode
+
+# Rstudio personal project file
+.Rproj.user
