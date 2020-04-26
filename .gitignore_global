@@ -43,3 +43,7 @@ Thumbs.db
 
 # Rstudio personal project file
 .Rproj.user
+
+# VS Code Workspace
+*.code-workspace
+
