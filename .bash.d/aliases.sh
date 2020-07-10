@@ -38,16 +38,16 @@ alias vu='vagrant up'
 
 # Docker Docker Docker Docker Docker Docker Docker Docker
 # "docker status"
-alias ds='echo -e "${Yellow}Images${Reset}"; podman images; echo -e "${Yellow}Containers${Reset}"; podman ps --all'
+alias ds='echo -e "${Yellow}Images${Reset}"; docker images; echo -e "${Yellow}Containers${Reset}"; docker ps --all'
 # "docker cleanup": Clean up volumes with status ‘exited’ and ‘dangling’ images
-alias dC='podman rm --volumes $(podman ps --all --quiet --filter="status=exited") > /dev/null 2>&1; podman rmi $(podman images --filter="dangling=true" --quiet) > /dev/null 2>&1'
+alias dC='docker rm --volumes $(docker ps --all --quiet --filter="status=exited") > /dev/null 2>&1; docker rmi $(docker images --filter="dangling=true" --quiet) > /dev/null 2>&1'
 # Stop all running containers and clean up
-alias dCC='podman stop $(podman ps --quiet) > /dev/null 2>&1; podman rm --volumes $(podman ps --all --quiet --filter="status=exited") > /dev/null 2>&1; podman rmi $(podman images --filter="dangling=true" --quiet) > /dev/null 2>&1'
+alias dCC='docker stop $(docker ps --quiet) > /dev/null 2>&1; docker rm --volumes $(docker ps --all --quiet --filter="status=exited") > /dev/null 2>&1; docker rmi $(docker images --filter="dangling=true" --quiet) > /dev/null 2>&1'
 # "docker ssh": Open a shell console into the latest created Docker container
-alias dS='podman exec --interactive --tty $(podman ps --latest --quiet) env TERM=xterm /bin/bash'
+alias dS='docker exec --interactive --tty $(docker ps --latest --quiet) env TERM=xterm /bin/bash'
 # "docker halt"
-alias dh='podman stop'
-alias dip='podman inspect  --format="{{ .NetworkSettings.IPAddress }}" $(podman ps --latest --quiet)'
+alias dh='docker stop'
+alias dip='docker inspect  --format="{{ .NetworkSettings.IPAddress }}" $(docker ps --latest --quiet)'
 
 # DNF
 alias i='sudo dnf install -y'
@@ -82,6 +82,7 @@ fi
 alias ff='find . -type f -name '
 alias fd='find . -type d -name '
 
+alias bc='bc --mathlib' # Start bc with support for rational numbers
 alias sudo='sudo '
 
 # Notification after long commands, e.g. sleep 10; alert
