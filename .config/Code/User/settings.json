@@ -1,0 +1,208 @@
+{
+    "[markdown]": {
+        "editor.defaultFormatter": "fcrespo82.markdown-table-formatter"
+    },
+    "editor.fontFamily": "'Fira Code', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+    "editor.fontLigatures": true,
+    "editor.minimap.enabled": true,
+    "editor.renderIndentGuides": false,
+    "editor.renderWhitespace": "all",
+    "editor.rulers": [
+        80,
+        120
+    ],
+    "editor.wordWrap": "wordWrapColumn",
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 20000,
+    "files.defaultLanguage": "${activeEditorLanguage}",
+    "latex-workshop.chktex.enabled": true,
+    "latex-workshop.intellisense.package.enabled": true,
+    "latex-workshop.latex.clean.subfolder.enabled": true,
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk 🔃",
+            "tools": [
+                "latexmk"
+            ]
+        },
+        {
+            "name": "xelatex ➞ biber ➞ xelatex× 2",
+            "tools": [
+                "xelatex",
+                "biber",
+                "xelatex",
+                "xelatex"
+            ]
+        },
+        {
+            "name": "pdflatex ➞ bibtex ➞ pdflatex × 2",
+            "tools": [
+                "pdflatex",
+                "bibtex",
+                "pdflatex",
+                "pdflatex"
+            ]
+        },
+        {
+            "name": "latexmk (latexmkrc)",
+            "tools": [
+                "latexmk_rconly"
+            ]
+        },
+        {
+            "name": "Compile Rnw files",
+            "tools": [
+                "rnw2pdf"
+            ]
+        }
+    ],
+    "latex-workshop.latex.tools": [
+        {
+            "args": [
+                "-xelatex",
+                "-shell-escape",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-outdir=%OUTDIR%",
+                "%DOC%"
+            ],
+            "command": "latexmk",
+            "env": {},
+            "name": "latexmk"
+        },
+        {
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-lualatex",
+                "-outdir=%OUTDIR%",
+                "%DOC%"
+            ],
+            "command": "latexmk",
+            "env": {},
+            "name": "lualatexmk"
+        },
+        {
+            "args": [
+                "%DOC%"
+            ],
+            "command": "latexmk",
+            "env": {},
+            "name": "latexmk_rconly"
+        },
+        {
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOC%"
+            ],
+            "command": "pdflatex",
+            "env": {},
+            "name": "pdflatex"
+        },
+        {
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-shell-excape",
+                "-file-line-error",
+                "%DOC%"
+            ],
+            "command": "xelatex",
+            "env": {},
+            "name": "xelatex"
+        },
+        {
+            "args": [
+                "%DOCFILE%"
+            ],
+            "command": "bibtex",
+            "env": {},
+            "name": "bibtex"
+        },
+        {
+            "args": [
+                "%DOCFILE%"
+            ],
+            "command": "biber",
+            "env": {},
+            "name": "biber"
+        },
+        {
+            "args": [
+                "-e",
+                "knitr::knit2pdf('%DOCFILE%')"
+            ],
+            "command": "Rscript",
+            "env": {},
+            "name": "rnw2pdf"
+        }
+    ],
+    "latex-workshop.view.pdf.viewer": "tab",
+    "markdown-table-formatter.markdownGrammarScopes": [
+        "markdown",
+        "rmd"
+    ],
+    "markdownlint.config": {
+        "MD007": {
+            "indent": 4
+        },
+        "MD013": false
+    },
+    "python.dataScience.sendSelectionToInteractiveWindow": true,
+    "r.bracketedPaste": true,
+    "r.rterm.linux": "/home/bert/.local/bin/radian",
+    "r.sessionWatcher": true,
+    "telemetry.enableTelemetry": false,
+    "window.zoomLevel": 0,
+    "workbench.colorTheme": "Default Light+",
+    "[rmd]": {
+        "editor.defaultFormatter": "REditorSupport.r-lsp"
+    },
+    "keyboard.dispatch": "keyCode",
+    "explorer.confirmDelete": false,
+    "editor.columnSelection": false,
+    "explorer.confirmDragAndDrop": false,
+    "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": false,
+    "latex-workshop.latex.autoBuild.interval": 30000,
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    "latex-workshop.latex.magic.args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "--shell-escape",
+        "%DOC%"
+    ],
+    "latex-workshop.bibtex-format.sort.enabled": true,
+    "latex-workshop.latex.clean.fileTypes": [
+        "*.aux",
+        "*.bbl",
+        "*.blg",
+        "*.idx",
+        "*.ind",
+        "*.lof",
+        "*.lot",
+        "*.out",
+        "*.toc",
+        "*.acn",
+        "*.acr",
+        "*.alg",
+        "*.glg",
+        "*.glo",
+        "*.gls",
+        "*.fls",
+        "*.log",
+        "*.fdb_latexmk",
+        "*.snm",
+        "*.synctex(busy)",
+        "*.synctex.gz(busy)",
+        "*.nav",
+        "*.synctex.gz",
+        "*.run.xml",
+        "*.bcf",
+        "*.xdv"
+    ]
+}

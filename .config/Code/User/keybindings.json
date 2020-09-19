@@ -1,0 +1,11 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+    {
+        "key": "alt+]",
+        "command": "workbench.action.terminal.focusNext"
+    },
+    {
+        "key": "alt+[",
+        "command": "workbench.action.terminal.focusPrevious"
+    }
+]
