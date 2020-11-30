@@ -212,5 +212,6 @@
             "comments": false,
             "strings": true
         }
-    }
+    },
+    "git.confirmSync": false
 }
