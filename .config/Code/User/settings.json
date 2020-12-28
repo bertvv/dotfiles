@@ -152,7 +152,6 @@
         },
         "MD013": false
     },
-    "python.dataScience.sendSelectionToInteractiveWindow": true,
     "r.bracketedPaste": true,
     "r.rterm.linux": "/home/bert/.local/bin/radian",
     "r.sessionWatcher": true,
@@ -213,5 +212,6 @@
             "strings": true
         }
     },
-    "git.confirmSync": false
+    "git.confirmSync": false,
+    "jupyter.sendSelectionToInteractiveWindow": true
 }
