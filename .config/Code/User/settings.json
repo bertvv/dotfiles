@@ -1,6 +1,6 @@
 {
     "[markdown]": {
-        "editor.defaultFormatter": "fcrespo82.markdown-table-formatter"
+        "editor.defaultFormatter": "yzhang.markdown-all-in-one"
     },
     "editor.fontFamily": "'Fira Code', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
     "editor.fontLigatures": true,
@@ -158,9 +158,6 @@
     "telemetry.enableTelemetry": false,
     "window.zoomLevel": 0,
     "workbench.colorTheme": "Default Light+",
-    "[rmd]": {
-        "editor.defaultFormatter": "REditorSupport.r-lsp"
-    },
     "keyboard.dispatch": "keyCode",
     "explorer.confirmDelete": false,
     "editor.columnSelection": false,
@@ -213,5 +210,15 @@
         }
     },
     "git.confirmSync": false,
-    "jupyter.sendSelectionToInteractiveWindow": true
+    "jupyter.sendSelectionToInteractiveWindow": true,
+    "[latex]": {
+        "editor.tabSize": 2,
+        "editor.formatOnPaste": false,
+        "editor.suggestSelection": "recentlyUsedByPrefix"
+    },
+    "workbench.editor.wrapTabs": true,
+    "workbench.editor.pinnedTabSizing": "shrink",
+    "workbench.editor.decorations.colors": true,
+    "workbench.editor.decorations.badges": true,
+    "search.mode": "newEditor"
 }
