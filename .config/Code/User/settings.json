@@ -220,5 +220,6 @@
     "workbench.editor.pinnedTabSizing": "shrink",
     "workbench.editor.decorations.colors": true,
     "workbench.editor.decorations.badges": true,
-    "search.mode": "newEditor"
+    "search.mode": "newEditor",
+    "jupyter.alwaysTrustNotebooks": true
 }
