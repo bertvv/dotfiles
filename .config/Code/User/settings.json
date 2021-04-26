@@ -220,5 +220,11 @@
     "workbench.editor.decorations.colors": true,
     "workbench.editor.decorations.badges": true,
     "search.mode": "newEditor",
-    "jupyter.alwaysTrustNotebooks": true
+    "jupyter.alwaysTrustNotebooks": true,
+    "workbench.editorAssociations": [
+        {
+            "viewType": "jupyter.notebook.ipynb",
+            "filenamePattern": "*.ipynb"
+        }
+    ]
 }
