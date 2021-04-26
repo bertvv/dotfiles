@@ -9,21 +9,22 @@ alias r='ranger'
 alias o='gnome-open'
 
 # Git
+# Git author stats
 alias a='git add'
 alias c='git commit -m'
 alias d='git diff'
 alias g='git'
+alias gca='git commit --amend'
+alias gp='git pull --rebase --autostash'
+alias gpd='for dir in ./*/; do cd "${dir}"; git pull --rebase --autostash; cd ..; done'
+alias gpr='git pull --rebase --autostash'
+alias gr='git restore .'
+alias gs='git ls-tree -r -z --name-only HEAD | xargs -0 -n1 git blame --line-porcelain | grep  "^author "|sort|uniq -c|sort -nr'
 alias h='git log --pretty="format:%C(yellow)%h %C(blue)%ad %C(reset)%s%C(red)%d %C(green)%an%C(reset), %C(cyan)%ar" --date=short --graph --all'
 alias p='git push && git push --tags'
-alias gca='git commit --amend'
-alias gpr='git pull --rebase --autostash'
-alias gp='git pull --rebase --autostash'
 alias pr='git pull --rebase --autostash'
 alias pt='git push -u origin --tags'
 alias s='git status'
-alias gr='git restore .'
-# Git author stats
-alias gs='git ls-tree -r -z --name-only HEAD | xargs -0 -n1 git blame --line-porcelain | grep  "^author "|sort|uniq -c|sort -nr'
 
 # Vagrant
 alias v='vagrant'
