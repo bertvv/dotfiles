@@ -221,10 +221,8 @@
     "workbench.editor.decorations.badges": true,
     "search.mode": "newEditor",
     "jupyter.alwaysTrustNotebooks": true,
-    "workbench.editorAssociations": [
-        {
-            "viewType": "jupyter.notebook.ipynb",
-            "filenamePattern": "*.ipynb"
-        }
-    ]
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter.notebook.ipynb"
+    },
+    "window.zoomLevel": -1
 }
