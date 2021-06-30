@@ -65,6 +65,7 @@ shopt -s autocd       # entering a directory as command will cd into it
 shopt -s cdspell      # autocorrect typos in path names when using 'cd'
 shopt -s globstar     # allow use of ** in file globbing
 shopt -s nocaseglob   # case insensitive globbing
+shopt -s nullglob     # filename patterns which match no files expand to null string
 
 # This defines where cd looks for targets
 # Add the directories you want to have fast access to, separated by colon
@@ -76,23 +77,11 @@ CDPATH=".:~:~/c"
 shopt -s cdable_vars
 
 export aj='20-21'
-export hg="${HOME}/Documents/Vakken"
-export bp="${hg}/bachelorproef/${aj}/"
-export devit="${hg}/dev-it/${aj}/"
-export elnx="${hg}/enterprise-linux/${aj}/"
-export ilnx="${hg}/besturingssystemen/${aj}/"
-export infra="${hg}/infrastructure-automation/${aj}/"
-export ozt="${hg}/onderzoekstechnieken/${aj}/"
-export selab="${hg}/system-engineering-lab/${aj}/"
-export stage="${hg}/stage/${aj}/"
-export p3ops="${hg}/prj-3-systeembeheer/${aj}/"
-export p2ops="${hg}/prj-2-systeembeheer/${aj}"
-export nb2="${HOME}/Documents/Avondschool/Netwerkbeheer2/17-18"
-export huisstijl="${HOME}/Documents/Algemeen/huisstijl"
-
-# Examples:
-# export dotfiles="$HOME/dotfiles"
-# export projects="$HOME/projects"
-# export documents="$HOME/Documents"
-# export dropbox="$HOME/Dropbox"
-
+export hg="${HOME}/Documents/10-19 Vakken"
+export infra="${hg}/11 Infrastructure Automation"
+export lnx="${hg}/12 Linux"
+export dpo="${hg}/13 Devops Project Operations"
+export dsai="${hg}/16 Data Science AI"
+export ozt="${hg}/17 Research Methods"
+export bp="${hg}/18 Bachelorproef"
+export stage="${hg}/19 Stage"

@@ -4,7 +4,7 @@
 # history (see functions.sh, topcmd function)
 # Credit https://coderwall.com/p/o5qijw
 
-alias notes='code ~/Documents/FoamNotes'
+alias notes='code ~/Documents/00-09\ Meta/01\ FoamNotes/'
 alias r='ranger'
 alias o='gnome-open'
 

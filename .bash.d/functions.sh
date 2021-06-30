@@ -256,3 +256,69 @@ eval "$cat"         # generate combined config file
 # running: bash -c glues together --action 'foo --bar' type commands...
 [ -e "$cssh" ] && bash -c "cssh --options '-F ${cssh}${screen}$options' $cmd"
 }
+
+# Usage: fail [ARG]...
+#
+# Prints all arguments on the standard error stream, in red
+_fail() {
+  printf '\e[0;31m!!! %s\e[0m\n' "${*}" 1>&2
+}
+
+# Change to a directory in a Johnny Decimal directory tree.
+# Source: <https://johnnydecimal.com/concepts/working-at-the-terminal/>
+cd_johnny_decimal() {
+  target_dir="${1}"
+
+  case "${target_dir}" in
+    '')
+      \cd "${HOME}" || return
+      ;;
+    [0-9][0-9].[0-9][0-9]) # e.g. 17.30, 58.34, ...
+      \cd "${HOME}"/Documents/*/*/"${1}"* || return
+      ;;
+    [0-9][0-9])   # e.g. 01, 28, ...
+      \cd "${HOME}"/Documents/*/"${1}"* || return
+      ;;
+    *)
+      \cd "${target_dir}" || return
+      ;;
+  esac
+}
+alias cd='cd_johnny_decimal'
+
+# Usage: index [depth]
+#
+# Prints an overview of all Johnny Decimal directories.
+#
+# depth  how deep in the directory structure the overview must be
+#        can be 1 (only areas), 2 (areas and categories, default) or 
+#        3 (all JD folders).
+index() {
+  depth="${1:-2}"
+  jd_root="${HOME}/Documents"
+  pushd "${jd_root}" > /dev/null || return
+  for area in */; do
+    printf '\e[97;44m%s\e[0m\n' "${area%/}"
+    if [ "${depth}" -ge '2' ]; then
+      pushd "${area}" > /dev/null || return
+      for category in [0-9][0-9]*/; do
+        printf '   %s\n' "${category%/}"
+        if [ "${depth}" -ge '3' ]; then
+          pushd "${category}" > /dev/null || return
+          for folder in [0-9][0-9].[0-9][0-9]*/; do
+            printf '      \e[0;94m%s\e[0m\n' "${folder%/}"
+          done
+          popd > /dev/null || return
+        fi
+      done
+      popd > /dev/null || return
+    fi
+  done
+  popd > /dev/null || return
+}
+
+# Save the index in a text file in the appropriate place in the JD directory tree.
+save_index() {
+  index_file="${HOME}/Documents/00-09 Meta/00 Index/00.00 index/index.txt"
+  index 3 | perl -pe 's/\e\[[\d;]*m//g;' >| "${index_file}"
+}
