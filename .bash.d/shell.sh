@@ -76,12 +76,12 @@ CDPATH=".:~:~/c"
 # Define a variable containing a path and you will be able to cd into it regardless of the directory you're in
 shopt -s cdable_vars
 
-export aj='20-21'
-export hg="${HOME}/Documents/10-19 Vakken"
-export infra="${hg}/11 Infrastructure Automation"
-export lnx="${hg}/12 Linux"
-export dpo="${hg}/13 Devops Project Operations"
-export dsai="${hg}/16 Data Science AI"
-export ozt="${hg}/17 Research Methods"
-export bp="${hg}/18 Bachelorproef"
-export stage="${hg}/19 Stage"
+export aj='21-22'
+export hg="${HOME}/Documents/Vakken"
+export infra="${hg}/InfrastructureAutomation"
+export lnx="${hg}/Linux"
+export dpo="${hg}/DevopsProjectOperations"
+export dsai="${hg}/DataScienceAI"
+export ozt="${hg}/ResearchMethods"
+export bp="${hg}/Bachelorproef"
+export stage="${hg}/Stage"
