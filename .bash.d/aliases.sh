@@ -4,7 +4,7 @@
 # history (see functions.sh, topcmd function)
 # Credit https://coderwall.com/p/o5qijw
 
-alias notes='code ~/Documents/00-09\ Meta/01\ FoamNotes/'
+alias notes='code ~/Documents/Notes/'
 alias r='ranger'
 alias o='gnome-open'
 
@@ -71,14 +71,10 @@ alias tree='tree -AC'
 alias Z='ls -l -Z --si --color'
 alias diff='diff --color --unified'
 
-# Protect root against shooting himself in the foot
-if [ "$(id -ru)" -eq "0" ]; then
-    alias rm='rm --interactive=once'
-    alias cp='cp --interactive=once'
-    alias mv='mv --interactive=once'
-else
-  alias cp='cp -r'
-fi
+# Avoid mistakes when copying or (re)moving files.
+alias rm='rm --interactive=once'       # Ask once if the user is sure
+alias cp='cp --recursive --no-clobber' # Don't overwrite existing files (add -f to override)
+alias mv='mv --no-clobber'             # Don't overwrite existing files
 
 # Find stuff
 alias ff='find . -type f -name '
