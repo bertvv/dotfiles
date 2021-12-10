@@ -19,6 +19,7 @@
     "latex-workshop.intellisense.package.enabled": true,
     "latex-workshop.latex.clean.subfolder.enabled": true,
     "latex-workshop.latex.recipes": [
+
         {
             "name": "latexmk 🔃",
             "tools": [
@@ -59,6 +60,7 @@
     "latex-workshop.latex.tools": [
         {
             "args": [
+                "-f",
                 "-xelatex",
                 "-shell-escape",
                 "-synctex=1",
@@ -155,7 +157,7 @@
     "r.bracketedPaste": true,
     "r.rterm.linux": "/home/bert/.local/bin/radian",
     "r.sessionWatcher": true,
-    "telemetry.enableTelemetry": false,
+    "telemetry.telemetryLevel": "off",
     "workbench.colorTheme": "Visual Studio Light",
     "keyboard.dispatch": "keyCode",
     "explorer.confirmDelete": false,
@@ -232,5 +234,9 @@
     "security.workspace.trust.untrustedFiles": "open",
     "[html]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    },
+    "latex-workshop.intellisense.citation.backend": "biblatex",
+    "latex-workshop.latex.autoClean.run": "onBuilt",
+    "notebook.lineNumbers": "on",
+    "latex-workshop.latex.outDir": "%DIR%/out"
 }
