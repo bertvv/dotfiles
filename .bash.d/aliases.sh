@@ -72,9 +72,9 @@ alias Z='ls -l -Z --si --color'
 alias diff='diff --color --unified'
 
 # Avoid mistakes when copying or (re)moving files.
-alias rm='rm --interactive=once'       # Ask once if the user is sure
-alias cp='cp --recursive --no-clobber' # Don't overwrite existing files (add -f to override)
-alias mv='mv --no-clobber'             # Don't overwrite existing files
+alias rm='rm --interactive=once' # Ask once if the user is sure
+alias cp='cp --recursive --interactive'
+alias mv='mv --interactive'
 
 # Find stuff
 alias ff='find . -type f -name '
