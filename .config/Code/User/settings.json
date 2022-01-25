@@ -5,12 +5,50 @@
     "editor.fontFamily": "'Fira Code', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
     "editor.fontLigatures": true,
     "editor.minimap.enabled": true,
-    "editor.renderIndentGuides": false,
     "editor.renderWhitespace": "all",
     "editor.rulers": [
         80,
         120
     ],
+    "editor.tokenColorCustomizations": {
+        // source: https://tex.stackexchange.com/questions/540880/vs-code-latex-workshop-how-to-enable-custom-highlighting
+        "textMateRules": [
+            {
+                "scope": [
+                    "support.function.be.latex",
+                    "support.function.general.tex",
+                    "support.function.textit.latex",
+                    "support.function.texttt.latex",
+                    "support.function.textbf.latex",
+                    "support.function.textsc.latex",
+                    "support.function.url.latex",
+                    "support.function.footnote.latex",
+                ],
+                "settings": {
+                    "foreground": "#0000FF",
+                },
+            },
+            {
+                "scope": [
+                    "support.function.section.latex",
+                ],
+                "settings": {
+                    "foreground": "#b700ff",
+                    "fontStyle": "bold"
+                },
+            },
+            {
+                "scope": [
+                    "variable.parameter.function.latex",
+                    "constant.other.reference.citation.latex"
+                ],
+                "settings": {
+                    "foreground": "#67a4ad",
+
+                }
+            }
+        ]
+    },
     "editor.wordWrap": "wordWrapColumn",
     "files.autoSave": "afterDelay",
     "files.autoSaveDelay": 20000,
@@ -222,7 +260,6 @@
     "workbench.editor.decorations.colors": true,
     "workbench.editor.decorations.badges": true,
     "search.mode": "newEditor",
-    "jupyter.alwaysTrustNotebooks": true,
     "workbench.editorAssociations": {
         "*.ipynb": "jupyter-notebook"
     },
