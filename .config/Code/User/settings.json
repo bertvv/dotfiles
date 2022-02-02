@@ -1,7 +1,31 @@
 {
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[latex]": {
+        "editor.formatOnPaste": false,
+        "editor.suggestSelection": "recentlyUsedByPrefix",
+        "editor.tabSize": 2
+    },
     "[markdown]": {
         "editor.defaultFormatter": "yzhang.markdown-all-in-one"
     },
+    "[shellscript]": {
+        "editor.tabSize": 2,
+        "files.eol": "\n"
+    },
+    "[yaml]": {
+        "editor.quickSuggestions": {
+            "comments": false,
+            "other": true,
+            "strings": true
+        },
+        "editor.tabSize": 2
+    },
+    "editor.columnSelection": false,
     "editor.fontFamily": "'Fira Code', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
     "editor.fontLigatures": true,
     "editor.minimap.enabled": true,
@@ -22,20 +46,20 @@
                     "support.function.textbf.latex",
                     "support.function.textsc.latex",
                     "support.function.url.latex",
-                    "support.function.footnote.latex",
+                    "support.function.footnote.latex"
                 ],
                 "settings": {
-                    "foreground": "#0000FF",
-                },
+                    "foreground": "#0000FF"
+                }
             },
             {
                 "scope": [
-                    "support.function.section.latex",
+                    "support.function.section.latex"
                 ],
                 "settings": {
-                    "foreground": "#b700ff",
-                    "fontStyle": "bold"
-                },
+                    "fontStyle": "bold",
+                    "foreground": "#b700ff"
+                }
             },
             {
                 "scope": [
@@ -43,18 +67,65 @@
                     "constant.other.reference.citation.latex"
                 ],
                 "settings": {
-                    "foreground": "#67a4ad",
+                    "foreground": "#67a4ad"
                 }
             }
         ]
     },
     "editor.wordWrap": "wordWrapColumn",
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
     "files.autoSave": "afterDelay",
     "files.autoSaveDelay": 20000,
     "files.defaultLanguage": "${activeEditorLanguage}",
+    "git.confirmSync": false,
+    "jupyter.sendSelectionToInteractiveWindow": true,
+    "keyboard.dispatch": "keyCode",
+    "latex-workshop.bibtex-format.sort.enabled": true,
     "latex-workshop.chktex.enabled": true,
+    "latex-workshop.intellisense.citation.backend": "biblatex",
     "latex-workshop.intellisense.package.enabled": true,
+    "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": false,
+    "latex-workshop.latex.autoBuild.interval": 30000,
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    "latex-workshop.latex.autoClean.run": "onBuilt",
+    "latex-workshop.latex.clean.fileTypes": [
+        "*.aux",
+        "*.bbl",
+        "*.blg",
+        "*.idx",
+        "*.ind",
+        "*.lof",
+        "*.lot",
+        "*.out",
+        "*.toc",
+        "*.acn",
+        "*.acr",
+        "*.alg",
+        "*.glg",
+        "*.glo",
+        "*.gls",
+        "*.fls",
+        "*.log",
+        "*.fdb_latexmk",
+        "*.snm",
+        "*.synctex(busy)",
+        "*.synctex.gz(busy)",
+        "*.nav",
+        "*.synctex.gz",
+        "*.run.xml",
+        "*.bcf",
+        "*.xdv"
+    ],
     "latex-workshop.latex.clean.subfolder.enabled": true,
+    "latex-workshop.latex.magic.args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "--shell-escape",
+        "%DOC%"
+    ],
+    "latex-workshop.latex.outDir": "%DIR%/out",
     "latex-workshop.latex.recipes": [
         {
             "name": "latexmk 🔃",
@@ -190,95 +261,24 @@
         },
         "MD013": false
     },
-    "r.bracketedPaste": true,
-    "r.rterm.linux": "/home/bert/.local/bin/radian",
-    "r.sessionWatcher": true,
-    "telemetry.telemetryLevel": "off",
-    "workbench.colorTheme": "Visual Studio Light",
-    "keyboard.dispatch": "keyCode",
-    "explorer.confirmDelete": false,
-    "editor.columnSelection": false,
-    "explorer.confirmDragAndDrop": false,
-    "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": false,
-    "latex-workshop.latex.autoBuild.interval": 30000,
-    "latex-workshop.latex.autoBuild.run": "onSave",
-    "latex-workshop.latex.magic.args": [
-        "-synctex=1",
-        "-interaction=nonstopmode",
-        "-file-line-error",
-        "--shell-escape",
-        "%DOC%"
-    ],
-    "latex-workshop.bibtex-format.sort.enabled": true,
-    "latex-workshop.latex.clean.fileTypes": [
-        "*.aux",
-        "*.bbl",
-        "*.blg",
-        "*.idx",
-        "*.ind",
-        "*.lof",
-        "*.lot",
-        "*.out",
-        "*.toc",
-        "*.acn",
-        "*.acr",
-        "*.alg",
-        "*.glg",
-        "*.glo",
-        "*.gls",
-        "*.fls",
-        "*.log",
-        "*.fdb_latexmk",
-        "*.snm",
-        "*.synctex(busy)",
-        "*.synctex.gz(busy)",
-        "*.nav",
-        "*.synctex.gz",
-        "*.run.xml",
-        "*.bcf",
-        "*.xdv"
-    ],
-    "[yaml]": {
-        "editor.tabSize": 2,
-        "editor.quickSuggestions": {
-            "other": true,
-            "comments": false,
-            "strings": true
-        }
-    },
-    "[shellscript]": {
-        "files.eol": "\n",
-        "editor.tabSize": 2
-    },
-    "git.confirmSync": false,
-    "jupyter.sendSelectionToInteractiveWindow": true,
-    "[latex]": {
-        "editor.tabSize": 2,
-        "editor.formatOnPaste": false,
-        "editor.suggestSelection": "recentlyUsedByPrefix"
-    },
-    "workbench.editor.wrapTabs": true,
-    "workbench.editor.pinnedTabSizing": "shrink",
-    "workbench.editor.decorations.colors": true,
-    "workbench.editor.decorations.badges": true,
-    "search.mode": "newEditor",
-    "workbench.editorAssociations": {
-        "*.ipynb": "jupyter-notebook"
-    },
     "notebook.cellToolbarLocation": {
         "default": "right",
         "jupyter-notebook": "left"
     },
-    "terminal.integrated.inheritEnv": false,
-    "security.workspace.trust.untrustedFiles": "open",
-    "[html]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "latex-workshop.intellisense.citation.backend": "biblatex",
-    "latex-workshop.latex.autoClean.run": "onBuilt",
     "notebook.lineNumbers": "on",
-    "latex-workshop.latex.outDir": "%DIR%/out",
-    "[jsonc]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "r.bracketedPaste": true,
+    "r.rterm.linux": "/home/bert/.local/bin/radian",
+    "r.sessionWatcher": true,
+    "search.mode": "newEditor",
+    "security.workspace.trust.untrustedFiles": "open",
+    "telemetry.telemetryLevel": "off",
+    "terminal.integrated.inheritEnv": false,
+    "workbench.colorTheme": "Visual Studio Light",
+    "workbench.editor.decorations.badges": true,
+    "workbench.editor.decorations.colors": true,
+    "workbench.editor.pinnedTabSizing": "shrink",
+    "workbench.editor.wrapTabs": true,
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
     }
 }
