@@ -44,7 +44,6 @@
                 ],
                 "settings": {
                     "foreground": "#67a4ad",
-
                 }
             }
         ]
@@ -57,7 +56,6 @@
     "latex-workshop.intellisense.package.enabled": true,
     "latex-workshop.latex.clean.subfolder.enabled": true,
     "latex-workshop.latex.recipes": [
-
         {
             "name": "latexmk 🔃",
             "tools": [
@@ -248,6 +246,10 @@
             "strings": true
         }
     },
+    "[shellscript]": {
+        "files.eol": "\n",
+        "editor.tabSize": 2
+    },
     "git.confirmSync": false,
     "jupyter.sendSelectionToInteractiveWindow": true,
     "[latex]": {
@@ -275,5 +277,8 @@
     "latex-workshop.intellisense.citation.backend": "biblatex",
     "latex-workshop.latex.autoClean.run": "onBuilt",
     "notebook.lineNumbers": "on",
-    "latex-workshop.latex.outDir": "%DIR%/out"
+    "latex-workshop.latex.outDir": "%DIR%/out",
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }
