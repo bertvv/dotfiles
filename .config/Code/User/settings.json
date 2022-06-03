@@ -11,7 +11,7 @@
         "editor.tabSize": 2
     },
     "[markdown]": {
-        "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[shellscript]": {
         "editor.tabSize": 2,
@@ -88,7 +88,6 @@
     "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": false,
     "latex-workshop.latex.autoBuild.interval": 30000,
     "latex-workshop.latex.autoBuild.run": "onSave",
-    "latex-workshop.latex.autoClean.run": "onBuilt",
     "latex-workshop.latex.clean.fileTypes": [
         "*.aux",
         "*.bbl",
@@ -115,7 +114,9 @@
         "*.synctex.gz",
         "*.run.xml",
         "*.bcf",
-        "*.xdv"
+        "*.xdv",
+        "*.vrb",
+        "_minted*"
     ],
     "latex-workshop.latex.clean.subfolder.enabled": true,
     "latex-workshop.latex.magic.args": [
@@ -127,6 +128,7 @@
     ],
     "latex-workshop.latex.outDir": "%DIR%/out",
     "latex-workshop.latex.recipes": [
+    
         {
             "name": "latexmk 🔃",
             "tools": [
@@ -273,12 +275,89 @@
     "security.workspace.trust.untrustedFiles": "open",
     "telemetry.telemetryLevel": "off",
     "terminal.integrated.inheritEnv": false,
-    "workbench.colorTheme": "Visual Studio Light",
+    "workbench.colorTheme": "Default Light+",
     "workbench.editor.decorations.badges": true,
     "workbench.editor.decorations.colors": true,
     "workbench.editor.pinnedTabSizing": "shrink",
     "workbench.editor.wrapTabs": true,
     "workbench.editorAssociations": {
         "*.ipynb": "jupyter-notebook"
-    }
+    },
+    "latex-workshop.chktex.args.active": [
+        "-wall",
+        "-n22",
+        "-n30",
+        "-e16",
+        "-q",
+        "-n46",
+        "-n36"
+    ],
+    "latex-workshop.chktex.convertOutput.column.chktexrcTabSize": 2,
+    "gitlens.defaultDateFormat": null,
+    "gitlens.defaultTimeFormat": "H:mm",
+    "gitlens.defaultDateShortFormat": "YYYY-MM-DD",
+    "editor.bracketPairColorization.enabled": true,
+    "latex-workshop.latex.autoClean.run": "onBuilt",
+    "gitlens.hovers.currentLine.over": "line",
+    "latex-workshop.synctex.afterBuild.enabled": true,
+    "latex-workshop.intellisense.file.exclude": [
+        "**/*.aux",
+        "**/*.bbl",
+        "**/*.bcf",
+        "**/*.blg",
+        "**/*.idx",
+        "**/*.ind",
+        "**/*.lof",
+        "**/*.lot",
+        "**/*.out",
+        "**/*.toc",
+        "**/*.acn",
+        "**/*.acr",
+        "**/*.alg",
+        "**/*.glg",
+        "**/*.glo",
+        "**/*.gls",
+        "**/*.ist",
+        "**/*.fls",
+        "**/*.log",
+        "**/*.nav",
+        "**/*.snm",
+        "**/*.fdb_latexmk",
+        "**/*.synctex.gz",
+        "**/*.run.xml",
+        "**/*.vrb"
+    ],
+    "jupyter.kernels.filter": [],
+    "latex-workshop.latex.watch.files.ignore": [
+        "**/*.bbx",
+        "**/*.bbl",
+        "**/*.cbx",
+        "**/*.cfg",
+        "**/*.clo",
+        "**/*.cnf",
+        "**/*.def",
+        "**/*.dfu",
+        "**/*.enc",
+        "**/*.fd",
+        "**/*.fmt",
+        "**/*.lbx",
+        "**/*.map",
+        "**/*.mkii",
+        "**/*.pfb",
+        "**/*.tfm",
+        "**/*.vf",
+        "**/*.code.tex",
+        "**/*.sty",
+        "**/texmf-{dist,var}/**",
+        "**/Local/MiKTeX/**",
+        "**/Local/Programs/MiKTeX/**",
+        "**/Roaming/MiKTeX/**",
+        "**/Program*/MiKTeX*/**",
+        "**/.miktex/texmfs/**",
+        "/var/cache/miktex-texmf/**",
+        "/usr/local/share/miktex-texmf/**",
+        "**/Library/Application Support/MiKTeX/texmfs/**",
+        "/dev/null",
+        "**/opgave.tex"
+    ]
 }
