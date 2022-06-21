@@ -121,3 +121,5 @@ alias ctrlv='xclip -selection clipboard -o'
 
 # SSH without adding the target host to ~/.ssh/known_hosts
 alias sshh='ssh -o UserKnownHostsFile=/dev/null '
+
+alias ping='ping -c 4 '
