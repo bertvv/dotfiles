@@ -283,15 +283,6 @@
     "workbench.editorAssociations": {
         "*.ipynb": "jupyter-notebook"
     },
-    "latex-workshop.chktex.args.active": [
-        "-wall",
-        "-n22",
-        "-n30",
-        "-e16",
-        "-q",
-        "-n46",
-        "-n36"
-    ],
     "latex-workshop.chktex.convertOutput.column.chktexrcTabSize": 2,
     "gitlens.defaultDateFormat": null,
     "gitlens.defaultTimeFormat": "H:mm",
@@ -359,5 +350,15 @@
         "**/Library/Application Support/MiKTeX/texmfs/**",
         "/dev/null",
         "**/opgave.tex"
+    ],
+    "latex-workshop.chktex.exec.args": [
+        "-wall",
+        "-n22",
+        "-n30",
+        "-e16",
+        "-q",
+        "-n13",
+        "-n46",
+        "-n36"
     ]
 }
