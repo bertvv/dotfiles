@@ -65,7 +65,6 @@ shopt -s autocd       # entering a directory as command will cd into it
 shopt -s cdspell      # autocorrect typos in path names when using 'cd'
 shopt -s globstar     # allow use of ** in file globbing
 shopt -s nocaseglob   # case insensitive globbing
-shopt -s nullglob     # filename patterns which match no files expand to null string
 
 # This defines where cd looks for targets
 # Add the directories you want to have fast access to, separated by colon
@@ -87,3 +86,4 @@ export dsai="${hg}/DataScienceAI"
 export ozt="${hg}/ResearchMethods"
 export bp="${hg}/Bachelorproef"
 export stage="${hg}/Stage"
+export huisstijl="${HOME}/Documents/HOGENT/Huisstijl"
