@@ -17,8 +17,9 @@ endsnippet
 
 snippet usage "Usage function"
 # Print usage message on stdout by parsing start of script comments
+# The comment should start with #/ followed by either a newline or a space
 usage() {
-  grep '^#/' "${script_dir}/${script_name}" | sed 's/^#\/\s*//'
+  grep '^#/' "${script_dir}/${script_name}" | sed 's/^#\/\($\| \)//'
 }
 
 endsnippet
