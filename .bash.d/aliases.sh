@@ -53,10 +53,7 @@ alias dip='docker inspect  --format="{{ .NetworkSettings.IPAddress }}" $(docker 
 
 # DNF
 alias i='sudo dnf install -y'
-alias y='sudo dnf'
-alias yl='dnf list'
-alias ys='dnf search'
-alias yu='sudo dnf update'
+alias u='sudo dnf upgrade'
 
 # Directory listing and file system
 # Use rational units/formats in file size & date output
