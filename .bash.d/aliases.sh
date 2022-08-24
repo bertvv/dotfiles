@@ -76,6 +76,7 @@ alias mv='mv --interactive'
 # Find stuff
 alias ff='find . -type f -name '
 alias fd='find . -type d -name '
+alias f="fzf --preview 'bat --color=always --style=numbers {}'"
 
 alias bc='bc --mathlib' # Start bc with support for rational numbers
 alias sudo='sudo '
