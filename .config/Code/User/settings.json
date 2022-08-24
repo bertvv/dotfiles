@@ -360,5 +360,6 @@
         "-n13",
         "-n46",
         "-n36"
-    ]
+    ],
+    "terminal.integrated.shellIntegration.enabled": true
 }
