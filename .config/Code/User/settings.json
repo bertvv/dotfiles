@@ -3,7 +3,7 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[jsonc]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+        "editor.defaultFormatter": "vscode.json-language-features"
     },
     "[latex]": {
         "editor.formatOnPaste": false,
@@ -11,7 +11,7 @@
         "editor.tabSize": 2
     },
     "[markdown]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+        "editor.defaultFormatter": "yzhang.markdown-all-in-one"
     },
     "[shellscript]": {
         "editor.tabSize": 2,
@@ -82,7 +82,7 @@
     "jupyter.sendSelectionToInteractiveWindow": true,
     "keyboard.dispatch": "keyCode",
     "latex-workshop.bibtex-format.sort.enabled": true,
-    "latex-workshop.chktex.enabled": true,
+    "latex-workshop.linting.chktex.enabled": true,
     "latex-workshop.intellisense.citation.backend": "biblatex",
     "latex-workshop.intellisense.package.enabled": true,
     "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": false,
@@ -283,7 +283,7 @@
     "workbench.editorAssociations": {
         "*.ipynb": "jupyter-notebook"
     },
-    "latex-workshop.chktex.convertOutput.column.chktexrcTabSize": 2,
+    "latex-workshop.linting.chktex.convertOutput.column.chktexrcTabSize": 2,
     "gitlens.defaultDateFormat": null,
     "gitlens.defaultTimeFormat": "H:mm",
     "gitlens.defaultDateShortFormat": "YYYY-MM-DD",
@@ -351,7 +351,8 @@
         "/dev/null",
         "**/opgave.tex"
     ],
-    "latex-workshop.chktex.exec.args": [
+    "terminal.integrated.shellIntegration.enabled": true,
+    "latex-workshop.linting.chktex.exec.args": [
         "-wall",
         "-n22",
         "-n30",
@@ -360,6 +361,5 @@
         "-n13",
         "-n46",
         "-n36"
-    ],
-    "terminal.integrated.shellIntegration.enabled": true
+      ]
 }
