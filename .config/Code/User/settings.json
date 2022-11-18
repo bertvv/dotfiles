@@ -361,5 +361,8 @@
         "-n13",
         "-n46",
         "-n36"
-      ]
+    ],
+    "markdown.validate.enabled": true,
+    "window.restoreWindows": "none",
+    "interactiveWindow.restore": true
 }

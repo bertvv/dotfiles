@@ -7,5 +7,15 @@
     {
         "key": "alt+[",
         "command": "workbench.action.terminal.focusPrevious"
+    },
+    {
+        "key": "ctrl+shift+b",
+        "command": "workbench.action.terminal.new",
+        "when": "terminalProcessSupported || terminalWebExtensionContributedProfile"
+    },
+    {
+        "key": "ctrl+shift+`",
+        "command": "-workbench.action.terminal.new",
+        "when": "terminalProcessSupported || terminalWebExtensionContributedProfile"
     }
 ]
