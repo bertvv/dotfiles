@@ -20,5 +20,34 @@
 			"\\end{solutionordottedlines}"
 		],
 		"description": "Insert solutionordottedlines environment"
+	},
+	"Partial question": {
+		"prefix": "PT",
+		"body": [
+			"\\part[${1:1}] $2",
+			"\t\\begin{solutionordottedlines}[${3:1}cm]",
+			"\t\t$4",
+			"\t\\end{solutionordottedlines}"
+		],
+		"description": "Insert question part and solution"
+	},
+	"Question": {
+		"prefix": "QT",
+		"body": [
+			"\\question[${1:1}] $2",
+			"\n\\begin{solutionordottedlines}[${3:3}cm]",
+			"\t$4",
+			"\\end{solutionordottedlines}"
+		],
+		"description": "Insert question and solution"
+	},
+	"Verbatim": {
+		"prefix": "BVE",
+		"body": [
+			"\\begin{verbatim}",
+			"$1",
+			"\\end{verbatim}"
+		],
+		"description": "Verbatim environment"
 	}
 }

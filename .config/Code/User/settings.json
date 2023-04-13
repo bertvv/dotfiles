@@ -79,7 +79,6 @@
     "files.autoSaveDelay": 20000,
     "files.defaultLanguage": "${activeEditorLanguage}",
     "git.confirmSync": false,
-    "jupyter.sendSelectionToInteractiveWindow": true,
     "keyboard.dispatch": "keyCode",
     "latex-workshop.bibtex-format.sort.enabled": true,
     "latex-workshop.linting.chktex.enabled": true,
@@ -167,6 +166,7 @@
         }
     ],
     "latex-workshop.latex.tools": [
+    
         {
             "args": [
                 "-f",
@@ -267,7 +267,6 @@
         "default": "right",
         "jupyter-notebook": "left"
     },
-    "notebook.lineNumbers": "on",
     "r.bracketedPaste": true,
     "r.rterm.linux": "/home/bert/.local/bin/radian",
     "r.sessionWatcher": true,
@@ -281,14 +280,14 @@
     "workbench.editor.pinnedTabSizing": "shrink",
     "workbench.editor.wrapTabs": true,
     "workbench.editorAssociations": {
-        "*.ipynb": "jupyter-notebook"
+        "*.ipynb": "jupyter-notebook",
+        "*.pdf": "latex-workshop-pdf-hook"
     },
     "latex-workshop.linting.chktex.convertOutput.column.chktexrcTabSize": 2,
     "gitlens.defaultDateFormat": null,
     "gitlens.defaultTimeFormat": "H:mm",
     "gitlens.defaultDateShortFormat": "YYYY-MM-DD",
     "editor.bracketPairColorization.enabled": true,
-    "latex-workshop.latex.autoClean.run": "onBuilt",
     "gitlens.hovers.currentLine.over": "line",
     "latex-workshop.synctex.afterBuild.enabled": true,
     "latex-workshop.intellisense.file.exclude": [
@@ -364,5 +363,21 @@
     ],
     "markdown.validate.enabled": true,
     "window.restoreWindows": "none",
-    "interactiveWindow.restore": true
+    "interactiveWindow.restore": true,
+    "redhat.telemetry.enabled": false,
+    "editor.inlineSuggest.enabled": true,
+    "git.autofetch": true,
+    "git.openRepositoryInParentFolders": "never",
+    "[python]": {
+        "editor.wordWrapColumn": 120
+    },
+    "github.copilot.enable": {
+        "*": true,
+        "yaml": false,
+        "plaintext": false,
+        "markdown": true
+    },
+    "jupyter.interactiveWindow.textEditor.executeSelection": true,
+    "notebook.lineNumbers": "on",
+    "window.zoomLevel": 1
 }
