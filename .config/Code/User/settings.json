@@ -1,7 +1,4 @@
 {
-    "[html]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
     "[jsonc]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     },
@@ -127,6 +124,7 @@
     ],
     "latex-workshop.latex.outDir": "%DIR%/out",
     "latex-workshop.latex.recipes": [
+
     
         {
             "name": "latexmk 🔃",
@@ -135,10 +133,11 @@
             ]
         },
         {
-            "name": "xelatex ➞ biber ➞ xelatex× 2",
+            "name": "xelatex ➞ biber ➞ gloss ➞ xelatex× 2",
             "tools": [
                 "xelatex",
                 "biber",
+                "makeglossaries",
                 "xelatex",
                 "xelatex"
             ]
@@ -166,7 +165,6 @@
         }
     ],
     "latex-workshop.latex.tools": [
-    
         {
             "args": [
                 "-f",
@@ -186,40 +184,9 @@
             "args": [
                 "-synctex=1",
                 "-interaction=nonstopmode",
-                "-file-line-error",
-                "-lualatex",
-                "-outdir=%OUTDIR%",
-                "%DOC%"
-            ],
-            "command": "latexmk",
-            "env": {},
-            "name": "lualatexmk"
-        },
-        {
-            "args": [
-                "%DOC%"
-            ],
-            "command": "latexmk",
-            "env": {},
-            "name": "latexmk_rconly"
-        },
-        {
-            "args": [
-                "-synctex=1",
-                "-interaction=nonstopmode",
-                "-file-line-error",
-                "%DOC%"
-            ],
-            "command": "pdflatex",
-            "env": {},
-            "name": "pdflatex"
-        },
-        {
-            "args": [
-                "-synctex=1",
-                "-interaction=nonstopmode",
                 "-shell-excape",
                 "-file-line-error",
+                "-output-directory=%OUTDIR%",
                 "%DOC%"
             ],
             "command": "xelatex",
@@ -228,14 +195,8 @@
         },
         {
             "args": [
-                "%DOCFILE%"
-            ],
-            "command": "bibtex",
-            "env": {},
-            "name": "bibtex"
-        },
-        {
-            "args": [
+                "--output-directory",
+                "%OUTDIR%",
                 "%DOCFILE%"
             ],
             "command": "biber",
@@ -244,19 +205,16 @@
         },
         {
             "args": [
-                "-e",
-                "knitr::knit2pdf('%DOCFILE%')"
+                "-d",
+                "%OUTDIR%",
+                "%DOCFILE%"
             ],
-            "command": "Rscript",
+            "command": "makeglossaries",
             "env": {},
-            "name": "rnw2pdf"
+            "name": "makeglossaries"
         }
     ],
     "latex-workshop.view.pdf.viewer": "tab",
-    "markdown-table-formatter.markdownGrammarScopes": [
-        "markdown",
-        "rmd"
-    ],
     "markdownlint.config": {
         "MD007": {
             "indent": 4
@@ -267,14 +225,11 @@
         "default": "right",
         "jupyter-notebook": "left"
     },
-    "r.bracketedPaste": true,
-    "r.rterm.linux": "/home/bert/.local/bin/radian",
-    "r.sessionWatcher": true,
     "search.mode": "newEditor",
     "security.workspace.trust.untrustedFiles": "open",
     "telemetry.telemetryLevel": "off",
     "terminal.integrated.inheritEnv": false,
-    "workbench.colorTheme": "Default Light+",
+    "workbench.colorTheme": "Default Light Modern",
     "workbench.editor.decorations.badges": true,
     "workbench.editor.decorations.colors": true,
     "workbench.editor.pinnedTabSizing": "shrink",
@@ -291,30 +246,30 @@
     "gitlens.hovers.currentLine.over": "line",
     "latex-workshop.synctex.afterBuild.enabled": true,
     "latex-workshop.intellisense.file.exclude": [
+        "**/*.acn",
+        "**/*.acr",
+        "**/*.alg",
         "**/*.aux",
         "**/*.bbl",
         "**/*.bcf",
         "**/*.blg",
-        "**/*.idx",
-        "**/*.ind",
-        "**/*.lof",
-        "**/*.lot",
-        "**/*.out",
-        "**/*.toc",
-        "**/*.acn",
-        "**/*.acr",
-        "**/*.alg",
+        "**/*.fdb_latexmk",
+        "**/*.fls",
         "**/*.glg",
         "**/*.glo",
         "**/*.gls",
+        "**/*.idx",
+        "**/*.ind",
         "**/*.ist",
-        "**/*.fls",
+        "**/*.lof",
         "**/*.log",
+        "**/*.lot",
         "**/*.nav",
-        "**/*.snm",
-        "**/*.fdb_latexmk",
-        "**/*.synctex.gz",
+        "**/*.out",
         "**/*.run.xml",
+        "**/*.snm",
+        "**/*.synctex.gz",
+        "**/*.toc",
         "**/*.vrb"
     ],
     "jupyter.kernels.filter": [],
@@ -348,7 +303,6 @@
         "/usr/local/share/miktex-texmf/**",
         "**/Library/Application Support/MiKTeX/texmfs/**",
         "/dev/null",
-        "**/opgave.tex"
     ],
     "terminal.integrated.shellIntegration.enabled": true,
     "latex-workshop.linting.chktex.exec.args": [
@@ -373,11 +327,11 @@
     },
     "github.copilot.enable": {
         "*": true,
-        "yaml": false,
         "plaintext": false,
-        "markdown": true
+        "markdown": true,
+        "scminput": false,
+        "yaml": false
     },
     "jupyter.interactiveWindow.textEditor.executeSelection": true,
     "notebook.lineNumbers": "on",
-    "window.zoomLevel": 1
 }
