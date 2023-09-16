@@ -8,7 +8,7 @@
         "editor.tabSize": 2
     },
     "[markdown]": {
-        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+        "editor.defaultFormatter": "yzhang.markdown-all-in-one"
     },
     "[shellscript]": {
         "editor.tabSize": 2,
