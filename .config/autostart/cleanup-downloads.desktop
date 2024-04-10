@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Cleanup Downloads
-GenericName=Cleanup Downloads folder
-Comment=Removes old files from the Downloads folder. Check ~/Downloads/cleanup-downloads.log to see what got removed.
-Exec=/home/bert/.local/bin/cleanup-downloads
-Terminal=false
-Type=Application
-X-GNOME-Autostart-enabled=true
