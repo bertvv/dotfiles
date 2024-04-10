@@ -6,26 +6,18 @@
 # This script was written by cra0zy and is released to the public domain
 # Source: https://github.com/harry-cpp/code-nautilus
 
-from gi import require_version
-require_version('Gtk', '3.0')
-require_version('Nautilus', '3.0')
+import os
 from gi.repository import Nautilus, GObject
 from subprocess import call
-import os
-
-# path to vscode
-VSCODE = 'code'
-
-# what name do you want to see in the context menu?
-VSCODENAME = 'Code'
-
-# always create new window?
-NEWWINDOW = False
-
+from typing import List
 
 class VSCodeExtension(GObject.GObject, Nautilus.MenuProvider):
 
-    def launch_vscode(self, menu, files):
+    def launch_vscode(
+            self,
+            menu: Nautilus.MenuItem,
+            files: List[Nautilus.FileInfo]
+    ) -> None:
         safepaths = ''
         args = ''
 
@@ -38,27 +30,32 @@ class VSCodeExtension(GObject.GObject, Nautilus.MenuProvider):
             if os.path.isdir(filepath) and os.path.exists(filepath):
                 args = '--new-window '
 
-        if NEWWINDOW:
-            args = '--new-window '
+        call('code ' + args + safepaths + '&', shell=True)
 
-        call(VSCODE + ' ' + args + safepaths + '&', shell=True)
+    def get_file_items(
+            self,
+            files: List[Nautilus.FileInfo],
+    ) -> List[Nautilus.MenuItem]:
 
-    def get_file_items(self, window, files):
         item = Nautilus.MenuItem(
-            name='VSCodeOpen',
-            label='Open In ' + VSCODENAME,
+            name='NautilusPython::open_vscode_files',
+            label='Open In VSCode',
             tip='Opens the selected files with VSCode'
         )
         item.connect('activate', self.launch_vscode, files)
 
         return [item]
 
-    def get_background_items(self, window, file_):
+    def get_background_items(
+            self,
+            current_folder: Nautilus.FileInfo,
+    ) -> List[Nautilus.MenuItem]:
+
         item = Nautilus.MenuItem(
-            name='VSCodeOpenBackground',
-            label='Open ' + VSCODENAME + ' Here',
+            name='NautilusPython::open_vscode_bg',
+            label='Open VSCode Here',
             tip='Opens VSCode in the current directory'
         )
-        item.connect('activate', self.launch_vscode, [file_])
+        item.connect('activate', self.launch_vscode, [current_folder])
 
         return [item]
