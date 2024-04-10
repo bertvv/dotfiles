@@ -4,16 +4,17 @@
 #
 #/ Usage: SCRIPTNAME [OPTIONS]...
 #/
-#/ Install the dotfiles on the current host using GNU Stow
+#/ Install the dotfiles on the current host using GNU Stow. The files are kept
+#/ in separate directories with paths relative to the home directory where they
+#/ should be installed. You can pick which directories to install by
+#/ enumerating
 #/
 #/ OPTIONS
 #/   -h, --help
 #/                Print this help message
-#/   -n, --noop
+#/   -n, --no
 #/                Print what would be installed without actually executing
 #/
-#/ EXAMPLES
-#/  
 
 
 #{{{ Bash settings
