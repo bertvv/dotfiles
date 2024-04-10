@@ -75,7 +75,7 @@ CDPATH=".:~:~/c"
 # Define a variable containing a path and you will be able to cd into it regardless of the directory you're in
 shopt -s cdable_vars
 
-export aj='21-22'
+export aj='23-24'
 export hg="${HOME}/Documents/Vakken"
 export infra="${hg}/InfrastructureAutomation"
 export lnx="${hg}/Linux"
@@ -87,3 +87,10 @@ export ozt="${hg}/ResearchMethods"
 export bp="${hg}/Bachelorproef"
 export stage="${hg}/Stage"
 export huisstijl="${HOME}/Documents/HOGENT/Huisstijl"
+
+#---------- Prompt ------------------------------------------------------------
+
+# If Powerline is installed, activate it
+if [ -r /usr/share/powerline/bash/powerline.sh ]; then
+  source /usr/share/powerline/bash/powerline.sh
+fi
