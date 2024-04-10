@@ -1,3 +1,5 @@
 # Ignore Vim plugins (are probably Git repos)
 vim/.vim/pack/*/
 
+# Ignore Python cache directories
+__pycache__/
