@@ -1,0 +1,3 @@
+# Ignore Vim plugins (are probably Git repos)
+vim/.vim/pack/*/
+
