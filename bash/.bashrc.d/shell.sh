@@ -88,9 +88,15 @@ export bp="${hg}/Bachelorproef"
 export stage="${hg}/Stage"
 export huisstijl="${HOME}/Documents/HOGENT/Huisstijl"
 
+# Default permissions
+umask 0077
+
 #---------- Prompt ------------------------------------------------------------
 
 # If Powerline is installed, activate it
 if [ -r /usr/share/powerline/bash/powerline.sh ]; then
+  powerline-daemon --quiet
+  POWERLINE_BASH_CONTINUATION=1
+  POWERLINE_BASH_SELECT=1
   source /usr/share/powerline/bash/powerline.sh
 fi
