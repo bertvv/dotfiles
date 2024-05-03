@@ -110,7 +110,7 @@ match ExtraWhitespace /\s\+$\| \+\ze\t\|\t/
 " colour scheme
 "  beamer: turn off these colour schemes, use white shell bg
 set background=light
-colorscheme default
+colorscheme desert256
 
 " }}}
 
