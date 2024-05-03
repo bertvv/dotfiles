@@ -59,13 +59,10 @@ alias u='sudo dnf upgrade'
 # Use rational units/formats in file size & date output
 alias df='df --si'
 alias du='du --total --si'
-alias l='ls -l --si --time-style=long-iso --color'
-alias ls='ls -h --si --time-style=long-iso --color'
-alias la='ls -la --si --time-style=long-iso --color'
-alias ll='ls -l  --si --time-style=long-iso --color'
-alias lh='ls -lh  --si --time-style=long-iso --color'
+alias l='eza --long --time-style=long-iso --color --icons --git'
+alias Z='eza --long --time-style=long-iso --color --icons --git --context'
+alias lt='eza --long --time-style=long-iso --color --icons --git --sort=modified --reverse'
 alias tree='tree -AC'
-alias Z='ls -l -Z --si --color'
 alias diff='diff --color --unified'
 
 # Avoid mistakes when copying or (re)moving files.
