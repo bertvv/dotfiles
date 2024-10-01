@@ -88,6 +88,9 @@ export bp="${hg}/Bachelorproef"
 export stage="${hg}/Stage"
 export huisstijl="${HOME}/Documents/HOGENT/Huisstijl"
 
+# Set up fzf key bindings and fuzzy completion
+source /usr/share/fzf/shell/key-bindings.bash
+
 # Default permissions
 umask 0077
 

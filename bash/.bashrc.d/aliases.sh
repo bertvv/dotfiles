@@ -69,6 +69,7 @@ alias diff='diff --color --unified'
 alias rm='rm --interactive=once' # Ask once if the user is sure
 alias cp='cp --recursive --interactive'
 alias mv='mv --interactive'
+alias cd='z'  # Uze zOxide for cd
 
 # Find stuff
 alias ff='find . -type f -name '
