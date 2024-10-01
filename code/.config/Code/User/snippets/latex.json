@@ -12,6 +12,45 @@
 	// 	],
 	// 	"description": "Log output to console"
 	// }
+	"Figure": {
+		"prefix": "FIG",
+		"body": [
+			"\\begin{figure}",
+			"\t\\centering",
+			"\t\\includegraphics[width=${1:0.8}\\textwidth]{${2:figure}}",
+			"\t\\caption[${3:ShortCaption}]{\\label{fig:${5:label}}${4:Caption}}",
+			"\\end{figure}"
+		],
+		"description": "Insert floating figure environment"
+	},
+	"Table": {
+		"prefix": "TAB",
+		"body": [
+			"\\begin{table}",
+			"\t\\centering",
+			"\t\\begin{tabular}{${1:c}}",
+			"\t\t\\toprule",
+			"\t\t$2",
+			"\t\t\\bottomrule",
+			"\t\\end{tabular}",
+			"\t\\caption[${3:ShortCaption}]{\\label{tab:${5:label}}${4:Caption}}",
+			"\\end{table}"
+		],
+		"description": "Insert floating table environment"
+	},
+	"Listing":{
+		"prefix": "LST",
+		"body": [
+			"\\begin{listing}",
+			"\t\\centering",
+			"\t\\begin{minted}{${1:python}}",
+			"$2",
+			"\t\\end{minted}",
+			"\t\\caption[${3:ShortCaption}]{\\label{lst:${5:label}}${4:Caption}}",
+			"\\end{listing}"
+		],
+		"description": "Insert listing environment"
+	},
 	"Exam solution environment": {
 		"prefix": "SOL",
 		"body": [
