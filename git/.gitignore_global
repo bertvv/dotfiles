@@ -1,0 +1,49 @@
+# Global .gitignore
+#
+# Activate with
+#   git config --global core.excludesfile ~/.gitignore_global
+
+# Backup files
+*~
+*.bak
+
+# Document swap files
+*.swp
+.~*#
+
+# Packages
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# VMs
+*.box
+*.vmdk
+*.ova
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Python virtualenv
+.ropeproject
+
+# Visual Studio Code settings
+.vscode
+
+# Rstudio personal project file
+.Rproj.user
+
+# VS Code Workspace
+*.code-workspace
+
