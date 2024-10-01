@@ -1,6 +1,7 @@
 {
     "[jsonc]": {
-        "editor.defaultFormatter": "vscode.json-language-features"
+        "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+
     },
     "[latex]": {
         "editor.formatOnPaste": false,
@@ -8,7 +9,7 @@
         "editor.tabSize": 2
     },
     "[markdown]": {
-        "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
     },
     "[shellscript]": {
         "editor.tabSize": 2,
@@ -122,14 +123,21 @@
         "--shell-escape",
         "%DOC%"
     ],
-    "latex-workshop.latex.outDir": "%DIR%/out",
+    "latex-workshop.latex.outDir": "%DIR%/../output",
     "latex-workshop.latex.recipes": [
-
-    
         {
             "name": "latexmk 🔃",
             "tools": [
                 "latexmk"
+            ]
+        },
+        {
+            "name": "xelatex ➞ biber ➞ xelatex× 2",
+            "tools": [
+                "xelatex",
+                "biber",
+                "xelatex",
+                "xelatex"
             ]
         },
         {
@@ -334,4 +342,11 @@
     },
     "jupyter.interactiveWindow.textEditor.executeSelection": true,
     "notebook.lineNumbers": "on",
+    "terminal.integrated.fontFamily": "SauceCodePro Nerd Font Mono",
+    "gitlens.launchpad.indicator.enabled": false,
+    "gitlens.launchpad.indicator.polling.enabled": false,
+    "gitlens.launchpad.allowMultiple": false,
+    "github.copilot.editor.enableAutoCompletions": true,
+    "python.createEnvironment.trigger": "off",
+    "makefile.configureOnOpen": false,
 }
