@@ -25,5 +25,18 @@
 			"from statsmodels.graphics.mosaicplot import mosaic"
 		],
 		"description": "Imports for data science"
+	},
+	"Time series analysis imports": {
+		"prefix": "tsimp",
+		"body": [
+			"# Package imports for time series analysis",
+			"from datetime import datetime",
+			"from statsmodels.tsa.holtwinters import SimpleExpSmoothing",
+			"from statsmodels.tsa.api import Holt",
+			"from statsmodels.tsa.holtwinters import ExponentialSmoothing",
+			"from statsmodels.tsa.seasonal import seasonal_decompose",
+			"from sklearn.metrics import mean_absolute_error,mean_squared_error"
+		],
+		"description": "Imports for time series analysis"
 	}
 }
