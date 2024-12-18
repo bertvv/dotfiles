@@ -334,7 +334,7 @@
         "editor.wordWrapColumn": 120
     },
     "github.copilot.enable": {
-        "*": true,
+        "*": false,
         "plaintext": false,
         "markdown": true,
         "scminput": false,
@@ -349,4 +349,6 @@
     "github.copilot.editor.enableAutoCompletions": true,
     "python.createEnvironment.trigger": "off",
     "makefile.configureOnOpen": false,
+    "plantuml.render": "PlantUMLServer",
+    "plantuml.server": "https://www.plantuml.com/plantuml",
 }
