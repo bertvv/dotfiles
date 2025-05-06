@@ -1,4 +1,4 @@
--- options.lua - nvim options
+-- options.lua - Neovim options
 
 local set = vim.opt
 
@@ -9,7 +9,7 @@ set.cursorline = true
 set.number = true
 set.relativenumber = true
 
--- scrolling behaviour
+-- Scrolling behavior
 --   minimal number of screen lines/columns to show around cursor
 
 set.scrolloff = 3
@@ -27,7 +27,7 @@ set.showbreak = "↪"
 set.softtabstop = 2
 set.tabstop = 2
 
--- saving, backup and undo files
+-- save, back-up and undo files
 
 set.autoread = true
 set.autowrite = true
@@ -44,10 +44,14 @@ set.incsearch = true
 set.ignorecase = true
 set.smartcase = true
 
--- backspace behaviour
+-- backspace behavior
 
 set.backspace = "indent,eol,start"
 
 -- use desktop clipboard
 
 set.clipboard:append("unnamedplus")
+
+-- Session options
+
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"

@@ -35,7 +35,7 @@ return {
                         buffer = args.buf,
                         callback = function()
                             vim.lsp.buf.format({
-                                formatting_options = { tabSize = 4, insertSpaces = true },
+                                formatting_options = { tabSize = 2, insertSpaces = true },
                                 bufnr = args.buf,
                                 id = client.id
                             })

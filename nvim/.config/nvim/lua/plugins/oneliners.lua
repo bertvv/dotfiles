@@ -4,4 +4,7 @@ return {
     { -- Git plugin
         'tpope/vim-fugitive',
     },
+    {
+        "github/copilot.vim",
+    }
 }
