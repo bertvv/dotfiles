@@ -9,8 +9,9 @@ return {
 
     vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
     vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
-    vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
-    vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
+    vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope search buffers' })
+    vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope search help tags' })
+    vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = 'Telescope search key bindings' })
 
     -- Find hidden files
     -- Source: <https://stackoverflow.com/a/76991432/887560>
@@ -34,6 +35,7 @@ return {
           "--glob=!**/build/*",
           "--glob=!**/dist/*",
           "--glob=!**/node_modules/*",
+          "--glob=!**/undodir/*",
           "--glob=!**/yarn.lock",
           "--glob=!**/package-lock.json",
         },
@@ -53,6 +55,8 @@ return {
             "--glob=!**/.vscode/*",
             "--glob=!**/build/*",
             "--glob=!**/dist/*",
+            "--glob=!**/node_modules/*",
+            "--glob=!**/undodir/*",
             "--glob=!**/yarn.lock",
             "--glob=!**/package-lock.json",
           },
