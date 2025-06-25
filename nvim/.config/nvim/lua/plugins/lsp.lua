@@ -139,6 +139,7 @@ return {
 
     local cmp = require('cmp')
 
+    require("luasnip.loaders.from_vscode").load({ paths = os.getenv("HOME") .. "/.config/Code/User/snippets/" })
     require('luasnip.loaders.from_vscode').lazy_load()
 
     vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
