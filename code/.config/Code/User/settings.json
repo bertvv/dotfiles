@@ -24,7 +24,6 @@
         "editor.tabSize": 2
     },
     "editor.columnSelection": false,
-    "editor.fontFamily": "'Fira Code', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
     "editor.fontLigatures": true,
     "editor.minimap.enabled": true,
     "editor.renderWhitespace": "all",
@@ -136,6 +135,7 @@
             "tools": [
                 "xelatex",
                 "biber",
+                "makeglossaries",
                 "xelatex",
                 "xelatex"
             ]
@@ -148,15 +148,6 @@
                 "makeglossaries",
                 "xelatex",
                 "xelatex"
-            ]
-        },
-        {
-            "name": "pdflatex ➞ bibtex ➞ pdflatex × 2",
-            "tools": [
-                "pdflatex",
-                "bibtex",
-                "pdflatex",
-                "pdflatex"
             ]
         },
         {
@@ -192,7 +183,7 @@
             "args": [
                 "-synctex=1",
                 "-interaction=nonstopmode",
-                "-shell-excape",
+                "-shell-escape",
                 "-file-line-error",
                 "-output-directory=%OUTDIR%",
                 "%DOC%"
@@ -237,7 +228,6 @@
     "security.workspace.trust.untrustedFiles": "open",
     "telemetry.telemetryLevel": "off",
     "terminal.integrated.inheritEnv": false,
-    "workbench.colorTheme": "Default Light Modern",
     "workbench.editor.decorations.badges": true,
     "workbench.editor.decorations.colors": true,
     "workbench.editor.pinnedTabSizing": "shrink",
@@ -280,7 +270,6 @@
         "**/*.toc",
         "**/*.vrb"
     ],
-    "jupyter.kernels.filter": [],
     "latex-workshop.latex.watch.files.ignore": [
         "**/*.bbx",
         "**/*.bbl",
@@ -325,7 +314,6 @@
     ],
     "markdown.validate.enabled": true,
     "window.restoreWindows": "none",
-    "interactiveWindow.restore": true,
     "redhat.telemetry.enabled": false,
     "editor.inlineSuggest.enabled": true,
     "git.autofetch": true,
@@ -346,9 +334,19 @@
     "gitlens.launchpad.indicator.enabled": false,
     "gitlens.launchpad.indicator.polling.enabled": false,
     "gitlens.launchpad.allowMultiple": false,
-    "github.copilot.editor.enableAutoCompletions": true,
     "python.createEnvironment.trigger": "off",
     "makefile.configureOnOpen": false,
     "plantuml.render": "PlantUMLServer",
     "plantuml.server": "https://www.plantuml.com/plantuml",
+    "editor.fontFamily": "'Hasklug Nerd Font Mono', 'monospace', monospace",
+    "window.customTitleBarVisibility": "auto",
+    "workbench.activityBar.location": "top",
+    "workbench.colorTheme": "Default Light Modern",
+    "C_Cpp.default.compilerPath": "/usr/bin/gcc",
+    "dev.containers.dockerComposePath": "podman-compose",
+    "dev.containers.dockerPath": "podman",
+    "dev.containers.dockerSocketPath": "/run/user/1000/podman/podman.sock",
+    "runme.telemetry.enabled": false,
+    "containers.containerCommand": "podman",
+    "telemetry.feedback.enabled": false,
 }

@@ -31,5 +31,10 @@
 		"prefix": "stdn",
 		"body": "De standaard is niet behaald",
 		"description": "Rubrics: de standaard is niet behaald"
+	},
+	"Contributor name": {
+		"prefix": "contrib",
+		"body": "Bert Van Vreckem, <https://github.com/bertvv/>",
+		"description": "Author name (for Linux Training authors file)"
 	}
 }
