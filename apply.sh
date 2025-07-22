@@ -60,9 +60,9 @@ main() {
     [ "${dir}" = '' ] && break
     log "Installing dir: ${dir}"
     if [ "${noop}" = 'yes' ]; then
-      stow --target="${HOME}" --verbose=2 --no "${dir}"
+      stow --target="${HOME}" --dotfiles --verbose=2 --no "${dir}"
     else
-      stow --target="${HOME}" --verbose=2 "${dir}"
+      stow --target="${HOME}" --dotfiles --verbose=2 "${dir}"
     fi
   done < "$(hostname).dirs"
 }

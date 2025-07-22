@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =0
+let g:netrw_dirhist_0='/usr/share/plasma/look-and-feel/org.kde.breeze.desktop/contents/splash'
+let g:netrw_dirhist_9='/home/bert/Infracoding/dotfiles/bash/.bashrc.d'
+let g:netrw_dirhist_8='/home/bert/OneDrive/Documenten/Vakken/Linux/linux-training-labs/dhcp/provisioning'
+let g:netrw_dirhist_7='/home/bert/OneDrive/Documenten/Vakken/Linux/linux-training-labs/dhcp/provisioning/debian'
+let g:netrw_dirhist_6='/home/bert/Infracoding/rock4/ansible'
+let g:netrw_dirhist_5='/home/bert/Infracoding/rock4'
+let g:netrw_dirhist_4='/home/bert/Infracoding/rock4/scripts'
+let g:netrw_dirhist_3='/home/bert/Infracoding/rock4'
+let g:netrw_dirhist_2='/home/bert/Infracoding/NB23-G89HHX3-LNX/config'
+let g:netrw_dirhist_1='/home/bert/Infracoding/NB23-G89HHX3-LNX'
