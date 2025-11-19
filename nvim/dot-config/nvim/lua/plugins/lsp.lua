@@ -97,16 +97,16 @@ return {
     require('mason').setup({})
     require('mason-lspconfig').setup({
       ensure_installed = {
-        "awk_ls",    -- AWK
-        "bashls",    -- Shell script
-        "clangd",    -- C, C++
-        "dockerls",  -- Docker, Docker, Docker, Docker!
-        "harper_ls", -- English
+        "awk_ls",   -- AWK
+        "bashls",   -- Shell script
+        "clangd",   -- C, C++
+        "dockerls", -- Docker, Docker, Docker, Docker!
+        --        "harper_ls", -- English
         "html",
         "markdown_oxide",
         "lua_ls",
         "ruff",     -- Python
-        "spectral", -- JSON, YAML
+        "spectral", -- JSON, YAML -- failed to install
         "texlab",
       },
       handlers = {
@@ -139,8 +139,9 @@ return {
 
     local cmp = require('cmp')
 
-    require("luasnip.loaders.from_vscode").load({ paths = os.getenv("HOME") .. "/.config/Code/User/snippets/" })
-    require('luasnip.loaders.from_vscode').lazy_load()
+    --    require("luasnip.loaders.from_vscode").load({ paths = os.getenv("HOME") .. "/.config/Code/User/snippets/" })
+    --    require('luasnip.loaders.from_vscode').lazy_load()
+    --    require("luasnip.loaders.from_snipmate").lazy_load()
 
     vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 
