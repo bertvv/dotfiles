@@ -13,9 +13,9 @@ end, { desc = "Source current file" })
 
 -- move through buffers
 
-vim.keymap.set("n", "<leader>n", ":bn<cr>", { desc = "Open next buffer" })
+vim.keymap.set("n", "<leader>n", ":bnext<cr>", { desc = "Open next buffer" })
 vim.keymap.set("n", "<leader>p", ":bp<cr>", { desc = "Open previous buffer" })
-vim.keymap.set("n", "<leader>x", ":bx<cr>", { desc = "Close current buffer" })
+vim.keymap.set("n", "<leader>x", ":bdelete<cr>", { desc = "Close current buffer" })
 
 -- yank to clipboard
 
