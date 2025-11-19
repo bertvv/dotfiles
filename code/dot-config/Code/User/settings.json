@@ -322,7 +322,7 @@
         "editor.wordWrapColumn": 120
     },
     "github.copilot.enable": {
-        "*": false,
+        "*": true,
         "plaintext": false,
         "markdown": true,
         "scminput": false,
@@ -349,4 +349,25 @@
     "runme.telemetry.enabled": false,
     "containers.containerCommand": "podman",
     "telemetry.feedback.enabled": false,
+    "[dockercompose]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.autoIndent": "advanced",
+        "editor.quickSuggestions": {
+            "other": true,
+            "comments": false,
+            "strings": true
+        },
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "[github-actions-workflow]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "workbench.secondarySideBar.defaultVisibility": "hidden",
+    "chat.agent.enabled": false,
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "python.analysis.typeCheckingMode": "standard",
+    "markdown.occurrencesHighlight.enabled": true,
+    "markdown-links.graphType": "obsidian",
+    "markdown-pdf.omitBackground": true,
 }
