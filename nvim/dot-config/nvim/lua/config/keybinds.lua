@@ -17,6 +17,7 @@ end, { desc = "Source current file" })
 vim.keymap.set("n", "<leader>n", ":bnext<cr>", { desc = "Open next buffer" })
 vim.keymap.set("n", "<leader>p", ":bp<cr>", { desc = "Open previous buffer" })
 vim.keymap.set("n", "<leader>x", ":bdelete<cr>", { desc = "Close current buffer" })
+vim.keymap.set("n", "<leader>X", ":%bdelete<cr>:NvimTreeFindFile<cr>", { desc = "Close all buffers" })
 
 -- split buffer
 
