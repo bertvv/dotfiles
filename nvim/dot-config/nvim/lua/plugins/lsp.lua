@@ -108,6 +108,9 @@ return {
         "ruff",     -- Python
         "spectral", -- JSON, YAML -- failed to install
         "texlab",
+        "tinymist",  -- Typst
+        "zls"
+
       },
       handlers = {
         -- This first function is the "default handler"
