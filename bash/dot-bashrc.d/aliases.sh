@@ -6,7 +6,11 @@
 
 alias notes='code ~/Documents/Notes/'
 alias r='ranger'
-alias o='gnome-open'
+alias o='xdg-open'
+alias n='nvim'
+alias N='nvim .'
+alias ns='nvim ~/.config/nvim/'
+alias act='source .venv/bin/activate'
 
 # Git
 # Git author stats
@@ -51,10 +55,6 @@ alias dS='podman exec --interactive --tty $(podman ps --latest --quiet) env TERM
 alias dh='podman stop'
 alias dip='podman inspect  --format="{{ .NetworkSettings.IPAddress }}" $(podman ps --latest --quiet)'
 
-# DNF
-alias i='sudo dnf install -y'
-alias u='sudo dnf upgrade'
-
 # Directory listing and file system
 # Use rational units/formats in file size & date output
 alias df='df --si'
@@ -73,38 +73,12 @@ alias cd='z'  # Uze zOxide for cd
 
 # Find stuff
 alias ff='find . -type f -name '
-alias fd='find . -type d -name '
-alias f="fzf --preview 'bat --color=always --style=numbers {}'"
 
 alias bc='bc --mathlib' # Start bc with support for rational numbers
 alias sudo='sudo '
 
 # Notification after long commands, e.g. sleep 10; alert
 alias alert='tput bel; notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "Done: $(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-# Print CPU temperature
-alias temp='cat /sys/bus/acpi/drivers/thermal/LNXTHERM\:00/thermal_zone/temp'
-
-# Put the Fedora menu bar on the correct display, i.e. the laptop screen,
-# not an external monitor
-# credits: http://forums.fedoraforum.org/showpost.php?p=1462702&postcount=4
-alias fixbar='xrandr --output LVDS-0 --primary'
-
-# If Gvim/vim-X11 is installed, use it to enable X11 clipboard support
-# otherwise, if vim-enhanced is installed, use that
-if [ -x "/usr/bin/gvim" ]; then
-    alias vi='gvim -v'
-    alias vim='gvim -v'
-elif [ -x "/usr/bin/vim" ]; then
-    alias vi='vim'
-fi
-
-# Let ip produce coloured output
-alias ip='ip --color'
-
-# Create a crypted password for use in a Linux shadow file
-# Python library ’passlib’ should be installed
-alias cryptpw='python3 -c "from passlib.hash import sha512_crypt; import getpass; print(sha512_crypt.hash(getpass.getpass()))" | sed "s/rounds=[0-9]*.//"'
 
 # Source: Luciano Quercia
 # https://dev.to/djviolin/what-are-your-unix-pipeline-commands-that-saved-you-from-lot-of-codingtime-7ok/comments/185j

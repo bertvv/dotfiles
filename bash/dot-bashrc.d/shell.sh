@@ -75,14 +75,14 @@ CDPATH=".:~:~/c"
 # Define a variable containing a path and you will be able to cd into it regardless of the directory you're in
 shopt -s cdable_vars
 
-export aj='23-24'
+export aj='25-26'
 export hg="${HOME}/Documents/Vakken"
 export infra="${hg}/InfrastructureAutomation"
 export lnx="${hg}/Linux"
 export linux="${hg}/Linux"
 export dpo="${hg}/DevopsProjectOperations"
 export devops="${hg}/DevopsProjectOperations"
-export dsai="${hg}/DataScienceAI"
+export ds="${hg}/DataScience"
 export ozt="${hg}/ResearchMethods"
 export bp="${hg}/Bachelorproef"
 export stage="${hg}/Stage"
@@ -92,14 +92,37 @@ export huisstijl="${HOME}/Documents/HOGENT/Huisstijl"
 source /usr/share/fzf/shell/key-bindings.bash
 
 # Default permissions
-umask 0077
+# I would prefer 0077, but that causes problems, a.o.
+# https://github.com/rpm-software-management/dnf5/issues/1908
+umask 0022
 
 #---------- Prompt ------------------------------------------------------------
 
 # If Powerline is installed, activate it
-if [ -r /usr/share/powerline/bash/powerline.sh ]; then
-  powerline-daemon --quiet
-  POWERLINE_BASH_CONTINUATION=1
-  POWERLINE_BASH_SELECT=1
-  source /usr/share/powerline/bash/powerline.sh
+#if [ -r /usr/share/powerline/bash/powerline.sh ]; then
+#  powerline-daemon --quiet
+#  POWERLINE_BASH_CONTINUATION=1
+#  POWERLINE_BASH_SELECT=1
+#  source /usr/share/powerline/bash/powerline.sh
+#fi
+
+function _update_ps1() {
+    PS1="$(/usr/bin/powerline-go \
+      -cwd-max-depth 2 \
+      -error $? \
+      -hostname-only-if-ssh \
+      -jobs "$(jobs -p | wc -l)" \
+      -newline \
+    )"
+
+    # Uncomment the following line to automatically clear errors after showing
+    # them once. This not only clears the error for powerline-go, but also for
+    # everything else you run in that shell. Don't enable this if you're not
+    # sure this is what you want.
+
+    #set "?"
+}
+
+if [ "$TERM" != "linux" ] && [ -f "/usr/bin/powerline-go" ]; then
+    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
 fi
